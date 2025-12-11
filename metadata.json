@@ -1,0 +1,5 @@
+{
+  "name": "ChemAI Pro",
+  "description": "An advanced AI-powered chemical calculator featuring reaction prediction, mechanism visualization, 3D molecular modeling, and an interactive structural formula builder with auto-naming capabilities.",
+  "requestFramePermissions": []
+}
