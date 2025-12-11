@@ -2,7 +2,18 @@ import { GoogleGenAI, Type } from "@google/genai";
 import { ReactionResult, NamingResult, MoleculeStructure, BuilderAtom, BuilderBond } from '../types';
 import { Language } from '../contexts/LanguageContext';
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+// 支持多种环境变量读取方式（本地开发、Cloudflare Pages 等）
+const apiKey = 
+  import.meta.env.VITE_GEMINI_API_KEY || 
+  import.meta.env.GEMINI_API_KEY || 
+  (typeof process !== 'undefined' && (process.env.API_KEY || process.env.GEMINI_API_KEY)) ||
+  '';
+
+if (!apiKey) {
+  throw new Error("An API Key must be set. Please configure GEMINI_API_KEY in your environment variables (Cloudflare Pages: Settings > Environment Variables, or local: .env.local file)");
+}
+
+const ai = new GoogleGenAI({ apiKey });
 
 const modelName = "gemini-2.5-flash";
 
