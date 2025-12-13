@@ -1,4 +1,4 @@
-import { ReactionResult, NamingResult, MoleculeStructure, BuilderAtom, BuilderBond } from '../types';
+import { ReactionResult, NamingResult, BuilderAtom, BuilderBond } from '../types';
 import { Language } from '../contexts/LanguageContext';
 
 // 支持多种环境变量读取方式（本地开发、Cloudflare Pages 等）
@@ -15,7 +15,7 @@ if (!apiKey) {
 }
 
 // VectorEngine AI API 地址
-const API_URL = 'https://api.vectorengine.ai';
+const API_URL = 'http://api.vectorengine.ai/v1/chat/completions';
 
 const modelName = "gpt-3.5-turbo";
 
