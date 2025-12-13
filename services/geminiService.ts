@@ -17,7 +17,7 @@ if (!apiKey) {
 // 2. 配置 Vector Engine (必须用 HTTPS，防止浏览器拦截)
 const API_URL = 'https://api.vectorengine.ai/v1/chat/completions';
 // 3. 模型名称 (Vector Engine 通常兼容 gpt-3.5-turbo，用这个最稳)
-const modelName = "gemini-3-pro-image-preview";
+const modelName = "gemini-2.5-flash";
 
 export const predictReaction = async (reactants: string, conditions: string, language: Language): Promise<ReactionResult> => {
   const langInstruction = language === 'zh' ? "Provide output in Simplified Chinese." : "Provide output in English.";
