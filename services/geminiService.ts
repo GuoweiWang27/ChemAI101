@@ -15,7 +15,7 @@ if (!apiKey) {
 }
 
 // VectorEngine AI API 地址
-const API_URL = 'https://api.vectorengine.ai/v1/chat/completions';
+const API_URL = 'https://api.vectorengine.ai/v1';
 
 const modelName = "gpt-3.5-turbo";
 
