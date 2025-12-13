@@ -1,3 +1,4 @@
+import { GoogleGenAI, Type } from "@google/genai";
 import { ReactionResult, NamingResult, BuilderAtom, BuilderBond } from '../types';
 import { Language } from '../contexts/LanguageContext';
 
@@ -14,8 +15,15 @@ if (!apiKey) {
   throw new Error("An API Key must be set. Please configure VECTORENGINE_API_KEY in your environment variables (Cloudflare Pages: Settings > Environment Variables, or local: .env.local file)");
 }
 
-// VectorEngine AI API 地址
-const API_URL = 'http://api.vectorengine.ai/v1/chat/completions';
+// VectorEngine AI API 地址 - baseURL 应该是基础地址，不包含 /chat/completions
+const BASE_URL = 'https://api.vectorengine.ai/v1';
+
+// 初始化 GoogleGenerativeAI SDK，设置 baseURL
+// baseURL 在运行时支持，但类型定义中可能未包含，使用类型断言
+const ai = new GoogleGenAI({ 
+  apiKey: apiKey,
+  baseURL: BASE_URL
+} as any);
 
 const modelName = "gpt-3.5-turbo";
 
@@ -67,35 +75,64 @@ export const predictReaction = async (reactants: string, conditions: string, lan
   `;
 
   try {
-    const response = await fetch(API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`
-      },
-      body: JSON.stringify({
-        model: modelName,
-        messages: [
-          {
-            role: 'user',
-            content: prompt
+    const response = await ai.models.generateContent({
+      model: modelName,
+      contents: prompt,
+      config: {
+        responseMimeType: "application/json",
+        responseSchema: {
+          type: Type.OBJECT,
+          properties: {
+            equation: { type: Type.STRING },
+            products: { 
+              type: Type.ARRAY, 
+              items: { type: Type.STRING } 
+            },
+            mechanismSteps: { 
+              type: Type.ARRAY, 
+              items: { type: Type.STRING } 
+            },
+            vseprInfo: { 
+              type: Type.STRING, 
+              description: "Description of the geometry (e.g. Tetrahedral)" 
+            },
+            productStructure: {
+              type: Type.OBJECT,
+              properties: {
+                atoms: {
+                  type: Type.ARRAY,
+                  items: {
+                    type: Type.OBJECT,
+                    properties: {
+                      id: { type: Type.INTEGER },
+                      element: { type: Type.STRING },
+                      x: { type: Type.NUMBER },
+                      y: { type: Type.NUMBER },
+                      z: { type: Type.NUMBER },
+                      color: { type: Type.STRING }
+                    }
+                  }
+                },
+                bonds: {
+                  type: Type.ARRAY,
+                  items: {
+                    type: Type.OBJECT,
+                    properties: {
+                      source: { type: Type.INTEGER },
+                      target: { type: Type.INTEGER },
+                      order: { type: Type.INTEGER }
+                    }
+                  }
+                }
+              }
+            }
           }
-        ],
-        response_format: { type: 'json_object' },
-        temperature: 0.7
-      })
+        }
+      }
     });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`API request failed: ${response.status} ${response.statusText} - ${errorText}`);
-    }
-
-    const data = await response.json();
-    const content = data.choices?.[0]?.message?.content;
-
-    if (content) {
-      return JSON.parse(content) as ReactionResult;
+    if (response.text) {
+      return JSON.parse(response.text) as ReactionResult;
     }
     throw new Error("Empty response from AI");
   } catch (error) {
@@ -135,35 +172,24 @@ export const nameMoleculeFromGraph = async (atoms: BuilderAtom[], bonds: Builder
   `;
 
   try {
-    const response = await fetch(API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`
-      },
-      body: JSON.stringify({
-        model: modelName,
-        messages: [
-          {
-            role: 'user',
-            content: prompt
+    const response = await ai.models.generateContent({
+      model: modelName,
+      contents: prompt,
+      config: {
+        responseMimeType: "application/json",
+        responseSchema: {
+          type: Type.OBJECT,
+          properties: {
+            systematicName: { type: Type.STRING },
+            commonName: { type: Type.STRING },
+            explanation: { type: Type.STRING },
           }
-        ],
-        response_format: { type: 'json_object' },
-        temperature: 0.7
-      })
+        }
+      }
     });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`API request failed: ${response.status} ${response.statusText} - ${errorText}`);
-    }
-
-    const data = await response.json();
-    const content = data.choices?.[0]?.message?.content;
-
-    if (content) {
-      return JSON.parse(content) as NamingResult;
+    if (response.text) {
+      return JSON.parse(response.text) as NamingResult;
     }
     throw new Error("Empty response from AI");
   } catch (error) {
