@@ -1,19 +1,21 @@
-import { GoogleGenAI, Type } from "@google/genai";
 import { ReactionResult, NamingResult, MoleculeStructure, BuilderAtom, BuilderBond } from '../types';
 import { Language } from '../contexts/LanguageContext';
 
 // 支持多种环境变量读取方式（本地开发、Cloudflare Pages 等）
+// @ts-expect-error - import.meta.env 在 Vite 环境中可用，但 TypeScript 类型可能未定义
+const viteEnv = typeof import.meta !== 'undefined' ? import.meta.env : undefined;
 const apiKey = 
-  import.meta.env.VITE_GEMINI_API_KEY || 
-  import.meta.env.GEMINI_API_KEY || 
-  (typeof process !== 'undefined' && (process.env.API_KEY || process.env.GEMINI_API_KEY)) ||
+  (viteEnv as any)?.VITE_VECTORENGINE_API_KEY || 
+  (viteEnv as any)?.VECTORENGINE_API_KEY || 
+  (typeof process !== 'undefined' && (process.env.VECTORENGINE_API_KEY || process.env.API_KEY)) ||
   '';
 
 if (!apiKey) {
-  throw new Error("An API Key must be set. Please configure GEMINI_API_KEY in your environment variables (Cloudflare Pages: Settings > Environment Variables, or local: .env.local file)");
+  throw new Error("An API Key must be set. Please configure VECTORENGINE_API_KEY in your environment variables (Cloudflare Pages: Settings > Environment Variables, or local: .env.local file)");
 }
 
-const ai = new GoogleGenAI({ apiKey });
+// VectorEngine AI API 地址
+const API_URL = 'https://api.vectorengine.ai/v1/chat/completions';
 
 const modelName = "gemini-2.5-flash";
 
@@ -34,61 +36,66 @@ export const predictReaction = async (reactants: string, conditions: string, lan
 
     ${langInstruction}
 
-    Return the result strictly as JSON matching the following schema.
+    Return the result strictly as JSON matching the following schema:
+    {
+      "equation": "string",
+      "products": ["string"],
+      "mechanismSteps": ["string"],
+      "vseprInfo": "string (Description of the geometry, e.g. Tetrahedral)",
+      "productStructure": {
+        "atoms": [
+          {
+            "id": number,
+            "element": "string",
+            "x": number,
+            "y": number,
+            "z": number,
+            "color": "string (CPK hex code)"
+          }
+        ],
+        "bonds": [
+          {
+            "source": number,
+            "target": number,
+            "order": number
+          }
+        ]
+      }
+    }
     For atoms, provide x, y, z coordinates generally within range -5 to 5.
     Element colors should be standard CPK hex codes.
   `;
 
   try {
-    const response = await ai.models.generateContent({
-      model: modelName,
-      contents: prompt,
-      config: {
-        responseMimeType: "application/json",
-        responseSchema: {
-          type: Type.OBJECT,
-          properties: {
-            equation: { type: Type.STRING },
-            products: { type: Type.ARRAY, items: { type: Type.STRING } },
-            mechanismSteps: { type: Type.ARRAY, items: { type: Type.STRING } },
-            vseprInfo: { type: Type.STRING, description: "Description of the geometry (e.g. Tetrahedral)" },
-            productStructure: {
-              type: Type.OBJECT,
-              properties: {
-                atoms: {
-                  type: Type.ARRAY,
-                  items: {
-                    type: Type.OBJECT,
-                    properties: {
-                      id: { type: Type.INTEGER },
-                      element: { type: Type.STRING },
-                      x: { type: Type.NUMBER },
-                      y: { type: Type.NUMBER },
-                      z: { type: Type.NUMBER },
-                      color: { type: Type.STRING }
-                    }
-                  }
-                },
-                bonds: {
-                  type: Type.ARRAY,
-                  items: {
-                    type: Type.OBJECT,
-                    properties: {
-                      source: { type: Type.INTEGER },
-                      target: { type: Type.INTEGER },
-                      order: { type: Type.INTEGER }
-                    }
-                  }
-                }
-              }
-            }
+    const response = await fetch(API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`
+      },
+      body: JSON.stringify({
+        model: modelName,
+        messages: [
+          {
+            role: 'user',
+            content: prompt
           }
-        }
-      }
+        ],
+        response_format: { type: 'json_object' },
+        temperature: 0.7
+      })
     });
 
-    if (response.text) {
-      return JSON.parse(response.text) as ReactionResult;
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`API request failed: ${response.status} ${response.statusText} - ${errorText}`);
+    }
+
+    const data = await response.json();
+    const content = data.choices?.[0]?.message?.content;
+
+    if (content) {
+      return JSON.parse(content) as ReactionResult;
     }
     throw new Error("Empty response from AI");
   } catch (error) {
@@ -119,28 +126,44 @@ export const nameMoleculeFromGraph = async (atoms: BuilderAtom[], bonds: Builder
 
     ${langInstruction}
 
-    Return JSON.
+    Return the result strictly as JSON matching the following schema:
+    {
+      "systematicName": "string",
+      "commonName": "string",
+      "explanation": "string"
+    }
   `;
 
   try {
-    const response = await ai.models.generateContent({
-      model: modelName,
-      contents: prompt,
-      config: {
-        responseMimeType: "application/json",
-        responseSchema: {
-          type: Type.OBJECT,
-          properties: {
-            systematicName: { type: Type.STRING },
-            commonName: { type: Type.STRING },
-            explanation: { type: Type.STRING },
+    const response = await fetch(API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`
+      },
+      body: JSON.stringify({
+        model: modelName,
+        messages: [
+          {
+            role: 'user',
+            content: prompt
           }
-        }
-      }
+        ],
+        response_format: { type: 'json_object' },
+        temperature: 0.7
+      })
     });
 
-    if (response.text) {
-      return JSON.parse(response.text) as NamingResult;
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`API request failed: ${response.status} ${response.statusText} - ${errorText}`);
+    }
+
+    const data = await response.json();
+    const content = data.choices?.[0]?.message?.content;
+
+    if (content) {
+      return JSON.parse(content) as NamingResult;
     }
     throw new Error("Empty response from AI");
   } catch (error) {
