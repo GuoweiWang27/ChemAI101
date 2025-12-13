@@ -17,7 +17,7 @@ if (!apiKey) {
 // VectorEngine AI API 地址
 const API_URL = 'https://api.vectorengine.ai/v1/chat/completions';
 
-const modelName = "gemini-2.5-flash";
+const modelName = "gpt-3.5-turbo";
 
 export const predictReaction = async (reactants: string, conditions: string, language: Language): Promise<ReactionResult> => {
   const langInstruction = language === 'zh' 
