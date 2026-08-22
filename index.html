@@ -4,6 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ChemAI Pro - Chemical Calculator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -11,14 +14,29 @@
           extend: {
             colors: {
               science: {
-                50: '#f0f9ff',
-                100: '#e0f2fe',
-                500: '#0ea5e9',
-                600: '#0284c7',
-                700: '#0369a1',
-                800: '#075985',
-                900: '#0c4a6e',
-              }
+                50: '#faf8f5',
+                100: '#f0ece4',
+                200: '#e8d5b8',
+                300: '#D4A76A',
+                400: '#b98a45',
+                500: '#8C1515',
+                600: '#7a1212',
+                700: '#6f1010',
+                800: '#5a0d0d',
+                900: '#471010'
+              },
+              sand: {
+                DEFAULT: '#D4A76A',
+                dark: '#866027',
+                light: '#e8d5b8'
+              },
+              accent: '#8C1515'
+            },
+            fontFamily: {
+              sans: ['Source Serif 4', 'Georgia', 'serif'],
+              serif: ['Source Serif 4', 'Georgia', 'serif'],
+              display: ['Playfair Display', 'Georgia', 'serif'],
+              mono: ['JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace']
             }
           }
         }
@@ -26,8 +44,9 @@
     </script>
     <style>
       body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background-color: #f8fafc;
+        font-family: 'Source Serif 4', Georgia, serif;
+        background-color: #faf8f5;
+        color: #1a1a1a;
       }
       /* Custom scrollbar for panel content */
       ::-webkit-scrollbar {
@@ -35,14 +54,14 @@
         height: 8px;
       }
       ::-webkit-scrollbar-track {
-        background: #f1f5f9;
+        background: #f0ece4;
       }
       ::-webkit-scrollbar-thumb {
-        background: #cbd5e1;
+        background: #e8d5b8;
         border-radius: 4px;
       }
       ::-webkit-scrollbar-thumb:hover {
-        background: #94a3b8;
+        background: #D4A76A;
       }
     </style>
   <script type="importmap">

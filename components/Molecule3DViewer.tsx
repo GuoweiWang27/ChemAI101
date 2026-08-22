@@ -141,7 +141,7 @@ const SceneContent: React.FC<{ structure: MoleculeStructure }> = ({ structure })
 export const Molecule3DViewer: React.FC<Molecule3DViewerProps> = ({ structure }) => {
   const { t } = useLanguage();
   return (
-    <div className="w-full h-full min-h-[400px] bg-slate-900 rounded-lg overflow-hidden relative shadow-inner">
+    <div className="w-full h-full min-h-[400px] bg-[#1a1a1a] rounded-lg overflow-hidden relative shadow-inner">
       <div className="absolute top-4 left-4 z-10 bg-black/50 text-white text-xs px-2 py-1 rounded backdrop-blur-sm">
         {t('interactive3D')}
       </div>

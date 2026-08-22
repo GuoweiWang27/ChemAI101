@@ -106,32 +106,32 @@ export const BuilderModule: React.FC = () => {
     <div className="flex h-full flex-col lg:flex-row gap-6 p-6">
        {/* Toolbar */}
        <div className="w-full lg:w-64 flex flex-col gap-4">
-           <div className="bg-white p-4 rounded-xl shadow-md border border-slate-100">
-               <h3 className="text-sm font-bold text-slate-500 uppercase mb-3">{t('tools')}</h3>
+           <div className="bg-white p-4 rounded-xl shadow-md border border-[#f0ece4]">
+               <h3 className="text-sm font-bold text-[#866027] uppercase mb-3">{t('tools')}</h3>
                <div className="grid grid-cols-4 gap-2 mb-4">
                    <button 
                     onClick={() => setSelectedTool('move')}
-                    className={`p-2 rounded-lg flex justify-center items-center transition-colors ${selectedTool === 'move' ? 'bg-science-100 text-science-600' : 'hover:bg-slate-100 text-slate-600'}`} title={t('toolsTooltip.move')}>
+                    className={`p-2 rounded-lg flex justify-center items-center transition-colors ${selectedTool === 'move' ? 'bg-science-100 text-science-600' : 'hover:bg-[#f0ece4] text-[#5c5549]'}`} title={t('toolsTooltip.move')}>
                        <MousePointer2 className="w-5 h-5" />
                    </button>
                    <button 
                     onClick={() => setSelectedTool('bond')}
-                    className={`p-2 rounded-lg flex justify-center items-center transition-colors ${selectedTool === 'bond' ? 'bg-science-100 text-science-600' : 'hover:bg-slate-100 text-slate-600'}`} title={t('toolsTooltip.bond')}>
+                    className={`p-2 rounded-lg flex justify-center items-center transition-colors ${selectedTool === 'bond' ? 'bg-science-100 text-science-600' : 'hover:bg-[#f0ece4] text-[#5c5549]'}`} title={t('toolsTooltip.bond')}>
                        <div className="w-5 h-0.5 bg-current rotate-45"></div>
                    </button>
                    <button 
                     onClick={() => setSelectedTool('delete')}
-                    className={`p-2 rounded-lg flex justify-center items-center transition-colors ${selectedTool === 'delete' ? 'bg-red-100 text-red-600' : 'hover:bg-slate-100 text-slate-600'}`} title={t('toolsTooltip.delete')}>
+                    className={`p-2 rounded-lg flex justify-center items-center transition-colors ${selectedTool === 'delete' ? 'bg-[#8C1515]/10 text-[#8C1515]' : 'hover:bg-[#f0ece4] text-[#5c5549]'}`} title={t('toolsTooltip.delete')}>
                        <Trash2 className="w-5 h-5" />
                    </button>
                    <button 
                     onClick={clearCanvas}
-                    className="p-2 rounded-lg flex justify-center items-center hover:bg-slate-100 text-slate-600 transition-colors" title={t('toolsTooltip.clear')}>
+                    className="p-2 rounded-lg flex justify-center items-center hover:bg-[#f0ece4] text-[#5c5549] transition-colors" title={t('toolsTooltip.clear')}>
                        <RotateCcw className="w-5 h-5" />
                    </button>
                </div>
 
-               <h3 className="text-sm font-bold text-slate-500 uppercase mb-3">{t('elements')}</h3>
+               <h3 className="text-sm font-bold text-[#866027] uppercase mb-3">{t('elements')}</h3>
                <div className="grid grid-cols-3 gap-2">
                    {Object.keys(ElementType).map((el) => (
                        <button
@@ -140,7 +140,7 @@ export const BuilderModule: React.FC = () => {
                          className={`h-10 rounded-lg font-bold text-sm shadow-sm border transition-all
                             ${selectedTool === el 
                                 ? 'border-science-500 ring-2 ring-science-200 z-10 scale-105' 
-                                : 'border-slate-200 hover:bg-slate-50 text-slate-700'}`}
+                                : 'border-[#e8d5b8] hover:bg-[#faf8f5] text-[#1a1a1a]'}`}
                          style={{ 
                              backgroundColor: selectedTool === el ? 'white' : undefined,
                              color: selectedTool === el ? ELEMENT_COLORS[el] : undefined 
@@ -154,7 +154,7 @@ export const BuilderModule: React.FC = () => {
            
            <div className="bg-gradient-to-br from-science-50 to-white p-4 rounded-xl shadow-md border border-science-100">
                <h3 className="text-sm font-bold text-science-800 mb-2">{t('instructionsTitle')}</h3>
-               <ul className="text-xs text-slate-600 space-y-2 list-disc pl-4">
+               <ul className="text-xs text-[#5c5549] space-y-2 list-disc pl-4">
                    {instructions.map((inst, i) => (
                        <li key={i}>{inst}</li>
                    ))}
@@ -166,11 +166,11 @@ export const BuilderModule: React.FC = () => {
        <div className="flex-1 flex flex-col gap-6">
            {/* Canvas */}
            <div 
-             className="flex-1 bg-white rounded-2xl shadow-inner border border-slate-200 relative overflow-hidden cursor-crosshair group"
+             className="flex-1 bg-white rounded-2xl shadow-inner border border-[#e8d5b8] relative overflow-hidden cursor-crosshair group"
              ref={canvasRef}
              onClick={handleCanvasClick}
            >
-               <div className="absolute top-4 right-4 bg-white/80 backdrop-blur px-3 py-1 rounded text-xs text-slate-500 font-mono pointer-events-none">
+               <div className="absolute top-4 right-4 bg-white/80 backdrop-blur px-3 py-1 rounded text-xs text-[#866027] font-mono pointer-events-none">
                    {t('canvasStats', { atoms: atoms.length, bonds: bonds.length })}
                </div>
                
@@ -188,19 +188,19 @@ export const BuilderModule: React.FC = () => {
                                <line 
                                  x1={source.x} y1={source.y} 
                                  x2={target.x} y2={target.y} 
-                                 stroke={isSelected ? '#3b82f6' : '#94a3b8'} 
+                                 stroke={isSelected ? '#8C1515' : '#D4A76A'} 
                                  strokeWidth={bond.order * 3 + 2} // visually wider
                                  opacity={0.3}
                                />
                                <line 
                                  x1={source.x} y1={source.y} 
                                  x2={target.x} y2={target.y} 
-                                 stroke={isSelected ? '#3b82f6' : '#64748b'} 
+                                 stroke={isSelected ? '#8C1515' : '#5c5549'} 
                                  strokeWidth={bond.order === 1 ? 2 : (bond.order * 2)} 
                                />
                                {/* Label for double/triple bonds visual simplified */}
                                {bond.order > 1 && (
-                                   <text x={(source.x+target.x)/2} y={(source.y+target.y)/2} textAnchor="middle" dy={-5} fontSize="10" fill="#64748b">
+                                   <text x={(source.x+target.x)/2} y={(source.y+target.y)/2} textAnchor="middle" dy={-5} fontSize="10" fill="#866027">
                                        {bond.order === 2 ? '=' : '≡'}
                                    </text>
                                )}
@@ -214,7 +214,7 @@ export const BuilderModule: React.FC = () => {
                            <circle 
                              r={18} 
                              fill="white" 
-                             stroke={selectedAtomId === atom.id ? '#3b82f6' : '#cbd5e1'} 
+                             stroke={selectedAtomId === atom.id ? '#8C1515' : '#e8d5b8'} 
                              strokeWidth={selectedAtomId === atom.id ? 3 : 1}
                              className="shadow-sm"
                            />
@@ -223,7 +223,7 @@ export const BuilderModule: React.FC = () => {
                              dy="5" 
                              textAnchor="middle" 
                              fontWeight="bold" 
-                             fill="#1e293b"
+                             fill="#1a1a1a"
                              className="select-none"
                            >
                                {atom.element}
@@ -234,12 +234,12 @@ export const BuilderModule: React.FC = () => {
            </div>
 
            {/* Controls & Results */}
-           <div className="min-h-[120px] bg-white rounded-2xl shadow-lg border border-slate-100 p-6 flex flex-col md:flex-row gap-6 items-start">
+           <div className="min-h-[120px] bg-white rounded-2xl shadow-lg border border-[#f0ece4] p-6 flex flex-col md:flex-row gap-6 items-start">
                 <button
                     onClick={handleAnalyze}
                     disabled={isNaming || atoms.length === 0}
                     className={`px-6 py-3 rounded-lg font-bold text-white shadow-md transition-all flex items-center gap-2 whitespace-nowrap
-                    ${isNaming || atoms.length === 0 ? 'bg-slate-300 cursor-not-allowed' : 'bg-science-600 hover:bg-science-700 hover:shadow-lg'}`}
+                    ${isNaming || atoms.length === 0 ? 'bg-[#D4A76A] cursor-not-allowed' : 'bg-science-600 hover:bg-science-700 hover:shadow-lg'}`}
                 >
                     {isNaming ? <Loader2 className="animate-spin" /> : <Type className="w-5 h-5" />}
                     {t('analyzeBtn')}
@@ -249,19 +249,19 @@ export const BuilderModule: React.FC = () => {
                     {namingResult ? (
                         <div className="animate-fade-in space-y-2">
                              <div className="flex items-center gap-2">
-                                <h4 className="text-xl font-bold text-slate-800">{namingResult.systematicName}</h4>
+                                <h4 className="text-xl font-bold text-[#1a1a1a]">{namingResult.systematicName}</h4>
                                 {namingResult.commonName && (
-                                    <span className="px-2 py-0.5 bg-yellow-100 text-yellow-800 text-xs rounded-full border border-yellow-200 font-medium">
+                                    <span className="px-2 py-0.5 bg-sand-light text-sand-dark text-xs rounded-full border border-sand/40 font-medium">
                                         {namingResult.commonName}
                                     </span>
                                 )}
                              </div>
-                             <div className="p-3 bg-slate-50 rounded-lg border border-slate-100 text-sm text-slate-600">
+                             <div className="p-3 bg-[#f5f0e8] rounded-lg border border-[#f0ece4] text-sm text-[#5c5549]">
                                  <p><span className="font-semibold text-science-600">{t('ruleLogic')}:</span> {namingResult.explanation}</p>
                              </div>
                         </div>
                     ) : (
-                        <div className="h-full flex items-center text-slate-400 text-sm italic">
+                        <div className="h-full flex items-center text-[#6f685d] text-sm italic">
                             <Info className="w-4 h-4 mr-2" />
                             {t('buildMoleculeInfo')}
                         </div>
