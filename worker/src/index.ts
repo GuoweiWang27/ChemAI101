@@ -228,13 +228,15 @@ export async function handleRequest(
     const upstream = await fetcher(env.UPSTREAM_URL, {
       method: 'POST',
       headers: {
-        authorization: `Bearer ${env.VECTORENGINE_API_KEY}`,
+        authorization: `Bearer ${env.DEEPSEEK_API_KEY}`,
         'content-type': 'application/json',
       },
       body: JSON.stringify({
         model: env.MODEL_NAME,
         messages: [{ role: 'user', content: buildPrompt(body) }],
         response_format: { type: 'json_object' },
+        thinking: { type: 'disabled' },
+        max_tokens: 4096,
         ...(body.operation === 'predictReaction' ? { temperature: 0.3 } : {}),
       }),
     });

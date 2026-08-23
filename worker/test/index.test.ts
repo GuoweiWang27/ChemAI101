@@ -47,10 +47,12 @@ describe('ChemAI proxy', () => {
     const upstream = vi.fn<typeof fetch>(async (input, init) => {
       expect(String(input)).toBe(env.UPSTREAM_URL);
       expect(new Headers(init?.headers).get('authorization')).toBe(
-        `Bearer ${env.VECTORENGINE_API_KEY}`,
+        `Bearer ${env.DEEPSEEK_API_KEY}`,
       );
       const upstreamBody = JSON.parse(String(init?.body));
       expect(upstreamBody.model).toBe(env.MODEL_NAME);
+      expect(upstreamBody.thinking).toEqual({ type: 'disabled' });
+      expect(upstreamBody.max_tokens).toBe(4096);
       expect(upstreamBody.messages[0].content).toContain('H2 + O2');
       return Response.json({
         choices: [{ message: { content: '{"equation":"2H2 + O2 → 2H2O"}' } }],

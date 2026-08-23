@@ -6,11 +6,11 @@
   "compatibility_flags": ["nodejs_compat"],
   "workers_dev": true,
   "vars": {
-    "UPSTREAM_URL": "https://api.vectorengine.ai/v1/chat/completions",
-    "MODEL_NAME": "gemini-2.5-flash"
+    "UPSTREAM_URL": "https://api.deepseek.com/chat/completions",
+    "MODEL_NAME": "deepseek-v4-flash"
   },
   "secrets": {
-    "required": ["VECTORENGINE_API_KEY"]
+    "required": ["DEEPSEEK_API_KEY"]
   },
   "ratelimits": [
     {

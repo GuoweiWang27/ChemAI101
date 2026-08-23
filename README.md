@@ -33,11 +33,11 @@ npm run worker:check
 ## Deploy the Worker
 
 The Worker source of truth is `worker/src/index.ts`; `wrangler.jsonc` declares
-the non-secret upstream URL, model, rate limiter, observability, and the required
-`VECTORENGINE_API_KEY` Secret binding.
+the non-secret DeepSeek upstream URL, model, rate limiter, observability, and the
+required `DEEPSEEK_API_KEY` Secret binding.
 
 ```bash
-npx wrangler secret put VECTORENGINE_API_KEY
+npx wrangler secret put DEEPSEEK_API_KEY
 npm run worker:deploy
 ```
 
