@@ -11,7 +11,8 @@
     ],
     "skipLibCheck": true,
     "types": [
-      "node"
+      "node",
+      "@cloudflare/vitest-plugin/types"
     ],
     "moduleResolution": "bundler",
     "isolatedModules": true,

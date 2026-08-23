@@ -1,35 +1,54 @@
-# Cloudflare Pages 部署配置
+# Cloudflare Pages + Worker 部署配置
 
-## 环境变量设置
+## 架构
 
-在 Cloudflare Pages 中设置 Gemini API Key：
+- 前端：Cloudflare Pages 项目 `chemai101`
+- 正式域名：`https://chemai101.guoweiwang.com/`
+- API 代理：Worker `chemai101-api`
+- 上游：VectorEngine OpenAI-compatible API，模型 `gemini-2.5-flash`
 
-### 步骤：
+浏览器只向 Worker 发送业务参数；Worker 在服务端补上
+`VECTORENGINE_API_KEY` Secret binding。任何 Vite / Pages 构建变量都不得
+保存供应商 key。
 
-1. 登录 Cloudflare Dashboard
-2. 进入你的 Pages 项目
-3. 点击 **Settings** → **Environment Variables**
-4. 添加以下环境变量：
+## 首次部署或换 key
 
-   **变量名：** `GEMINI_API_KEY`  
-   **值：** 你的 Gemini API Key
+在仓库根目录执行：
 
-   **或者使用 Vite 标准格式：**
+```bash
+npm install
+npm test
+npm run worker:check
+npx wrangler secret put VECTORENGINE_API_KEY
+npm run worker:deploy
+```
 
-   **变量名：** `VITE_GEMINI_API_KEY`  
-   **值：** 你的 Gemini API Key
+`wrangler secret put` 会交互读取密钥，密钥不会写入源码或配置文件。
 
-5. 选择应用环境（Production、Preview、或两者）
-6. 保存后重新部署项目
+## 前端发布
 
-### 获取 Gemini API Key：
+Cloudflare Pages 从 GitHub `GuoweiWang27/ChemAI101` 的 `main` 分支构建。
+前端默认访问：
 
-访问：https://aistudio.google.com/app/apikey
+`https://chemai101-api.guoweiwang27.workers.dev/v1/analyze`
 
-### 注意事项：
+如需临时指向另一套非敏感代理地址，只设置
+`VITE_CHEMAI_API_URL`。不要设置 `GEMINI_API_KEY`、
+`VITE_GEMINI_API_KEY`、`VECTORENGINE_API_KEY` 或
+`VITE_VECTORENGINE_API_KEY`。
 
-- 环境变量会在构建时注入到代码中
-- 使用 `VITE_` 前缀是 Vite 的标准做法
-- 代码支持两种格式：`GEMINI_API_KEY` 或 `VITE_GEMINI_API_KEY`
-- 环境变量不会出现在客户端代码中（构建时替换）
+## 安全验证
 
+```bash
+npm run build
+rg -n "api\\.vectorengine\\.ai|Authorization.{0,40}Bearer|sk-[A-Za-z0-9._-]{8,}" dist
+```
+
+预期无匹配。Worker 限制允许来源、请求体大小与每分钟调用次数；错误响应
+不会回传上游正文。
+
+## 轮换说明
+
+当前线上 key 是 VectorEngine 的 `sk-` key，不是 Google AI Studio key。
+轮换必须在持有该 VectorEngine 账号的一侧创建新 key，更新 Worker Secret，
+验证成功后再吊销旧 key。
