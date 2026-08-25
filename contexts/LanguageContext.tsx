@@ -80,7 +80,15 @@ const translations: Translations = {
     conditionsLabel: "Conditions",
     noStructureMsg: "No 3D structure available for this reaction.",
     curatedIntro: "Classic reactions from the PEP high-school textbook, curated with our chemistry teacher. Click any card to open its lesson view.",
-    curatedCount: "{{count}} reactions online"
+    curatedCount: "{{count}} reactions online",
+    navHome: "Home",
+    homeTagline: "An AI toolbox built for real chemistry classrooms",
+    homeCardCuratedDesc: "PEP textbook classics — first choice for classroom demos",
+    homeCardLabDesc: "Type reactants, get AI products + mechanism + 3D structure",
+    homeCardBuilderDesc: "Build molecules by hand, get IUPAC names",
+    homeCardPubchemDesc: "Official PubChem database — search a name, see it in 3D",
+    homeReadyReactions: "{{count}} classroom-ready reactions",
+    homeReviewBadge: "Teacher review in progress"
   },
   zh: {
     appTitle: "化学AI专家",
@@ -153,7 +161,15 @@ const translations: Translations = {
     conditionsLabel: "反应条件",
     noStructureMsg: "该反应暂无 3D 结构数据。",
     curatedIntro: "按人教版教材章节整理的典型反应，与化学老师共同校订。点击卡片进入教学视图。",
-    curatedCount: "已上线 {{count}} 个反应"
+    curatedCount: "已上线 {{count}} 个反应",
+    navHome: "首页",
+    homeTagline: "为真实化学课堂而生的 AI 工具箱",
+    homeCardCuratedDesc: "人教版教材经典反应 · 课堂演示首选",
+    homeCardLabDesc: "输入反应物，AI 预测产物＋机理＋3D 结构",
+    homeCardBuilderDesc: "动手搭建分子，获取 IUPAC 命名",
+    homeCardPubchemDesc: "PubChem 官方数据库，搜名字出 3D 结构",
+    homeReadyReactions: "{{count}} 个课堂就绪反应",
+    homeReviewBadge: "老师签批进行中"
   }
 };
 

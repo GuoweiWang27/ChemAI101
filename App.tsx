@@ -3,14 +3,15 @@ import { ReactionLab } from './components/ReactionLab';
 import { BuilderModule } from './components/BuilderModule';
 import { LibraryModule } from './components/LibraryModule';
 import { TextbookModule } from './components/TextbookModule';
+import { HomeModule } from './components/HomeModule';
 import { ReactionPage } from './components/ReactionPage';
-import { Atom, BookOpen, Database, FlaskConical, Languages } from 'lucide-react';
+import { Atom, BookOpen, Database, FlaskConical, Home as HomeIcon, Languages } from 'lucide-react';
 import { useLanguage } from './contexts/LanguageContext';
 import { parseRoute, updateRouteParams, RouteTarget } from './utils/routeParams';
 import { getReaction } from './src/data/reactions';
 
 function App() {
-  const [activeTab, setActiveTab] = useState<'textbook' | 'reaction' | 'builder' | 'library'>('textbook');
+  const [activeTab, setActiveTab] = useState<'home' | 'textbook' | 'reaction' | 'builder' | 'library'>('home');
   const [route, setRoute] = useState<RouteTarget>(() => parseRoute(window.location.search));
   const { language, setLanguage, t } = useLanguage();
 
@@ -52,6 +53,16 @@ function App() {
           
           <div className="flex items-center gap-2 sm:gap-4 min-w-0">
             <nav className="flex items-center gap-1 bg-[#f0ece4] p-1 rounded-xl overflow-x-auto max-w-full">
+               <button
+                 onClick={() => switchTab('home')}
+                 className={`px-3 sm:px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 whitespace-nowrap shrink-0
+                   ${activeTab === 'home'
+                     ? 'bg-white text-science-700 shadow-sm'
+                     : 'text-[#6f685d] hover:text-[#1a1a1a] hover:bg-white'}`}
+               >
+                 <HomeIcon className="w-4 h-4" />
+                 <span className="hidden sm:inline">{t('navHome')}</span>
+               </button>
                <button
                  onClick={() => switchTab('textbook')}
                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2
@@ -113,6 +124,8 @@ function App() {
         <div className="h-[calc(100dvh-64px)] overflow-y-auto lg:overflow-hidden">
            {reaction ? (
              <ReactionPage reaction={reaction} present={route.present} onExit={exitReaction} />
+           ) : activeTab === 'home' ? (
+             <HomeModule onOpen={switchTab} />
            ) : activeTab === 'reaction' ? (
              <ReactionLab />
            ) : activeTab === 'textbook' ? (
