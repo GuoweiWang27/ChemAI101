@@ -13,6 +13,6 @@ export default defineConfig({
     }),
   ],
   test: {
-    include: ['worker/test/**/*.test.ts', 'services/**/*.test.ts', 'utils/**/*.test.ts'],
+    include: ['worker/test/**/*.test.ts', 'services/**/*.test.ts', 'utils/**/*.test.ts', 'src/**/*.test.ts'],
   },
 });

@@ -15,6 +15,7 @@
       "@cloudflare/vitest-plugin/types"
     ],
     "moduleResolution": "bundler",
+    "resolveJsonModule": true,
     "isolatedModules": true,
     "moduleDetection": "force",
     "allowJs": true,
