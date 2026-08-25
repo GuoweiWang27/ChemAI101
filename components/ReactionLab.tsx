@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { predictReaction } from '../services/geminiService';
 import { ReactionResult } from '../types';
 import { Molecule3DViewer } from './Molecule3DViewer';
-import { Play, Pause, FastForward, Loader2, Beaker, Flame, Wind, ShieldCheck, ShieldAlert, ShieldQuestion } from 'lucide-react';
+import { Play, Pause, FastForward, Loader2, Beaker, Flame, Wind, ShieldCheck, ShieldAlert, ShieldQuestion, Presentation } from 'lucide-react';
+import { PresentationMode } from './PresentationMode';
 import { useLanguage } from '../contexts/LanguageContext';
 
 export const ReactionLab: React.FC = () => {
@@ -12,6 +13,7 @@ export const ReactionLab: React.FC = () => {
   const [result, setResult] = useState<ReactionResult | null>(null);
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [presenting, setPresenting] = useState(false);
   const { t, language } = useLanguage();
 
   const handlePredict = async () => {
@@ -198,12 +200,30 @@ export const ReactionLab: React.FC = () => {
             <div className="flex-1 min-h-[400px] bg-white rounded-2xl shadow-lg border border-[#f0ece4] overflow-hidden flex flex-col">
               <div className="p-4 border-b border-[#f0ece4] flex justify-between items-center">
                 <h3 className="font-semibold text-[#1a1a1a]">{t('productStructure')}</h3>
-                <span className="text-xs px-2 py-1 bg-[#e6f2f0] text-[#2a7c6f] rounded border border-[#2a7c6f]/25">{t('interactive')}</span>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setPresenting(true)}
+                    className="flex items-center gap-1 text-xs px-2 py-1 bg-[#f5f0e8] text-[#866027] rounded border border-[#e8d5b8] hover:bg-[#efe6d5] transition-colors"
+                  >
+                    <Presentation className="w-3 h-3" /> {t('demoBtn')}
+                  </button>
+                  <span className="text-xs px-2 py-1 bg-[#e6f2f0] text-[#2a7c6f] rounded border border-[#2a7c6f]/25">{t('interactive')}</span>
+                </div>
               </div>
               <div className="flex-1 relative">
                  <Molecule3DViewer structure={result.productStructure} />
               </div>
             </div>
+            {presenting && result && (
+              <PresentationMode
+                equation={result.equation}
+                conditions={conditions}
+                title={t('reactionResult')}
+                steps={result.mechanismSteps}
+                structure={result.productStructure}
+                onClose={() => setPresenting(false)}
+              />
+            )}
           </>
         ) : (
           <div className="h-full flex flex-col items-center justify-center text-[#6f685d] bg-white/60 rounded-3xl border-2 border-dashed border-[#e8d5b8]">
