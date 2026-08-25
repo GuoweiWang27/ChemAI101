@@ -1,0 +1,960 @@
+[
+  {
+    "id": "ch4-cl2-light",
+    "chapter": "必修2·第七章 有机化合物",
+    "title": "甲烷与氯气取代",
+    "reactants": "甲烷、氯气",
+    "conditions": "光照",
+    "equation": "CH₄ + Cl₂ → CH₃Cl + HCl",
+    "products": [
+      "一氯甲烷",
+      "氯化氢"
+    ],
+    "mechanismSteps": [
+      "甲烷与氯气混合于集气瓶，置于漫射光下照射",
+      "黄绿色逐渐变浅，瓶壁出现油状液滴",
+      "本质：甲烷分子中的氢原子被氯原子逐步替代（取代反应）",
+      "产物是一系列氯代烃：CH₃Cl、CH₂Cl₂、CHCl₃、CCl₄",
+      "安全备注：用漫射光，强光直射会引起爆炸"
+    ],
+    "productStructure": {
+      "atoms": [
+        {
+          "id": 1,
+          "element": "Cl",
+          "x": 0.8836,
+          "y": 0,
+          "z": 0
+        },
+        {
+          "id": 2,
+          "element": "C",
+          "x": -0.8836,
+          "y": 0,
+          "z": 0
+        },
+        {
+          "id": 3,
+          "element": "H",
+          "x": -1.2405,
+          "y": -0.6985,
+          "z": 0.76
+        },
+        {
+          "id": 4,
+          "element": "H",
+          "x": -1.2405,
+          "y": 1.0074,
+          "z": 0.2249
+        },
+        {
+          "id": 5,
+          "element": "H",
+          "x": -1.2406,
+          "y": -0.3089,
+          "z": -0.9849
+        }
+      ],
+      "bonds": [
+        {
+          "source": 1,
+          "target": 2,
+          "order": 1
+        },
+        {
+          "source": 2,
+          "target": 3,
+          "order": 1
+        },
+        {
+          "source": 2,
+          "target": 4,
+          "order": 1
+        },
+        {
+          "source": 2,
+          "target": 5,
+          "order": 1
+        }
+      ]
+    },
+    "smiles": "CCl",
+    "reviewed": true
+  },
+  {
+    "id": "c2h4-br2",
+    "chapter": "必修2·第七章 有机化合物",
+    "title": "乙烯与溴加成",
+    "reactants": "乙烯、溴",
+    "conditions": "常温",
+    "equation": "CH₂=CH₂ + Br₂ → CH₂Br—CH₂Br",
+    "products": [
+      "1,2-二溴乙烷"
+    ],
+    "mechanismSteps": [
+      "将乙烯通入溴的四氯化碳溶液（或溴水）",
+      "红棕色迅速褪去",
+      "本质：碳碳双键中的一个键断裂，两个 Br 原子分别加到两个碳原子上",
+      "这类反应叫加成反应，与取代反应有本质区别",
+      "应用：溴水（溴的四氯化碳溶液）褪色可用于检验碳碳双键"
+    ],
+    "productStructure": {
+      "atoms": [
+        {
+          "id": 1,
+          "element": "Br",
+          "x": 2.3064,
+          "y": -0.1219,
+          "z": 0.014
+        },
+        {
+          "id": 2,
+          "element": "Br",
+          "x": -2.3065,
+          "y": 0.1218,
+          "z": 0.014
+        },
+        {
+          "id": 3,
+          "element": "C",
+          "x": 0.4894,
+          "y": 0.5743,
+          "z": -0.014
+        },
+        {
+          "id": 4,
+          "element": "C",
+          "x": -0.4893,
+          "y": -0.5742,
+          "z": -0.014
+        },
+        {
+          "id": 5,
+          "element": "H",
+          "x": 0.4037,
+          "y": 1.1943,
+          "z": -0.9112
+        },
+        {
+          "id": 6,
+          "element": "H",
+          "x": 0.3867,
+          "y": 1.2098,
+          "z": 0.8705
+        },
+        {
+          "id": 7,
+          "element": "H",
+          "x": -0.3865,
+          "y": -1.2098,
+          "z": 0.8705
+        },
+        {
+          "id": 8,
+          "element": "H",
+          "x": -0.4036,
+          "y": -1.1941,
+          "z": -0.9112
+        }
+      ],
+      "bonds": [
+        {
+          "source": 1,
+          "target": 3,
+          "order": 1
+        },
+        {
+          "source": 2,
+          "target": 4,
+          "order": 1
+        },
+        {
+          "source": 3,
+          "target": 4,
+          "order": 1
+        },
+        {
+          "source": 3,
+          "target": 5,
+          "order": 1
+        },
+        {
+          "source": 3,
+          "target": 6,
+          "order": 1
+        },
+        {
+          "source": 4,
+          "target": 7,
+          "order": 1
+        },
+        {
+          "source": 4,
+          "target": 8,
+          "order": 1
+        }
+      ]
+    },
+    "smiles": "BrCCBr",
+    "reviewed": true
+  },
+  {
+    "id": "c2h4-hydration",
+    "chapter": "必修2·第七章 有机化合物",
+    "title": "乙烯水化制乙醇",
+    "reactants": "乙烯、水",
+    "conditions": "催化剂·加压·加热",
+    "equation": "CH₂=CH₂ + H₂O → CH₃CH₂OH",
+    "products": [
+      "乙醇"
+    ],
+    "mechanismSteps": [
+      "乙烯在催化剂作用下与水发生加成反应",
+      "双键断开，H 原子和羟基分别加到两个碳原子上",
+      "生成物是乙醇（酒精）",
+      "地位：工业上大规模生产乙醇的重要方法",
+      "体现乙烯作为基础化工原料的价值"
+    ],
+    "productStructure": {
+      "atoms": [
+        {
+          "id": 1,
+          "element": "O",
+          "x": -1.1712,
+          "y": 0.2997,
+          "z": 0
+        },
+        {
+          "id": 2,
+          "element": "C",
+          "x": -0.0463,
+          "y": -0.5665,
+          "z": 0
+        },
+        {
+          "id": 3,
+          "element": "C",
+          "x": 1.2175,
+          "y": 0.2668,
+          "z": 0
+        },
+        {
+          "id": 4,
+          "element": "H",
+          "x": -0.0958,
+          "y": -1.212,
+          "z": 0.8819
+        },
+        {
+          "id": 5,
+          "element": "H",
+          "x": -0.0952,
+          "y": -1.1938,
+          "z": -0.8946
+        },
+        {
+          "id": 6,
+          "element": "H",
+          "x": 2.105,
+          "y": -0.372,
+          "z": -0.0177
+        },
+        {
+          "id": 7,
+          "element": "H",
+          "x": 1.2426,
+          "y": 0.9307,
+          "z": -0.8704
+        },
+        {
+          "id": 8,
+          "element": "H",
+          "x": 1.2616,
+          "y": 0.9052,
+          "z": 0.8886
+        },
+        {
+          "id": 9,
+          "element": "H",
+          "x": -1.1291,
+          "y": 0.8364,
+          "z": 0.8099
+        }
+      ],
+      "bonds": [
+        {
+          "source": 1,
+          "target": 2,
+          "order": 1
+        },
+        {
+          "source": 1,
+          "target": 9,
+          "order": 1
+        },
+        {
+          "source": 2,
+          "target": 3,
+          "order": 1
+        },
+        {
+          "source": 2,
+          "target": 4,
+          "order": 1
+        },
+        {
+          "source": 2,
+          "target": 5,
+          "order": 1
+        },
+        {
+          "source": 3,
+          "target": 6,
+          "order": 1
+        },
+        {
+          "source": 3,
+          "target": 7,
+          "order": 1
+        },
+        {
+          "source": 3,
+          "target": 8,
+          "order": 1
+        }
+      ]
+    },
+    "smiles": "CCO",
+    "reviewed": true
+  },
+  {
+    "id": "c2h4-polymerization",
+    "chapter": "必修2·第七章 有机化合物",
+    "title": "乙烯聚合",
+    "reactants": "乙烯",
+    "conditions": "催化剂",
+    "equation": "nCH₂=CH₂ → 聚乙烯",
+    "products": [
+      "聚乙烯"
+    ],
+    "mechanismSteps": [
+      "数千个乙烯分子在催化剂作用下相互加成",
+      "每个分子的碳碳双键打开，彼此连接成长链",
+      "生成的高分子化合物是聚乙烯",
+      "聚合反应是合成有机高分子的基本方法之一",
+      "生活联系：塑料袋、保鲜膜的主要成分就是聚乙烯"
+    ],
+    "productStructure": null,
+    "reviewed": true
+  },
+  {
+    "id": "ethanol-cat-oxidation",
+    "chapter": "必修2·第七章 有机化合物",
+    "title": "乙醇催化氧化",
+    "reactants": "乙醇、氧气",
+    "conditions": "催化剂(Cu)·加热",
+    "equation": "2C₂H₅OH + O₂ → 2CH₃CHO + 2H₂O",
+    "products": [
+      "乙醛",
+      "水"
+    ],
+    "mechanismSteps": [
+      "铜丝在酒精灯外焰上灼烧，表面变黑（生成 CuO）",
+      "趁热插入乙醇中，铜丝重新变得红亮，反复多次",
+      "液体中产生刺激性气味的乙醛",
+      "本质：黑色的 CuO 把乙醇氧化为乙醛，自身被还原为 Cu",
+      "催化剂机理：铜在 2Cu + O₂ = 2CuO 的循环中起催化作用"
+    ],
+    "productStructure": {
+      "atoms": [
+        {
+          "id": 1,
+          "element": "O",
+          "x": 1.1443,
+          "y": 0.2412,
+          "z": 0
+        },
+        {
+          "id": 2,
+          "element": "C",
+          "x": -1.2574,
+          "y": 0.1815,
+          "z": 0
+        },
+        {
+          "id": 3,
+          "element": "C",
+          "x": 0.113,
+          "y": -0.4226,
+          "z": 0
+        },
+        {
+          "id": 4,
+          "element": "H",
+          "x": -1.7938,
+          "y": -0.1493,
+          "z": 0.8924
+        },
+        {
+          "id": 5,
+          "element": "H",
+          "x": -1.1865,
+          "y": 1.2719,
+          "z": 0.0016
+        },
+        {
+          "id": 6,
+          "element": "H",
+          "x": -1.7928,
+          "y": -0.1468,
+          "z": -0.8938
+        },
+        {
+          "id": 7,
+          "element": "H",
+          "x": 0.1478,
+          "y": -1.5252,
+          "z": -0.0007
+        }
+      ],
+      "bonds": [
+        {
+          "source": 1,
+          "target": 3,
+          "order": 2
+        },
+        {
+          "source": 2,
+          "target": 3,
+          "order": 1
+        },
+        {
+          "source": 2,
+          "target": 4,
+          "order": 1
+        },
+        {
+          "source": 2,
+          "target": 5,
+          "order": 1
+        },
+        {
+          "source": 2,
+          "target": 6,
+          "order": 1
+        },
+        {
+          "source": 3,
+          "target": 7,
+          "order": 1
+        }
+      ]
+    },
+    "smiles": "CC=O",
+    "reviewed": true
+  },
+  {
+    "id": "esterification",
+    "chapter": "必修2·第七章 有机化合物",
+    "title": "乙酸与乙醇酯化",
+    "reactants": "乙酸、乙醇",
+    "conditions": "浓硫酸·加热",
+    "equation": "CH₃COOH + C₂H₅OH ⇌ CH₃COOC₂H₅ + H₂O",
+    "products": [
+      "乙酸乙酯",
+      "水"
+    ],
+    "mechanismSteps": [
+      "乙醇、乙酸与浓硫酸混合，小火加热",
+      "将产生的蒸气经导管通到饱和碳酸钠溶液液面上方",
+      "液面得到有芳香气味的透明油状液体——乙酸乙酯",
+      "浓硫酸的作用：催化剂和吸水剂（促进平衡右移）",
+      "断键规律：酸脱羟基、醇脱氢；酯化反应是可逆反应"
+    ],
+    "productStructure": {
+      "atoms": [
+        {
+          "id": 1,
+          "element": "O",
+          "x": -0.2577,
+          "y": -0.4782,
+          "z": -0.0002
+        },
+        {
+          "id": 2,
+          "element": "O",
+          "x": 1.2472,
+          "y": 1.2745,
+          "z": 0
+        },
+        {
+          "id": 3,
+          "element": "C",
+          "x": -1.347,
+          "y": 0.4499,
+          "z": 0.0001
+        },
+        {
+          "id": 4,
+          "element": "C",
+          "x": -2.6506,
+          "y": -0.3197,
+          "z": 0.0001
+        },
+        {
+          "id": 5,
+          "element": "C",
+          "x": 0.9867,
+          "y": 0.0789,
+          "z": -0.0001
+        },
+        {
+          "id": 6,
+          "element": "C",
+          "x": 2.0213,
+          "y": -1.0053,
+          "z": 0.0001
+        },
+        {
+          "id": 7,
+          "element": "H",
+          "x": -1.2894,
+          "y": 1.0804,
+          "z": 0.8943
+        },
+        {
+          "id": 8,
+          "element": "H",
+          "x": -1.2895,
+          "y": 1.0807,
+          "z": -0.894
+        },
+        {
+          "id": 9,
+          "element": "H",
+          "x": -3.5065,
+          "y": 0.3609,
+          "z": 0.0002
+        },
+        {
+          "id": 10,
+          "element": "H",
+          "x": -2.7149,
+          "y": -0.9687,
+          "z": -0.8795
+        },
+        {
+          "id": 11,
+          "element": "H",
+          "x": -2.7147,
+          "y": -0.969,
+          "z": 0.8794
+        },
+        {
+          "id": 12,
+          "element": "H",
+          "x": 1.9158,
+          "y": -1.6188,
+          "z": -0.8982
+        },
+        {
+          "id": 13,
+          "element": "H",
+          "x": 1.9167,
+          "y": -1.6175,
+          "z": 0.8994
+        },
+        {
+          "id": 14,
+          "element": "H",
+          "x": 3.0182,
+          "y": -0.5553,
+          "z": -0.0007
+        }
+      ],
+      "bonds": [
+        {
+          "source": 1,
+          "target": 3,
+          "order": 1
+        },
+        {
+          "source": 1,
+          "target": 5,
+          "order": 1
+        },
+        {
+          "source": 2,
+          "target": 5,
+          "order": 2
+        },
+        {
+          "source": 3,
+          "target": 4,
+          "order": 1
+        },
+        {
+          "source": 3,
+          "target": 7,
+          "order": 1
+        },
+        {
+          "source": 3,
+          "target": 8,
+          "order": 1
+        },
+        {
+          "source": 4,
+          "target": 9,
+          "order": 1
+        },
+        {
+          "source": 4,
+          "target": 10,
+          "order": 1
+        },
+        {
+          "source": 4,
+          "target": 11,
+          "order": 1
+        },
+        {
+          "source": 5,
+          "target": 6,
+          "order": 1
+        },
+        {
+          "source": 6,
+          "target": 12,
+          "order": 1
+        },
+        {
+          "source": 6,
+          "target": 13,
+          "order": 1
+        },
+        {
+          "source": 6,
+          "target": 14,
+          "order": 1
+        }
+      ]
+    },
+    "smiles": "CCOC(C)=O",
+    "reviewed": true
+  },
+  {
+    "id": "glucose-cuoh2",
+    "chapter": "必修2·第七章 有机化合物",
+    "title": "葡萄糖与新制氢氧化铜",
+    "reactants": "葡萄糖溶液、新制氢氧化铜",
+    "conditions": "加热",
+    "equation": "CH₂OH(CHOH)₄CHO + 2Cu(OH)₂ → CH₂OH(CHOH)₄COOH + Cu₂O↓ + 2H₂O",
+    "products": [
+      "葡萄糖酸",
+      "氧化亚铜"
+    ],
+    "mechanismSteps": [
+      "新制的蓝色 Cu(OH)₂ 悬浊液中加入少量葡萄糖溶液",
+      "加热煮沸后产生砖红色沉淀",
+      "砖红色沉淀是氧化亚铜 Cu₂O",
+      "本质：葡萄糖分子中的醛基（—CHO）被氧化为羧基",
+      "医学联系：体检化验尿糖的原理与此类似"
+    ],
+    "productStructure": {
+      "atoms": [
+        {
+          "id": 1,
+          "element": "O",
+          "x": -0.6679,
+          "y": 1.1587,
+          "z": 0.257
+        },
+        {
+          "id": 2,
+          "element": "O",
+          "x": -0.887,
+          "y": -2.4483,
+          "z": -0.3388
+        },
+        {
+          "id": 3,
+          "element": "O",
+          "x": 1.8623,
+          "y": -2.0693,
+          "z": 0.4696
+        },
+        {
+          "id": 4,
+          "element": "O",
+          "x": 2.8609,
+          "y": 0.5414,
+          "z": -0.4619
+        },
+        {
+          "id": 5,
+          "element": "O",
+          "x": 1.1222,
+          "y": 2.6552,
+          "z": 0.2574
+        },
+        {
+          "id": 6,
+          "element": "O",
+          "x": -3.3742,
+          "y": 0.9717,
+          "z": -0.1865
+        },
+        {
+          "id": 7,
+          "element": "C",
+          "x": -0.3727,
+          "y": -1.247,
+          "z": 0.23
+        },
+        {
+          "id": 8,
+          "element": "C",
+          "x": 1.0856,
+          "y": -1.0709,
+          "z": -0.194
+        },
+        {
+          "id": 9,
+          "element": "C",
+          "x": -1.2211,
+          "y": -0.0621,
+          "z": -0.2375
+        },
+        {
+          "id": 10,
+          "element": "C",
+          "x": 1.6082,
+          "y": 0.3151,
+          "z": 0.1839
+        },
+        {
+          "id": 11,
+          "element": "C",
+          "x": 0.6388,
+          "y": 1.4132,
+          "z": -0.2534
+        },
+        {
+          "id": 12,
+          "element": "C",
+          "x": -2.655,
+          "y": -0.1577,
+          "z": 0.274
+        },
+        {
+          "id": 13,
+          "element": "H",
+          "x": -0.4248,
+          "y": -1.3522,
+          "z": 1.3206
+        },
+        {
+          "id": 14,
+          "element": "H",
+          "x": 1.2066,
+          "y": -1.2487,
+          "z": -1.2697
+        },
+        {
+          "id": 15,
+          "element": "H",
+          "x": -1.2548,
+          "y": -0.0098,
+          "z": -1.3343
+        },
+        {
+          "id": 16,
+          "element": "H",
+          "x": 1.7952,
+          "y": 0.3598,
+          "z": 1.2636
+        },
+        {
+          "id": 17,
+          "element": "H",
+          "x": 0.5967,
+          "y": 1.5141,
+          "z": -1.344
+        },
+        {
+          "id": 18,
+          "element": "H",
+          "x": -2.6916,
+          "y": -0.1535,
+          "z": 1.3685
+        },
+        {
+          "id": 19,
+          "element": "H",
+          "x": -3.1564,
+          "y": -1.0581,
+          "z": -0.0922
+        },
+        {
+          "id": 20,
+          "element": "H",
+          "x": -0.8514,
+          "y": -2.3615,
+          "z": -1.3066
+        },
+        {
+          "id": 21,
+          "element": "H",
+          "x": 1.4973,
+          "y": -2.9356,
+          "z": 0.22
+        },
+        {
+          "id": 22,
+          "element": "H",
+          "x": 2.7165,
+          "y": 0.4989,
+          "z": -1.4227
+        },
+        {
+          "id": 23,
+          "element": "H",
+          "x": 1.4876,
+          "y": 2.5033,
+          "z": 1.1448
+        },
+        {
+          "id": 24,
+          "element": "H",
+          "x": -2.9192,
+          "y": 1.7652,
+          "z": 0.144
+        }
+      ],
+      "bonds": [
+        {
+          "source": 1,
+          "target": 9,
+          "order": 1
+        },
+        {
+          "source": 1,
+          "target": 11,
+          "order": 1
+        },
+        {
+          "source": 2,
+          "target": 7,
+          "order": 1
+        },
+        {
+          "source": 2,
+          "target": 20,
+          "order": 1
+        },
+        {
+          "source": 3,
+          "target": 8,
+          "order": 1
+        },
+        {
+          "source": 3,
+          "target": 21,
+          "order": 1
+        },
+        {
+          "source": 4,
+          "target": 10,
+          "order": 1
+        },
+        {
+          "source": 4,
+          "target": 22,
+          "order": 1
+        },
+        {
+          "source": 5,
+          "target": 11,
+          "order": 1
+        },
+        {
+          "source": 5,
+          "target": 23,
+          "order": 1
+        },
+        {
+          "source": 6,
+          "target": 12,
+          "order": 1
+        },
+        {
+          "source": 6,
+          "target": 24,
+          "order": 1
+        },
+        {
+          "source": 7,
+          "target": 8,
+          "order": 1
+        },
+        {
+          "source": 7,
+          "target": 9,
+          "order": 1
+        },
+        {
+          "source": 7,
+          "target": 13,
+          "order": 1
+        },
+        {
+          "source": 8,
+          "target": 10,
+          "order": 1
+        },
+        {
+          "source": 8,
+          "target": 14,
+          "order": 1
+        },
+        {
+          "source": 9,
+          "target": 12,
+          "order": 1
+        },
+        {
+          "source": 9,
+          "target": 15,
+          "order": 1
+        },
+        {
+          "source": 10,
+          "target": 11,
+          "order": 1
+        },
+        {
+          "source": 10,
+          "target": 16,
+          "order": 1
+        },
+        {
+          "source": 11,
+          "target": 17,
+          "order": 1
+        },
+        {
+          "source": 12,
+          "target": 18,
+          "order": 1
+        },
+        {
+          "source": 12,
+          "target": 19,
+          "order": 1
+        }
+      ]
+    },
+    "reviewed": true
+  }
+]

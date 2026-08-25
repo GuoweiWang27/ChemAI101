@@ -1,0 +1,250 @@
+[
+  {
+    "id": "zn-cu-cell",
+    "chapter": "必修2·第六章 化学反应与能量",
+    "title": "铜锌原电池（总反应）",
+    "reactants": "锌、稀硫酸、铜",
+    "conditions": "常温",
+    "equation": "Zn + H₂SO₄(稀) = ZnSO₄ + H₂↑",
+    "products": [
+      "硫酸锌",
+      "氢气"
+    ],
+    "mechanismSteps": [
+      "锌片与铜片平行插入稀硫酸并用导线连接电流表",
+      "两个电极上都有气泡冒出，电流表指针偏转",
+      "负极（锌）：Zn 失去电子被氧化，电子经导线流向铜片",
+      "正极（铜）：溶液中的 H⁺ 在铜片表面得电子生成 H₂",
+      "结论：该装置把化学能转化为电能，即原电池"
+    ],
+    "productStructure": {
+      "atoms": [
+        {
+          "id": 1,
+          "element": "Zn",
+          "x": 2,
+          "y": -1,
+          "z": 0
+        },
+        {
+          "id": 2,
+          "element": "S",
+          "x": 3,
+          "y": 0,
+          "z": 0
+        },
+        {
+          "id": 3,
+          "element": "O",
+          "x": 2,
+          "y": 0,
+          "z": 0
+        },
+        {
+          "id": 4,
+          "element": "O",
+          "x": 3,
+          "y": -1,
+          "z": 0
+        },
+        {
+          "id": 5,
+          "element": "O",
+          "x": 4,
+          "y": 0,
+          "z": 0
+        },
+        {
+          "id": 6,
+          "element": "O",
+          "x": 3,
+          "y": 1,
+          "z": 0
+        }
+      ],
+      "bonds": [
+        {
+          "source": 2,
+          "target": 3,
+          "order": 1
+        },
+        {
+          "source": 2,
+          "target": 4,
+          "order": 1
+        },
+        {
+          "source": 2,
+          "target": 5,
+          "order": 2
+        },
+        {
+          "source": 2,
+          "target": 6,
+          "order": 2
+        }
+      ]
+    },
+    "reviewed": true
+  },
+  {
+    "id": "cao-water-exothermic",
+    "chapter": "必修2·第六章 化学反应与能量",
+    "title": "生石灰与水（放热）",
+    "reactants": "氧化钙、水",
+    "conditions": "常温",
+    "equation": "CaO + H₂O = Ca(OH)₂",
+    "products": [
+      "氢氧化钙"
+    ],
+    "mechanismSteps": [
+      "块状生石灰中加入水，剧烈反应",
+      "大量水蒸气升腾，水甚至可能沸腾",
+      "触摸容器外壁明显发热发烫",
+      "结论：典型的放热反应，化学能转化为热能",
+      "生活联系：自热米饭/自热火锅的发热包原理"
+    ],
+    "productStructure": {
+      "atoms": [
+        {
+          "id": 1,
+          "element": "Ca",
+          "x": 3.403,
+          "y": -0.25,
+          "z": 0
+        },
+        {
+          "id": 2,
+          "element": "O",
+          "x": 4.269,
+          "y": 0.25,
+          "z": 0
+        },
+        {
+          "id": 3,
+          "element": "O",
+          "x": 2.5369,
+          "y": 0.25,
+          "z": 0
+        },
+        {
+          "id": 4,
+          "element": "H",
+          "x": 4.8059,
+          "y": -0.06,
+          "z": 0
+        },
+        {
+          "id": 5,
+          "element": "H",
+          "x": 2,
+          "y": -0.06,
+          "z": 0
+        }
+      ],
+      "bonds": [
+        {
+          "source": 2,
+          "target": 4,
+          "order": 1
+        },
+        {
+          "source": 3,
+          "target": 5,
+          "order": 1
+        }
+      ]
+    },
+    "reviewed": true
+  },
+  {
+    "id": "baoh2-nh4cl-endothermic",
+    "chapter": "必修2·第六章 化学反应与能量",
+    "title": "氢氧化钡晶体与氯化铵（吸热）",
+    "reactants": "氢氧化钡晶体（Ba(OH)₂·8H₂O）、氯化铵",
+    "conditions": "常温",
+    "equation": "Ba(OH)₂·8H₂O + 2NH₄Cl = BaCl₂ + 2NH₃↑ + 10H₂O",
+    "products": [
+      "氯化钡",
+      "氨气",
+      "水"
+    ],
+    "mechanismSteps": [
+      "在玻璃片上把两种固体快速混合搅拌",
+      "反应一段时间后玻璃片与烧杯冻结在一起（水结冰）",
+      "能闻到刺激性气味，产生了氨气",
+      "温度急剧下降，说明反应大量吸热",
+      "结论：典型的吸热反应，与上一条放热反应成对演示"
+    ],
+    "productStructure": {
+      "atoms": [
+        {
+          "id": 1,
+          "element": "Ba",
+          "x": 2.866,
+          "y": -0.25,
+          "z": 0
+        },
+        {
+          "id": 2,
+          "element": "Cl",
+          "x": 3.7321,
+          "y": 0.25,
+          "z": 0
+        },
+        {
+          "id": 3,
+          "element": "Cl",
+          "x": 2,
+          "y": 0.25,
+          "z": 0
+        }
+      ],
+      "bonds": [
+        {
+          "source": 1,
+          "target": 2,
+          "order": 3
+        },
+        {
+          "source": 1,
+          "target": 3,
+          "order": 3
+        }
+      ]
+    },
+    "reviewed": true
+  },
+  {
+    "id": "al-fe2o3-thermite",
+    "chapter": "必修2·第六章 化学反应与能量",
+    "title": "铝热反应",
+    "reactants": "铝粉、氧化铁",
+    "conditions": "高温",
+    "equation": "2Al + Fe₂O₃ = Al₂O₃ + 2Fe",
+    "products": [
+      "氧化铝",
+      "铁"
+    ],
+    "mechanismSteps": [
+      "铝粉与氧化铁混合，用镁条引燃",
+      "剧烈反应，火星四射",
+      "落下熔融的铁水，冷却后可被磁铁吸引证明是铁",
+      "铝的活泼性强于铁，把铁从其氧化物中置换出来",
+      "应用：野外焊接钢轨；安全备注需由教师演示并保持距离"
+    ],
+    "productStructure": {
+      "atoms": [
+        {
+          "id": 1,
+          "element": "Fe",
+          "x": 2,
+          "y": 0,
+          "z": 0
+        }
+      ],
+      "bonds": []
+    },
+    "reviewed": true
+  }
+]

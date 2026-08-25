@@ -2,14 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { ReactionLab } from './components/ReactionLab';
 import { BuilderModule } from './components/BuilderModule';
 import { LibraryModule } from './components/LibraryModule';
+import { TextbookModule } from './components/TextbookModule';
 import { ReactionPage } from './components/ReactionPage';
-import { Atom, Database, FlaskConical, Languages } from 'lucide-react';
+import { Atom, BookOpen, Database, FlaskConical, Languages } from 'lucide-react';
 import { useLanguage } from './contexts/LanguageContext';
 import { parseRoute, updateRouteParams, RouteTarget } from './utils/routeParams';
 import { getReaction } from './src/data/reactions';
 
 function App() {
-  const [activeTab, setActiveTab] = useState<'reaction' | 'builder' | 'library'>('reaction');
+  const [activeTab, setActiveTab] = useState<'reaction' | 'builder' | 'textbook' | 'library'>('reaction');
   const [route, setRoute] = useState<RouteTarget>(() => parseRoute(window.location.search));
   const { language, setLanguage, t } = useLanguage();
 
@@ -67,6 +68,16 @@ function App() {
                  <span className="hidden sm:inline">{t('navBuilder')}</span>
                </button>
                <button
+                 onClick={() => setActiveTab('textbook')}
+                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2
+                   ${activeTab === 'textbook'
+                     ? 'bg-white text-science-700 shadow-sm'
+                     : 'text-[#6f685d] hover:text-[#1a1a1a] hover:bg-white'}`}
+               >
+                 <BookOpen className="w-4 h-4" />
+                 <span className="hidden sm:inline">{t('navLibraryCurated')}</span>
+               </button>
+               <button
                  onClick={() => setActiveTab('library')}
                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2
                    ${activeTab === 'library'
@@ -99,6 +110,8 @@ function App() {
              <ReactionPage reaction={reaction} present={route.present} onExit={exitReaction} />
            ) : activeTab === 'reaction' ? (
              <ReactionLab />
+           ) : activeTab === 'textbook' ? (
+             <TextbookModule />
            ) : activeTab === 'library' ? (
              <LibraryModule />
            ) : (

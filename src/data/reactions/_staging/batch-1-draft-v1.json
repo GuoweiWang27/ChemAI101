@@ -1,0 +1,726 @@
+{
+  "_meta": {
+    "batch": 1,
+    "version": "v0.9-draft-consolidated",
+    "createdAt": "2026-08-25",
+    "note": "唯一权威草稿（合并早期 draft-batch-v1.json 的 31 条与本文件初版的 40 条，收敛为 40 条；被取代文件已改名保留）。loader 不导入。晋级规则见 docs/specs/reaction-content-guide.md 第四节：老师签字 → 台账登记 → 按 chapter 归入正式章节文件并补 reviewed:true、删除 products_pubchem_main。",
+    "structureSource": "productStructure 初稿统一 null；晋级时按各条主产物 PubChem 英文名批量抓取回填（复用 worker/src/pubchem.ts 解析逻辑），无可用记录保持 null"
+  },
+  "reactions": [
+    {
+      "id": "na-h2o",
+      "chapter": "必修1·第二章 海水中的重要元素——钠和氯",
+      "title": "钠与水反应",
+      "reactants": "钠、水",
+      "conditions": "常温",
+      "equation": "2Na + 2H₂O = 2NaOH + H₂↑",
+      "products": ["氢氧化钠", "氢气"],
+      "mechanismSteps": [
+        "钠的密度比水小，浮在水面上",
+        "反应放热，钠熔成闪亮小球（钠熔点低）",
+        "小球四处游动并发出嘶嘶声（生成的气体推动）",
+        "向反应后溶液滴入酚酞变红，证明生成碱（NaOH）",
+        "收集气体靠近火焰有爆鸣声，证明是 H₂"
+      ],
+      "products_pubchem_main": "Sodium hydroxide",
+      "productStructure": null
+    },
+    {
+      "id": "na-o2-heat",
+      "chapter": "必修1·第二章 海水中的重要元素——钠和氯",
+      "title": "钠在氧气中燃烧",
+      "reactants": "钠、氧气",
+      "conditions": "点燃",
+      "equation": "2Na + O₂ = Na₂O₂",
+      "products": ["过氧化钠"],
+      "mechanismSteps": [
+        "将金属钠加热至熔化后接触氧气，剧烈燃烧",
+        "发出黄色火焰，生成淡黄色固体过氧化钠（Na₂O₂）",
+        "对比记忆：常温缓慢氧化生成白色 Na₂O，燃烧则生成 Na₂O₂",
+        "条件不同产物不同的典型例子；Na₂O₂ 中氧为 −1 价"
+      ],
+      "products_pubchem_main": "Sodium peroxide",
+      "productStructure": null
+    },
+    {
+      "id": "na2o2-h2o",
+      "chapter": "必修1·第二章 海水中的重要元素——钠和氯",
+      "title": "过氧化钠与水",
+      "reactants": "过氧化钠、水",
+      "conditions": "常温",
+      "equation": "2Na₂O₂ + 2H₂O = 4NaOH + O₂↑",
+      "products": ["氢氧化钠", "氧气"],
+      "mechanismSteps": [
+        "淡黄色固体加入水中，剧烈反应产生大量气泡",
+        "用带火星的木条检验，木条复燃证明生成 O₂",
+        "反应后滴入酚酞变红，说明同时生成 NaOH",
+        "过氧化钠既是氧化剂又是还原剂（歧化反应）",
+        "应用：呼吸面具和潜艇里的供氧剂原理之一"
+      ],
+      "products_pubchem_main": "Oxygen",
+      "productStructure": null
+    },
+    {
+      "id": "na2o2-co2",
+      "chapter": "必修1·第二章 海水中的重要元素——钠和氯",
+      "title": "过氧化钠与二氧化碳",
+      "reactants": "过氧化钠、二氧化碳",
+      "conditions": "常温",
+      "equation": "2Na₂O₂ + 2CO₂ = 2Na₂CO₃ + O₂",
+      "products": ["碳酸钠", "氧气"],
+      "mechanismSteps": [
+        "过氧化钠与二氧化碳在常温下即可反应",
+        "生成白色的碳酸钠并放出氧气",
+        "该反应吸收人呼出的 CO₂ 同时再生 O₂",
+        "与上一条合称潜艇/呼吸面具两大供氧原理"
+      ],
+      "products_pubchem_main": "Carbon dioxide",
+      "productStructure": null
+    },
+    {
+      "id": "nahco3-hcl",
+      "chapter": "必修1·第二章 海水中的重要元素——钠和氯",
+      "title": "碳酸氢钠与盐酸",
+      "reactants": "碳酸氢钠、盐酸",
+      "conditions": "常温",
+      "equation": "NaHCO₃ + HCl = NaCl + H₂O + CO₂↑",
+      "products": ["氯化钠", "水", "二氧化碳"],
+      "mechanismSteps": [
+        "向碳酸氢钠固体中滴加稀盐酸，立即产生大量气泡",
+        "气体使澄清石灰水变浑浊，证明是 CO₂",
+        "相同条件下比碳酸钠与盐酸反应更剧烈",
+        "离子本质：HCO₃⁻ + H⁺ = H₂O + CO₂↑"
+      ],
+      "products_pubchem_main": "Carbon dioxide",
+      "productStructure": null
+    },
+    {
+      "id": "nahco3-heat",
+      "chapter": "必修1·第二章 海水中的重要元素——钠和氯",
+      "title": "碳酸氢钠受热分解",
+      "reactants": "碳酸氢钠",
+      "conditions": "加热",
+      "equation": "2NaHCO₃ = Na₂CO₃ + H₂O + CO₂↑",
+      "products": ["碳酸钠", "水", "二氧化碳"],
+      "mechanismSteps": [
+        "加热碳酸氢钠固体，导管口有气泡均匀冒出",
+        "试管口内壁出现小水珠，证明有水生成",
+        "气体通入澄清石灰水变浑浊，证明是 CO₂",
+        "充分加热后残留的白色固体为 Na₂CO₃",
+        "这是鉴别 Na₂CO₃ 与 NaHCO₃ 的经典热稳定性法"
+      ],
+      "products_pubchem_main": "Carbon dioxide",
+      "productStructure": null
+    },
+    {
+      "id": "cl2-na",
+      "chapter": "必修1·第二章 海水中的重要元素——钠和氯",
+      "title": "钠在氯气中燃烧",
+      "reactants": "钠、氯气",
+      "conditions": "点燃",
+      "equation": "2Na + Cl₂ = 2NaCl",
+      "products": ["氯化钠"],
+      "mechanismSteps": [
+        "将加热至熔化的金属钠伸入盛满氯气的集气瓶",
+        "钠剧烈燃烧，发出黄色火焰并产生大量白烟",
+        "白烟是反应生成的氯化钠细小晶体",
+        "结论：燃烧不一定需要氧气参与"
+      ],
+      "products_pubchem_main": "Sodium chloride",
+      "productStructure": null
+    },
+    {
+      "id": "cl2-fe",
+      "chapter": "必修1·第二章 海水中的重要元素——钠和氯",
+      "title": "铁在氯气中燃烧",
+      "reactants": "铁、氯气",
+      "conditions": "点燃",
+      "equation": "2Fe + 3Cl₂ = 2FeCl₃",
+      "products": ["氯化铁"],
+      "mechanismSteps": [
+        "将灼热的铁丝伸入氯气瓶中，铁丝剧烈燃烧",
+        "产生棕褐色的烟，为 FeCl₃ 固体颗粒",
+        "加水振荡后溶液呈黄色，是 Fe³⁺ 的颜色",
+        "规律：变价金属与 Cl₂ 反应被氧化到最高价"
+      ],
+      "products_pubchem_main": "Ferric chloride",
+      "productStructure": null
+    },
+    {
+      "id": "cl2-cu",
+      "chapter": "必修1·第二章 海水中的重要元素——钠和氯",
+      "title": "铜在氯气中燃烧",
+      "reactants": "铜、氯气",
+      "conditions": "点燃",
+      "equation": "Cu + Cl₂ = CuCl₂",
+      "products": ["氯化铜"],
+      "mechanismSteps": [
+        "将灼热的铜丝伸入氯气瓶中剧烈燃烧",
+        "产生棕黄色的烟，为 CuCl₂ 固体颗粒",
+        "溶于水后浓溶液呈绿色、稀溶液呈蓝色",
+        "说明 CuCl₂ 水溶液颜色随浓度变化"
+      ],
+      "products_pubchem_main": "Cupric chloride",
+      "productStructure": null
+    },
+    {
+      "id": "cl2-h2",
+      "chapter": "必修1·第二章 海水中的重要元素——钠和氯",
+      "title": "氢气在氯气中燃烧",
+      "reactants": "氢气、氯气",
+      "conditions": "点燃",
+      "equation": "H₂ + Cl₂ = 2HCl",
+      "products": ["氯化氢"],
+      "mechanismSteps": [
+        "点燃的氢气导管伸入氯气瓶中安静燃烧",
+        "发出苍白色火焰，瓶口出现白雾",
+        "白雾是生成的 HCl 与水蒸气结合成的盐酸酸雾",
+        "对比：强光直照 H₂ 与 Cl₂ 混合气会发生爆炸",
+        "安全备注：演示需在通风环境进行"
+      ],
+      "products_pubchem_main": "Hydrogen chloride",
+      "productStructure": null
+    },
+    {
+      "id": "cl2-h2o",
+      "chapter": "必修1·第二章 海水中的重要元素——钠和氯",
+      "title": "氯气与水（氯水）",
+      "reactants": "氯气、水",
+      "conditions": "常温",
+      "equation": "Cl₂ + H₂O ⇌ HCl + HClO",
+      "products": ["盐酸", "次氯酸"],
+      "mechanismSteps": [
+        "氯气溶于水得到黄绿色氯水，部分与水反应",
+        "生成盐酸和次氯酸，该反应可逆",
+        "氯水的黄绿色来自其中仍溶解的 Cl₂ 分子",
+        "对比实验：干燥氯气无漂白性，氯水能使有色布条褪色",
+        "结论：起漂白作用的是 HClO 而不是 Cl₂"
+      ],
+      "products_pubchem_main": "Hypochlorous acid",
+      "productStructure": null
+    },
+    {
+      "id": "cl2-nabr-displace",
+      "chapter": "必修1·第二章 海水中的重要元素——钠和氯",
+      "title": "氯气置换溴（与溴化钠）",
+      "reactants": "氯气、溴化钠溶液",
+      "conditions": "常温",
+      "equation": "Cl₂ + 2NaBr = 2NaCl + Br₂",
+      "products": ["氯化钠", "溴单质"],
+      "mechanismSteps": [
+        "把黄绿色氯气通入无色的溴化钠溶液",
+        "溶液逐渐变为橙色，生成了溴单质（溴水颜色）",
+        "本质：活泼性强的氯把溴从它的盐溶液中置换出来",
+        "结论：氯的氧化性强于溴",
+        "延伸考点：卤族单质氧化性 F₂ > Cl₂ > Br₂ > I₂"
+      ],
+      "products_pubchem_main": "Bromine",
+      "productStructure": null
+    },
+    {
+      "id": "cl2-naoh",
+      "chapter": "必修1·第二章 海水中的重要元素——钠和氯",
+      "title": "氯气与氢氧化钠（尾气吸收）",
+      "reactants": "氯气、氢氧化钠溶液",
+      "conditions": "常温",
+      "equation": "Cl₂ + 2NaOH = NaCl + NaClO + H₂O",
+      "products": ["氯化钠", "次氯酸钠", "水"],
+      "mechanismSteps": [
+        "氯气有毒，实验尾气不能直接排放",
+        "用氢氧化钠溶液吸收多余的氯气",
+        "生成氯化钠、次氯酸钠和水",
+        "产物 NaClO 就是 84 消毒液的有效成分",
+        "离子本质：Cl₂ + 2OH⁻ = Cl⁻ + ClO⁻ + H₂O"
+      ],
+      "products_pubchem_main": "Sodium hypochlorite",
+      "productStructure": null
+    },
+    {
+      "id": "cl2-caoh2",
+      "chapter": "必修1·第二章 海水中的重要元素——钠和氯",
+      "title": "氯气与石灰乳（制漂白粉）",
+      "reactants": "氯气、石灰乳",
+      "conditions": "常温",
+      "equation": "2Cl₂ + 2Ca(OH)₂ = Ca(ClO)₂ + CaCl₂ + 2H₂O",
+      "products": ["次氯酸钙", "氯化钙", "水"],
+      "mechanismSteps": [
+        "工业上把氯气通入石灰乳制备漂白粉",
+        "漂白粉的主要成分为 Ca(ClO)₂ 和 CaCl₂",
+        "有效成分是次氯酸钙 Ca(ClO)₂",
+        "漂白原理：酸性条件下转化为 HClO 发挥漂白作用",
+        "保存提示：敞口放置遇 CO₂ 和水汽会逐渐失效，需密封避光"
+      ],
+      "products_pubchem_main": "Calcium hypochlorite",
+      "productStructure": null
+    },
+    {
+      "id": "fe-h2o-steam",
+      "chapter": "必修1·第三章 铁 金属材料",
+      "title": "铁与水蒸气",
+      "reactants": "铁、水蒸气",
+      "conditions": "高温",
+      "equation": "3Fe + 4H₂O(g) = Fe₃O₄ + 4H₂",
+      "products": ["四氧化三铁", "氢气"],
+      "mechanismSteps": [
+        "铁粉与高温水蒸气在硬质玻璃管中反应",
+        "湿棉花受热提供持续的水蒸气流",
+        "产生的气体用肥皂液收集，点燃肥皂泡有爆鸣声，证明是 H₂",
+        "管内黑色固体为四氧化三铁 Fe₃O₄",
+        "结论：铁在高温下能与水蒸气反应置换出氢"
+      ],
+      "products_pubchem_main": "Triiron tetraoxide",
+      "productStructure": null
+    },
+    {
+      "id": "fecl2-cl2",
+      "chapter": "必修1·第三章 铁 金属材料",
+      "title": "氯气氧化氯化亚铁",
+      "reactants": "氯化亚铁溶液、氯气",
+      "conditions": "常温",
+      "equation": "2FeCl₂ + Cl₂ = 2FeCl₃",
+      "products": ["氯化铁"],
+      "mechanismSteps": [
+        "向浅绿色的 FeCl₂ 溶液中通入氯气",
+        "溶液颜色由浅绿色逐渐变为黄色",
+        "本质：Cl₂ 将 Fe²⁺ 氧化为 Fe³⁺",
+        "体现 Fe²⁺ 具有还原性，可作还原剂",
+        "实验室保存 FeCl₂ 溶液需隔绝空气防被氧化"
+      ],
+      "products_pubchem_main": "Ferric chloride",
+      "productStructure": null
+    },
+    {
+      "id": "fecl3-fe",
+      "chapter": "必修1·第三章 铁 金属材料",
+      "title": "铁与氯化铁",
+      "reactants": "铁、氯化铁溶液",
+      "conditions": "常温",
+      "equation": "2FeCl₃ + Fe = 3FeCl₂",
+      "products": ["氯化亚铁"],
+      "mechanismSteps": [
+        "向黄色的 FeCl₃ 溶液中加入过量铁粉",
+        "振荡后溶液黄色逐渐褪去变为浅绿色",
+        "本质：Fe 单质将 Fe³⁺ 还原为 Fe²⁺",
+        "体现 Fe³⁺ 具有氧化性；+2 与 +3 价铁可相互转化"
+      ],
+      "products_pubchem_main": "Ferrous chloride",
+      "productStructure": null
+    },
+    {
+      "id": "fecl3-cu",
+      "chapter": "必修1·第三章 铁 金属材料",
+      "title": "氯化铁与铜（电路板蚀刻）",
+      "reactants": "氯化铁溶液、铜",
+      "conditions": "常温",
+      "equation": "2FeCl₃ + Cu = 2FeCl₂ + CuCl₂",
+      "products": ["氯化亚铁", "氯化铜"],
+      "mechanismSteps": [
+        "将铜片放入 FeCl₃ 溶液中，铜片逐渐溶解",
+        "溶液变为蓝绿色（含 Cu²⁺ 和 Fe²⁺）",
+        "本质：Fe³⁺ 将 Cu 氧化为 Cu²⁺，自身被还原为 Fe²⁺",
+        "应用：印刷电路板的蚀刻正是利用这一反应"
+      ],
+      "products_pubchem_main": "Cupric chloride",
+      "productStructure": null
+    },
+    {
+      "id": "s-o2",
+      "chapter": "必修2·第五章 化工生产中的重要非金属元素",
+      "title": "硫在氧气中燃烧",
+      "reactants": "硫、氧气",
+      "conditions": "点燃",
+      "equation": "S + O₂ = SO₂",
+      "products": ["二氧化硫"],
+      "mechanismSteps": [
+        "硫在空气中燃烧发出微弱的淡蓝色火焰",
+        "在氧气中燃烧更剧烈，发出明亮的蓝紫色火焰",
+        "生成有刺激性气味的二氧化硫气体",
+        "环保操作：集气瓶底放少量水吸收 SO₂ 防止污染空气"
+      ],
+      "products_pubchem_main": "Sulfur dioxide",
+      "productStructure": null
+    },
+    {
+      "id": "so2-cat-oxidation",
+      "chapter": "必修2·第五章 化工生产中的重要非金属元素",
+      "title": "二氧化硫催化氧化",
+      "reactants": "二氧化硫、氧气",
+      "conditions": "催化剂·加热",
+      "equation": "2SO₂ + O₂ ⇌ 2SO₃",
+      "products": ["三氧化硫"],
+      "mechanismSteps": [
+        "二氧化硫在催化剂（钒触媒）表面与氧气反应",
+        "该反应可逆，工业上通过增大 O₂ 浓度促进 SO₂ 转化",
+        "生成的 SO₃ 与水化合得到硫酸",
+        "地位：接触法制硫酸的核心反应（接触室中发生）",
+        "体现可逆反应与化工生产条件选择的思想"
+      ],
+      "products_pubchem_main": "Sulfur trioxide",
+      "productStructure": null
+    },
+    {
+      "id": "cu-conc-h2so4",
+      "chapter": "必修2·第五章 化工生产中的重要非金属元素",
+      "title": "铜与浓硫酸",
+      "reactants": "铜、浓硫酸",
+      "conditions": "加热",
+      "equation": "Cu + 2H₂SO₄(浓) = CuSO₄ + SO₂↑ + 2H₂O",
+      "products": ["硫酸铜", "二氧化硫", "水"],
+      "mechanismSteps": [
+        "铜片与浓硫酸在常温下不反应",
+        "加热后铜片逐渐溶解，产生刺激性气味气体",
+        "气体使品红溶液褪色，证明是 SO₂",
+        "冷却后将反应液稀释，溶液显蓝色（Cu²⁺）",
+        "结论：加热时浓硫酸表现出强氧化性和酸性"
+      ],
+      "products_pubchem_main": "Copper(II) sulfate",
+      "productStructure": null
+    },
+    {
+      "id": "n2-o2",
+      "chapter": "必修2·第五章 化工生产中的重要非金属元素",
+      "title": "氮气与氧气",
+      "reactants": "氮气、氧气",
+      "conditions": "放电或高温",
+      "equation": "N₂ + O₂ = 2NO",
+      "products": ["一氧化氮"],
+      "mechanismSteps": [
+        "氮气分子中有氮氮三键，性质很稳定",
+        "常温下氮气与氧气不反应，放电或高温条件下化合",
+        "生成无色不溶于水的一氧化氮气体",
+        "雷雨天气中这一反应就是自然界的固氮过程之一",
+        "NO 在空气中随即被 O₂ 氧化为红棕色的 NO₂"
+      ],
+      "products_pubchem_main": "Nitric oxide",
+      "productStructure": null
+    },
+    {
+      "id": "no2-h2o",
+      "chapter": "必修2·第五章 化工生产中的重要非金属元素",
+      "title": "二氧化氮与水",
+      "reactants": "二氧化氮、水",
+      "conditions": "常温",
+      "equation": "3NO₂ + H₂O = 2HNO₃ + NO",
+      "products": ["硝酸", "一氧化氮"],
+      "mechanismSteps": [
+        "将红棕色的 NO₂ 通入水中，颜色逐渐褪去",
+        "反应生成硝酸和无色的一氧化氮气体",
+        "这是工业制硝酸流程中的关键一步（吸收塔内）",
+        "尾气中的 NO 需再氧化为 NO₂ 循环吸收，防止污染"
+      ],
+      "products_pubchem_main": "Nitric acid",
+      "productStructure": null
+    },
+    {
+      "id": "nh3-fountain",
+      "chapter": "必修2·第五章 化工生产中的重要非金属元素",
+      "title": "氨的喷泉实验",
+      "reactants": "氨气、水（含酚酞）",
+      "conditions": "常温",
+      "equation": "NH₃ + H₂O ⇌ NH₃·H₂O",
+      "products": ["一水合氨"],
+      "mechanismSteps": [
+        "挤入少量水，烧瓶内形成红色喷泉",
+        "原理：NH₃ 极易溶于水（1 体积水约溶 700 体积氨气）",
+        "瓶内气压骤减，外界大气压把水压入烧瓶形成喷泉",
+        "酚酞变红说明氨水显碱性",
+        "本质：NH₃ + H₂O ⇌ NH₃·H₂O ⇌ NH₄⁺ + OH⁻"
+      ],
+      "products_pubchem_main": "Ammonia",
+      "productStructure": null
+    },
+    {
+      "id": "nh3-hcl-smoke",
+      "chapter": "必修2·第五章 化工生产中的重要非金属元素",
+      "title": "氨与氯化氢（白烟）",
+      "reactants": "氨气、氯化氢",
+      "conditions": "常温",
+      "equation": "NH₃ + HCl = NH₄Cl",
+      "products": ["氯化铵"],
+      "mechanismSteps": [
+        "两根玻璃棒分别蘸取浓氨水和浓盐酸",
+        "相互靠近但不接触，中间产生大量白烟",
+        "白烟是反应生成的氯化铵微小晶粒",
+        "微观解释：氨分子和氯化氢分子在不断运动相遇化合",
+        "应用：此现象可用于检验氨气或氯化氢气体"
+      ],
+      "products_pubchem_main": "Ammonium chloride",
+      "productStructure": null
+    },
+    {
+      "id": "nh3-cat-oxidation",
+      "chapter": "必修2·第五章 化工生产中的重要非金属元素",
+      "title": "氨的催化氧化",
+      "reactants": "氨气、氧气",
+      "conditions": "催化剂·加热",
+      "equation": "4NH₃ + 5O₂ = 4NO + 6H₂O",
+      "products": ["一氧化氮", "水"],
+      "mechanismSteps": [
+        "氨气与空气混合通过红热的铂催化剂网",
+        "铂丝继续保持红热，说明反应放出大量热",
+        "生成的 NO 遇过量 O₂ 变为红棕色 NO₂",
+        "锥形瓶中出现的红棕色气体即 NO₂，与水生成硝酸",
+        "地位：这是工业制硝酸的核心反应（氧化炉中）"
+      ],
+      "products_pubchem_main": "Nitric oxide",
+      "productStructure": null
+    },
+    {
+      "id": "nh4cl-caoh2-lab",
+      "chapter": "必修2·第五章 化工生产中的重要非金属元素",
+      "title": "实验室制氨气",
+      "reactants": "氯化铵、消石灰",
+      "conditions": "加热",
+      "equation": "2NH₄Cl + Ca(OH)₂ = CaCl₂ + 2NH₃↑ + 2H₂O",
+      "products": ["氯化钙", "氨气", "水"],
+      "mechanismSteps": [
+        "氯化铵与消石灰固体混合加热，导管口有气泡",
+        "用湿润的红色石蕊试纸靠近管口，试纸变蓝证明是 NH₃",
+        "用向下排空气法收集（氨气密度小于空气且极易溶于水）",
+        "验满方法：蘸浓盐酸的玻璃棒靠近瓶口出现白烟",
+        "推广：铵盐遇碱共热都放出氨气，这也是铵根离子的检验方法"
+      ],
+      "products_pubchem_main": "Ammonia",
+      "productStructure": null
+    },
+    {
+      "id": "cu-dil-hno3",
+      "chapter": "必修2·第五章 化工生产中的重要非金属元素",
+      "title": "铜与稀硝酸",
+      "reactants": "铜、稀硝酸",
+      "conditions": "常温",
+      "equation": "3Cu + 8HNO₃(稀) = 3Cu(NO₃)₂ + 2NO↑ + 4H₂O",
+      "products": ["硝酸铜", "一氧化氮", "水"],
+      "mechanismSteps": [
+        "铜片放入稀硝酸中缓慢溶解，产生无色气泡",
+        "无色气体在瓶口遇空气变为红棕色，证明是 NO",
+        "溶液逐渐变蓝，生成了 Cu(NO₃)₂",
+        "规律：稀硝酸的还原产物主要是 NO",
+        "对比：反应不需加热但速率比浓硝酸慢"
+      ],
+      "products_pubchem_main": "Copper(II) nitrate",
+      "productStructure": null
+    },
+    {
+      "id": "cu-conc-hno3",
+      "chapter": "必修2·第五章 化工生产中的重要非金属元素",
+      "title": "铜与浓硝酸",
+      "reactants": "铜、浓硝酸",
+      "conditions": "常温",
+      "equation": "Cu + 4HNO₃(浓) = Cu(NO₃)₂ + 2NO₂↑ + 2H₂O",
+      "products": ["硝酸铜", "二氧化氮", "水"],
+      "mechanismSteps": [
+        "铜片放入浓硝酸中立即剧烈反应",
+        "产生红棕色、有刺激性气味的 NO₂ 气体",
+        "溶液很快变成蓝色或绿色",
+        "规律：浓硝酸的还原产物主要是 NO₂",
+        "安全备注：NO₂ 有毒，必须在通风橱中进行"
+      ],
+      "products_pubchem_main": "Copper(II) nitrate",
+      "productStructure": null
+    },
+    {
+      "id": "zn-cu-cell",
+      "chapter": "必修2·第六章 化学反应与能量",
+      "title": "铜锌原电池（总反应）",
+      "reactants": "锌、稀硫酸、铜",
+      "conditions": "常温",
+      "equation": "Zn + H₂SO₄(稀) = ZnSO₄ + H₂↑",
+      "products": ["硫酸锌", "氢气"],
+      "mechanismSteps": [
+        "锌片与铜片平行插入稀硫酸并用导线连接电流表",
+        "两个电极上都有气泡冒出，电流表指针偏转",
+        "负极（锌）：Zn 失去电子被氧化，电子经导线流向铜片",
+        "正极（铜）：溶液中的 H⁺ 在铜片表面得电子生成 H₂",
+        "结论：该装置把化学能转化为电能，即原电池"
+      ],
+      "products_pubchem_main": "Zinc sulfate",
+      "productStructure": null
+    },
+    {
+      "id": "cao-water-exothermic",
+      "chapter": "必修2·第六章 化学反应与能量",
+      "title": "生石灰与水（放热）",
+      "reactants": "氧化钙、水",
+      "conditions": "常温",
+      "equation": "CaO + H₂O = Ca(OH)₂",
+      "products": ["氢氧化钙"],
+      "mechanismSteps": [
+        "块状生石灰中加入水，剧烈反应",
+        "大量水蒸气升腾，水甚至可能沸腾",
+        "触摸容器外壁明显发热发烫",
+        "结论：典型的放热反应，化学能转化为热能",
+        "生活联系：自热米饭/自热火锅的发热包原理"
+      ],
+      "products_pubchem_main": "Calcium hydroxide",
+      "productStructure": null
+    },
+    {
+      "id": "baoh2-nh4cl-endothermic",
+      "chapter": "必修2·第六章 化学反应与能量",
+      "title": "氢氧化钡晶体与氯化铵（吸热）",
+      "reactants": "氢氧化钡晶体（Ba(OH)₂·8H₂O）、氯化铵",
+      "conditions": "常温",
+      "equation": "Ba(OH)₂·8H₂O + 2NH₄Cl = BaCl₂ + 2NH₃↑ + 10H₂O",
+      "products": ["氯化钡", "氨气", "水"],
+      "mechanismSteps": [
+        "在玻璃片上把两种固体快速混合搅拌",
+        "反应一段时间后玻璃片与烧杯冻结在一起（水结冰）",
+        "能闻到刺激性气味，产生了氨气",
+        "温度急剧下降，说明反应大量吸热",
+        "结论：典型的吸热反应，与上一条放热反应成对演示"
+      ],
+      "products_pubchem_main": "Barium chloride",
+      "productStructure": null
+    },
+    {
+      "id": "al-fe2o3-thermite",
+      "chapter": "必修2·第六章 化学反应与能量",
+      "title": "铝热反应",
+      "reactants": "铝粉、氧化铁",
+      "conditions": "高温",
+      "equation": "2Al + Fe₂O₃ = Al₂O₃ + 2Fe",
+      "products": ["氧化铝", "铁"],
+      "mechanismSteps": [
+        "铝粉与氧化铁混合，用镁条引燃",
+        "剧烈反应，火星四射",
+        "落下熔融的铁水，冷却后可被磁铁吸引证明是铁",
+        "铝的活泼性强于铁，把铁从其氧化物中置换出来",
+        "应用：野外焊接钢轨；安全备注需由教师演示并保持距离"
+      ],
+      "products_pubchem_main": "Iron",
+      "productStructure": null
+    },
+    {
+      "id": "ch4-cl2-light",
+      "chapter": "必修2·第七章 有机化合物",
+      "title": "甲烷与氯气取代",
+      "reactants": "甲烷、氯气",
+      "conditions": "光照",
+      "equation": "CH₄ + Cl₂ → CH₃Cl + HCl",
+      "products": ["一氯甲烷", "氯化氢"],
+      "mechanismSteps": [
+        "甲烷与氯气混合于集气瓶，置于漫射光下照射",
+        "黄绿色逐渐变浅，瓶壁出现油状液滴",
+        "本质：甲烷分子中的氢原子被氯原子逐步替代（取代反应）",
+        "产物是一系列氯代烃：CH₃Cl、CH₂Cl₂、CHCl₃、CCl₄",
+        "安全备注：用漫射光，强光直射会引起爆炸"
+      ],
+      "products_pubchem_main": "Chloromethane",
+      "smiles": "CCl",
+      "productStructure": null
+    },
+    {
+      "id": "c2h4-br2",
+      "chapter": "必修2·第七章 有机化合物",
+      "title": "乙烯与溴加成",
+      "reactants": "乙烯、溴",
+      "conditions": "常温",
+      "equation": "CH₂=CH₂ + Br₂ → CH₂Br—CH₂Br",
+      "products": ["1,2-二溴乙烷"],
+      "mechanismSteps": [
+        "将乙烯通入溴的四氯化碳溶液（或溴水）",
+        "红棕色迅速褪去",
+        "本质：碳碳双键中的一个键断裂，两个 Br 原子分别加到两个碳原子上",
+        "这类反应叫加成反应，与取代反应有本质区别",
+        "应用：溴水（溴的四氯化碳溶液）褪色可用于检验碳碳双键"
+      ],
+      "products_pubchem_main": "1,2-Dibromoethane",
+      "smiles": "BrCCBr",
+      "productStructure": null
+    },
+    {
+      "id": "c2h4-hydration",
+      "chapter": "必修2·第七章 有机化合物",
+      "title": "乙烯水化制乙醇",
+      "reactants": "乙烯、水",
+      "conditions": "催化剂·加压·加热",
+      "equation": "CH₂=CH₂ + H₂O → CH₃CH₂OH",
+      "products": ["乙醇"],
+      "mechanismSteps": [
+        "乙烯在催化剂作用下与水发生加成反应",
+        "双键断开，H 原子和羟基分别加到两个碳原子上",
+        "生成物是乙醇（酒精）",
+        "地位：工业上大规模生产乙醇的重要方法",
+        "体现乙烯作为基础化工原料的价值"
+      ],
+      "products_pubchem_main": "Ethanol",
+      "smiles": "CCO",
+      "productStructure": null
+    },
+    {
+      "id": "c2h4-polymerization",
+      "chapter": "必修2·第七章 有机化合物",
+      "title": "乙烯聚合",
+      "reactants": "乙烯",
+      "conditions": "催化剂",
+      "equation": "nCH₂=CH₂ → 聚乙烯",
+      "products": ["聚乙烯"],
+      "mechanismSteps": [
+        "数千个乙烯分子在催化剂作用下相互加成",
+        "每个分子的碳碳双键打开，彼此连接成长链",
+        "生成的高分子化合物是聚乙烯",
+        "聚合反应是合成有机高分子的基本方法之一",
+        "生活联系：塑料袋、保鲜膜的主要成分就是聚乙烯"
+      ],
+      "products_pubchem_main": "Polyethylene",
+      "productStructure": null
+    },
+    {
+      "id": "ethanol-cat-oxidation",
+      "chapter": "必修2·第七章 有机化合物",
+      "title": "乙醇催化氧化",
+      "reactants": "乙醇、氧气",
+      "conditions": "催化剂(Cu)·加热",
+      "equation": "2C₂H₅OH + O₂ → 2CH₃CHO + 2H₂O",
+      "products": ["乙醛", "水"],
+      "mechanismSteps": [
+        "铜丝在酒精灯外焰上灼烧，表面变黑（生成 CuO）",
+        "趁热插入乙醇中，铜丝重新变得红亮，反复多次",
+        "液体中产生刺激性气味的乙醛",
+        "本质：黑色的 CuO 把乙醇氧化为乙醛，自身被还原为 Cu",
+        "催化剂机理：铜在 2Cu + O₂ = 2CuO 的循环中起催化作用"
+      ],
+      "products_pubchem_main": "Acetaldehyde",
+      "smiles": "CC=O",
+      "productStructure": null
+    },
+    {
+      "id": "esterification",
+      "chapter": "必修2·第七章 有机化合物",
+      "title": "乙酸与乙醇酯化",
+      "reactants": "乙酸、乙醇",
+      "conditions": "浓硫酸·加热",
+      "equation": "CH₃COOH + C₂H₅OH ⇌ CH₃COOC₂H₅ + H₂O",
+      "products": ["乙酸乙酯", "水"],
+      "mechanismSteps": [
+        "乙醇、乙酸与浓硫酸混合，小火加热",
+        "将产生的蒸气经导管通到饱和碳酸钠溶液液面上方",
+        "液面得到有芳香气味的透明油状液体——乙酸乙酯",
+        "浓硫酸的作用：催化剂和吸水剂（促进平衡右移）",
+        "断键规律：酸脱羟基、醇脱氢；酯化反应是可逆反应"
+      ],
+      "products_pubchem_main": "Ethyl acetate",
+      "smiles": "CCOC(C)=O",
+      "productStructure": null
+    },
+    {
+      "id": "glucose-cuoh2",
+      "chapter": "必修2·第七章 有机化合物",
+      "title": "葡萄糖与新制氢氧化铜",
+      "reactants": "葡萄糖溶液、新制氢氧化铜",
+      "conditions": "加热",
+      "equation": "CH₂OH(CHOH)₄CHO + 2Cu(OH)₂ → CH₂OH(CHOH)₄COOH + Cu₂O↓ + 2H₂O",
+      "products": ["葡萄糖酸", "氧化亚铜"],
+      "mechanismSteps": [
+        "新制的蓝色 Cu(OH)₂ 悬浊液中加入少量葡萄糖溶液",
+        "加热煮沸后产生砖红色沉淀",
+        "砖红色沉淀是氧化亚铜 Cu₂O",
+        "本质：葡萄糖分子中的醛基（—CHO）被氧化为羧基",
+        "医学联系：体检化验尿糖的原理与此类似"
+      ],
+      "products_pubchem_main": "Glucose",
+      "productStructure": null
+    }
+  ]
+}

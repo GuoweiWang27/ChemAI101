@@ -78,7 +78,9 @@ const translations: Translations = {
     linkCopied: "Link copied!",
     mechanismLabel: "Mechanism Steps",
     conditionsLabel: "Conditions",
-    noStructureMsg: "No 3D structure available for this reaction."
+    noStructureMsg: "No 3D structure available for this reaction.",
+    curatedIntro: "Classic reactions from the PEP high-school textbook, curated with our chemistry teacher. Click any card to open its lesson view.",
+    curatedCount: "{{count}} reactions online"
   },
   zh: {
     appTitle: "化学AI专家",
@@ -149,7 +151,9 @@ const translations: Translations = {
     linkCopied: "链接已复制！",
     mechanismLabel: "机理步骤",
     conditionsLabel: "反应条件",
-    noStructureMsg: "该反应暂无 3D 结构数据。"
+    noStructureMsg: "该反应暂无 3D 结构数据。",
+    curatedIntro: "按人教版教材章节整理的典型反应，与化学老师共同校订。点击卡片进入教学视图。",
+    curatedCount: "已上线 {{count}} 个反应"
   }
 };
 

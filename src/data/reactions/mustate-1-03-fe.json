@@ -1,0 +1,202 @@
+[
+  {
+    "id": "fe-h2o-steam",
+    "chapter": "必修1·第三章 铁 金属材料",
+    "title": "铁与水蒸气",
+    "reactants": "铁、水蒸气",
+    "conditions": "高温",
+    "equation": "3Fe + 4H₂O(g) = Fe₃O₄ + 4H₂",
+    "products": [
+      "四氧化三铁",
+      "氢气"
+    ],
+    "mechanismSteps": [
+      "铁粉与高温水蒸气在硬质玻璃管中反应",
+      "湿棉花受热提供持续的水蒸气流",
+      "产生的气体用肥皂液收集，点燃肥皂泡有爆鸣声，证明是 H₂",
+      "管内黑色固体为四氧化三铁 Fe₃O₄",
+      "结论：铁在高温下能与水蒸气反应置换出氢"
+    ],
+    "productStructure": null,
+    "reviewed": true
+  },
+  {
+    "id": "fecl2-cl2",
+    "chapter": "必修1·第三章 铁 金属材料",
+    "title": "氯气氧化氯化亚铁",
+    "reactants": "氯化亚铁溶液、氯气",
+    "conditions": "常温",
+    "equation": "2FeCl₂ + Cl₂ = 2FeCl₃",
+    "products": [
+      "氯化铁"
+    ],
+    "mechanismSteps": [
+      "向浅绿色的 FeCl₂ 溶液中通入氯气",
+      "溶液颜色由浅绿色逐渐变为黄色",
+      "本质：Cl₂ 将 Fe²⁺ 氧化为 Fe³⁺",
+      "体现 Fe²⁺ 具有还原性，可作还原剂",
+      "实验室保存 FeCl₂ 溶液需隔绝空气防被氧化"
+    ],
+    "productStructure": {
+      "atoms": [
+        {
+          "id": 1,
+          "element": "Fe",
+          "x": 2.866,
+          "y": 0.25,
+          "z": 0
+        },
+        {
+          "id": 2,
+          "element": "Cl",
+          "x": 3.7321,
+          "y": 0.75,
+          "z": 0
+        },
+        {
+          "id": 3,
+          "element": "Cl",
+          "x": 2,
+          "y": 0.75,
+          "z": 0
+        },
+        {
+          "id": 4,
+          "element": "Cl",
+          "x": 2.866,
+          "y": -0.75,
+          "z": 0
+        }
+      ],
+      "bonds": [
+        {
+          "source": 1,
+          "target": 2,
+          "order": 1
+        },
+        {
+          "source": 1,
+          "target": 3,
+          "order": 1
+        },
+        {
+          "source": 1,
+          "target": 4,
+          "order": 1
+        }
+      ]
+    },
+    "reviewed": true
+  },
+  {
+    "id": "fecl3-fe",
+    "chapter": "必修1·第三章 铁 金属材料",
+    "title": "铁与氯化铁",
+    "reactants": "铁、氯化铁溶液",
+    "conditions": "常温",
+    "equation": "2FeCl₃ + Fe = 3FeCl₂",
+    "products": [
+      "氯化亚铁"
+    ],
+    "mechanismSteps": [
+      "向黄色的 FeCl₃ 溶液中加入过量铁粉",
+      "振荡后溶液黄色逐渐褪去变为浅绿色",
+      "本质：Fe 单质将 Fe³⁺ 还原为 Fe²⁺",
+      "体现 Fe³⁺ 具有氧化性；+2 与 +3 价铁可相互转化"
+    ],
+    "productStructure": {
+      "atoms": [
+        {
+          "id": 1,
+          "element": "Fe",
+          "x": 2.866,
+          "y": -0.25,
+          "z": 0
+        },
+        {
+          "id": 2,
+          "element": "Cl",
+          "x": 3.7321,
+          "y": 0.25,
+          "z": 0
+        },
+        {
+          "id": 3,
+          "element": "Cl",
+          "x": 2,
+          "y": 0.25,
+          "z": 0
+        }
+      ],
+      "bonds": [
+        {
+          "source": 1,
+          "target": 2,
+          "order": 1
+        },
+        {
+          "source": 1,
+          "target": 3,
+          "order": 1
+        }
+      ]
+    },
+    "reviewed": true
+  },
+  {
+    "id": "fecl3-cu",
+    "chapter": "必修1·第三章 铁 金属材料",
+    "title": "氯化铁与铜（电路板蚀刻）",
+    "reactants": "氯化铁溶液、铜",
+    "conditions": "常温",
+    "equation": "2FeCl₃ + Cu = 2FeCl₂ + CuCl₂",
+    "products": [
+      "氯化亚铁",
+      "氯化铜"
+    ],
+    "mechanismSteps": [
+      "将铜片放入 FeCl₃ 溶液中，铜片逐渐溶解",
+      "溶液变为蓝绿色（含 Cu²⁺ 和 Fe²⁺）",
+      "本质：Fe³⁺ 将 Cu 氧化为 Cu²⁺，自身被还原为 Fe²⁺",
+      "应用：印刷电路板的蚀刻正是利用这一反应"
+    ],
+    "productStructure": {
+      "atoms": [
+        {
+          "id": 1,
+          "element": "Cu",
+          "x": 2.866,
+          "y": -0.25,
+          "z": 0
+        },
+        {
+          "id": 2,
+          "element": "Cl",
+          "x": 3.7321,
+          "y": 0.25,
+          "z": 0
+        },
+        {
+          "id": 3,
+          "element": "Cl",
+          "x": 2,
+          "y": 0.25,
+          "z": 0
+        }
+      ],
+      "bonds": [
+        {
+          "source": 1,
+          "target": 2,
+          "order": 1
+        },
+        {
+          "source": 1,
+          "target": 3,
+          "order": 1
+        }
+      ]
+    },
+    "reviewed": true
+  }
+]

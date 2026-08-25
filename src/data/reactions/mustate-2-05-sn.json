@@ -1,0 +1,848 @@
+[
+  {
+    "id": "s-o2",
+    "chapter": "必修2·第五章 化工生产中的重要非金属元素",
+    "title": "硫在氧气中燃烧",
+    "reactants": "硫、氧气",
+    "conditions": "点燃",
+    "equation": "S + O₂ = SO₂",
+    "products": [
+      "二氧化硫"
+    ],
+    "mechanismSteps": [
+      "硫在空气中燃烧发出微弱的淡蓝色火焰",
+      "在氧气中燃烧更剧烈，发出明亮的蓝紫色火焰",
+      "生成有刺激性气味的二氧化硫气体",
+      "环保操作：集气瓶底放少量水吸收 SO₂ 防止污染空气"
+    ],
+    "productStructure": {
+      "atoms": [
+        {
+          "id": 1,
+          "element": "S",
+          "x": 0,
+          "y": -0.5774,
+          "z": 0
+        },
+        {
+          "id": 2,
+          "element": "O",
+          "x": 1.3091,
+          "y": 0.2887,
+          "z": 0
+        },
+        {
+          "id": 3,
+          "element": "O",
+          "x": -1.3091,
+          "y": 0.2887,
+          "z": 0
+        }
+      ],
+      "bonds": [
+        {
+          "source": 1,
+          "target": 2,
+          "order": 2
+        },
+        {
+          "source": 1,
+          "target": 3,
+          "order": 2
+        }
+      ]
+    },
+    "reviewed": true
+  },
+  {
+    "id": "so2-cat-oxidation",
+    "chapter": "必修2·第五章 化工生产中的重要非金属元素",
+    "title": "二氧化硫催化氧化",
+    "reactants": "二氧化硫、氧气",
+    "conditions": "催化剂·加热",
+    "equation": "2SO₂ + O₂ ⇌ 2SO₃",
+    "products": [
+      "三氧化硫"
+    ],
+    "mechanismSteps": [
+      "二氧化硫在催化剂（钒触媒）表面与氧气反应",
+      "该反应可逆，工业上通过增大 O₂ 浓度促进 SO₂ 转化",
+      "生成的 SO₃ 与水化合得到硫酸",
+      "地位：接触法制硫酸的核心反应（接触室中发生）",
+      "体现可逆反应与化工生产条件选择的思想"
+    ],
+    "productStructure": {
+      "atoms": [
+        {
+          "id": 1,
+          "element": "S",
+          "x": 0,
+          "y": 0,
+          "z": -0.0003
+        },
+        {
+          "id": 2,
+          "element": "O",
+          "x": -0.6552,
+          "y": -1.2949,
+          "z": 0.0001
+        },
+        {
+          "id": 3,
+          "element": "O",
+          "x": -0.7939,
+          "y": 1.2148,
+          "z": 0.0001
+        },
+        {
+          "id": 4,
+          "element": "O",
+          "x": 1.4491,
+          "y": 0.0801,
+          "z": 0.0001
+        }
+      ],
+      "bonds": [
+        {
+          "source": 1,
+          "target": 2,
+          "order": 2
+        },
+        {
+          "source": 1,
+          "target": 3,
+          "order": 2
+        },
+        {
+          "source": 1,
+          "target": 4,
+          "order": 2
+        }
+      ]
+    },
+    "reviewed": true
+  },
+  {
+    "id": "cu-conc-h2so4",
+    "chapter": "必修2·第五章 化工生产中的重要非金属元素",
+    "title": "铜与浓硫酸",
+    "reactants": "铜、浓硫酸",
+    "conditions": "加热",
+    "equation": "Cu + 2H₂SO₄(浓) = CuSO₄ + SO₂↑ + 2H₂O",
+    "products": [
+      "硫酸铜",
+      "二氧化硫",
+      "水"
+    ],
+    "mechanismSteps": [
+      "铜片与浓硫酸在常温下不反应",
+      "加热后铜片逐渐溶解，产生刺激性气味气体",
+      "气体使品红溶液褪色，证明是 SO₂",
+      "冷却后将反应液稀释，溶液显蓝色（Cu²⁺）",
+      "结论：加热时浓硫酸表现出强氧化性和酸性"
+    ],
+    "productStructure": {
+      "atoms": [
+        {
+          "id": 1,
+          "element": "Cu",
+          "x": 2,
+          "y": -1,
+          "z": 0
+        },
+        {
+          "id": 2,
+          "element": "S",
+          "x": 3,
+          "y": 0,
+          "z": 0
+        },
+        {
+          "id": 3,
+          "element": "O",
+          "x": 2,
+          "y": 0,
+          "z": 0
+        },
+        {
+          "id": 4,
+          "element": "O",
+          "x": 3,
+          "y": -1,
+          "z": 0
+        },
+        {
+          "id": 5,
+          "element": "O",
+          "x": 4,
+          "y": 0,
+          "z": 0
+        },
+        {
+          "id": 6,
+          "element": "O",
+          "x": 3,
+          "y": 1,
+          "z": 0
+        }
+      ],
+      "bonds": [
+        {
+          "source": 2,
+          "target": 3,
+          "order": 1
+        },
+        {
+          "source": 2,
+          "target": 4,
+          "order": 1
+        },
+        {
+          "source": 2,
+          "target": 5,
+          "order": 2
+        },
+        {
+          "source": 2,
+          "target": 6,
+          "order": 2
+        }
+      ]
+    },
+    "reviewed": true
+  },
+  {
+    "id": "n2-o2",
+    "chapter": "必修2·第五章 化工生产中的重要非金属元素",
+    "title": "氮气与氧气",
+    "reactants": "氮气、氧气",
+    "conditions": "放电或高温",
+    "equation": "N₂ + O₂ = 2NO",
+    "products": [
+      "一氧化氮"
+    ],
+    "mechanismSteps": [
+      "氮气分子中有氮氮三键，性质很稳定",
+      "常温下氮气与氧气不反应，放电或高温条件下化合",
+      "生成无色不溶于水的一氧化氮气体",
+      "雷雨天气中这一反应就是自然界的固氮过程之一",
+      "NO 在空气中随即被 O₂ 氧化为红棕色的 NO₂"
+    ],
+    "productStructure": {
+      "atoms": [
+        {
+          "id": 1,
+          "element": "O",
+          "x": 3,
+          "y": 0,
+          "z": 0
+        },
+        {
+          "id": 2,
+          "element": "N",
+          "x": 2,
+          "y": 0,
+          "z": 0
+        }
+      ],
+      "bonds": [
+        {
+          "source": 1,
+          "target": 2,
+          "order": 2
+        }
+      ]
+    },
+    "reviewed": true
+  },
+  {
+    "id": "no2-h2o",
+    "chapter": "必修2·第五章 化工生产中的重要非金属元素",
+    "title": "二氧化氮与水",
+    "reactants": "二氧化氮、水",
+    "conditions": "常温",
+    "equation": "3NO₂ + H₂O = 2HNO₃ + NO",
+    "products": [
+      "硝酸",
+      "一氧化氮"
+    ],
+    "mechanismSteps": [
+      "将红棕色的 NO₂ 通入水中，颜色逐渐褪去",
+      "反应生成硝酸和无色的一氧化氮气体",
+      "这是工业制硝酸流程中的关键一步（吸收塔内）",
+      "尾气中的 NO 需再氧化为 NO₂ 循环吸收，防止污染"
+    ],
+    "productStructure": {
+      "atoms": [
+        {
+          "id": 1,
+          "element": "O",
+          "x": -0.0416,
+          "y": -1.3017,
+          "z": 0.0001
+        },
+        {
+          "id": 2,
+          "element": "O",
+          "x": -1.1005,
+          "y": 0.6377,
+          "z": 0.0001
+        },
+        {
+          "id": 3,
+          "element": "O",
+          "x": 1.1387,
+          "y": 0.5685,
+          "z": 0.0001
+        },
+        {
+          "id": 4,
+          "element": "N",
+          "x": 0.0034,
+          "y": 0.0956,
+          "z": -0.0004
+        },
+        {
+          "id": 5,
+          "element": "H",
+          "x": 0.9095,
+          "y": -1.5016,
+          "z": 0.0002
+        }
+      ],
+      "bonds": [
+        {
+          "source": 1,
+          "target": 4,
+          "order": 1
+        },
+        {
+          "source": 1,
+          "target": 5,
+          "order": 1
+        },
+        {
+          "source": 2,
+          "target": 4,
+          "order": 1
+        },
+        {
+          "source": 3,
+          "target": 4,
+          "order": 2
+        }
+      ]
+    },
+    "reviewed": true
+  },
+  {
+    "id": "nh3-fountain",
+    "chapter": "必修2·第五章 化工生产中的重要非金属元素",
+    "title": "氨的喷泉实验",
+    "reactants": "氨气、水（含酚酞）",
+    "conditions": "常温",
+    "equation": "NH₃ + H₂O ⇌ NH₃·H₂O",
+    "products": [
+      "一水合氨"
+    ],
+    "mechanismSteps": [
+      "挤入少量水，烧瓶内形成红色喷泉",
+      "原理：NH₃ 极易溶于水（1 体积水约溶 700 体积氨气）",
+      "瓶内气压骤减，外界大气压把水压入烧瓶形成喷泉",
+      "酚酞变红说明氨水显碱性",
+      "本质：NH₃ + H₂O ⇌ NH₃·H₂O ⇌ NH₄⁺ + OH⁻"
+    ],
+    "productStructure": {
+      "atoms": [
+        {
+          "id": 1,
+          "element": "N",
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        {
+          "id": 2,
+          "element": "H",
+          "x": -0.4417,
+          "y": 0.2906,
+          "z": 0.8711
+        },
+        {
+          "id": 3,
+          "element": "H",
+          "x": 0.7256,
+          "y": 0.6896,
+          "z": -0.1907
+        },
+        {
+          "id": 4,
+          "element": "H",
+          "x": 0.4875,
+          "y": -0.8701,
+          "z": 0.2089
+        }
+      ],
+      "bonds": [
+        {
+          "source": 1,
+          "target": 2,
+          "order": 1
+        },
+        {
+          "source": 1,
+          "target": 3,
+          "order": 1
+        },
+        {
+          "source": 1,
+          "target": 4,
+          "order": 1
+        }
+      ]
+    },
+    "reviewed": true
+  },
+  {
+    "id": "nh3-hcl-smoke",
+    "chapter": "必修2·第五章 化工生产中的重要非金属元素",
+    "title": "氨与氯化氢（白烟）",
+    "reactants": "氨气、氯化氢",
+    "conditions": "常温",
+    "equation": "NH₃ + HCl = NH₄Cl",
+    "products": [
+      "氯化铵"
+    ],
+    "mechanismSteps": [
+      "两根玻璃棒分别蘸取浓氨水和浓盐酸",
+      "相互靠近但不接触，中间产生大量白烟",
+      "白烟是反应生成的氯化铵微小晶粒",
+      "微观解释：氨分子和氯化氢分子在不断运动相遇化合",
+      "应用：此现象可用于检验氨气或氯化氢气体"
+    ],
+    "productStructure": {
+      "atoms": [
+        {
+          "id": 1,
+          "element": "Cl",
+          "x": 0.2869,
+          "y": 0,
+          "z": 0
+        },
+        {
+          "id": 2,
+          "element": "N",
+          "x": 0.5369,
+          "y": 3.0369,
+          "z": 0
+        },
+        {
+          "id": 3,
+          "element": "H",
+          "x": 1.0739,
+          "y": 3.3469,
+          "z": 0
+        },
+        {
+          "id": 4,
+          "element": "H",
+          "x": 0,
+          "y": 2.7269,
+          "z": 0
+        },
+        {
+          "id": 5,
+          "element": "H",
+          "x": 0.2269,
+          "y": 3.5739,
+          "z": 0
+        },
+        {
+          "id": 6,
+          "element": "H",
+          "x": 0.8469,
+          "y": 2.5,
+          "z": 0
+        }
+      ],
+      "bonds": [
+        {
+          "source": 2,
+          "target": 3,
+          "order": 1
+        },
+        {
+          "source": 2,
+          "target": 4,
+          "order": 1
+        },
+        {
+          "source": 2,
+          "target": 5,
+          "order": 1
+        },
+        {
+          "source": 2,
+          "target": 6,
+          "order": 1
+        }
+      ]
+    },
+    "reviewed": true
+  },
+  {
+    "id": "nh3-cat-oxidation",
+    "chapter": "必修2·第五章 化工生产中的重要非金属元素",
+    "title": "氨的催化氧化",
+    "reactants": "氨气、氧气",
+    "conditions": "催化剂·加热",
+    "equation": "4NH₃ + 5O₂ = 4NO + 6H₂O",
+    "products": [
+      "一氧化氮",
+      "水"
+    ],
+    "mechanismSteps": [
+      "氨气与空气混合通过红热的铂催化剂网",
+      "铂丝继续保持红热，说明反应放出大量热",
+      "生成的 NO 遇过量 O₂ 变为红棕色 NO₂",
+      "锥形瓶中出现的红棕色气体即 NO₂，与水生成硝酸",
+      "地位：这是工业制硝酸的核心反应（氧化炉中）"
+    ],
+    "productStructure": {
+      "atoms": [
+        {
+          "id": 1,
+          "element": "O",
+          "x": 3,
+          "y": 0,
+          "z": 0
+        },
+        {
+          "id": 2,
+          "element": "N",
+          "x": 2,
+          "y": 0,
+          "z": 0
+        }
+      ],
+      "bonds": [
+        {
+          "source": 1,
+          "target": 2,
+          "order": 2
+        }
+      ]
+    },
+    "reviewed": true
+  },
+  {
+    "id": "nh4cl-caoh2-lab",
+    "chapter": "必修2·第五章 化工生产中的重要非金属元素",
+    "title": "实验室制氨气",
+    "reactants": "氯化铵、消石灰",
+    "conditions": "加热",
+    "equation": "2NH₄Cl + Ca(OH)₂ = CaCl₂ + 2NH₃↑ + 2H₂O",
+    "products": [
+      "氯化钙",
+      "氨气",
+      "水"
+    ],
+    "mechanismSteps": [
+      "氯化铵与消石灰固体混合加热，导管口有气泡",
+      "用湿润的红色石蕊试纸靠近管口，试纸变蓝证明是 NH₃",
+      "用向下排空气法收集（氨气密度小于空气且极易溶于水）",
+      "验满方法：蘸浓盐酸的玻璃棒靠近瓶口出现白烟",
+      "推广：铵盐遇碱共热都放出氨气，这也是铵根离子的检验方法"
+    ],
+    "productStructure": {
+      "atoms": [
+        {
+          "id": 1,
+          "element": "N",
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        {
+          "id": 2,
+          "element": "H",
+          "x": -0.4417,
+          "y": 0.2906,
+          "z": 0.8711
+        },
+        {
+          "id": 3,
+          "element": "H",
+          "x": 0.7256,
+          "y": 0.6896,
+          "z": -0.1907
+        },
+        {
+          "id": 4,
+          "element": "H",
+          "x": 0.4875,
+          "y": -0.8701,
+          "z": 0.2089
+        }
+      ],
+      "bonds": [
+        {
+          "source": 1,
+          "target": 2,
+          "order": 1
+        },
+        {
+          "source": 1,
+          "target": 3,
+          "order": 1
+        },
+        {
+          "source": 1,
+          "target": 4,
+          "order": 1
+        }
+      ]
+    },
+    "reviewed": true
+  },
+  {
+    "id": "cu-dil-hno3",
+    "chapter": "必修2·第五章 化工生产中的重要非金属元素",
+    "title": "铜与稀硝酸",
+    "reactants": "铜、稀硝酸",
+    "conditions": "常温",
+    "equation": "3Cu + 8HNO₃(稀) = 3Cu(NO₃)₂ + 2NO↑ + 4H₂O",
+    "products": [
+      "硝酸铜",
+      "一氧化氮",
+      "水"
+    ],
+    "mechanismSteps": [
+      "铜片放入稀硝酸中缓慢溶解，产生无色气泡",
+      "无色气体在瓶口遇空气变为红棕色，证明是 NO",
+      "溶液逐渐变蓝，生成了 Cu(NO₃)₂",
+      "规律：稀硝酸的还原产物主要是 NO",
+      "对比：反应不需加热但速率比浓硝酸慢"
+    ],
+    "productStructure": {
+      "atoms": [
+        {
+          "id": 1,
+          "element": "Cu",
+          "x": 4.5981,
+          "y": 0.25,
+          "z": 0
+        },
+        {
+          "id": 2,
+          "element": "O",
+          "x": 2,
+          "y": 0.75,
+          "z": 0
+        },
+        {
+          "id": 3,
+          "element": "O",
+          "x": 3.7321,
+          "y": 0.75,
+          "z": 0
+        },
+        {
+          "id": 4,
+          "element": "O",
+          "x": 7.1962,
+          "y": 0.75,
+          "z": 0
+        },
+        {
+          "id": 5,
+          "element": "O",
+          "x": 5.4641,
+          "y": 0.75,
+          "z": 0
+        },
+        {
+          "id": 6,
+          "element": "O",
+          "x": 2.866,
+          "y": -0.75,
+          "z": 0
+        },
+        {
+          "id": 7,
+          "element": "O",
+          "x": 6.3301,
+          "y": -0.75,
+          "z": 0
+        },
+        {
+          "id": 8,
+          "element": "N",
+          "x": 2.866,
+          "y": 0.25,
+          "z": 0
+        },
+        {
+          "id": 9,
+          "element": "N",
+          "x": 6.3301,
+          "y": 0.25,
+          "z": 0
+        }
+      ],
+      "bonds": [
+        {
+          "source": 2,
+          "target": 8,
+          "order": 1
+        },
+        {
+          "source": 3,
+          "target": 8,
+          "order": 1
+        },
+        {
+          "source": 4,
+          "target": 9,
+          "order": 1
+        },
+        {
+          "source": 5,
+          "target": 9,
+          "order": 1
+        },
+        {
+          "source": 6,
+          "target": 8,
+          "order": 2
+        },
+        {
+          "source": 7,
+          "target": 9,
+          "order": 2
+        }
+      ]
+    },
+    "reviewed": true
+  },
+  {
+    "id": "cu-conc-hno3",
+    "chapter": "必修2·第五章 化工生产中的重要非金属元素",
+    "title": "铜与浓硝酸",
+    "reactants": "铜、浓硝酸",
+    "conditions": "常温",
+    "equation": "Cu + 4HNO₃(浓) = Cu(NO₃)₂ + 2NO₂↑ + 2H₂O",
+    "products": [
+      "硝酸铜",
+      "二氧化氮",
+      "水"
+    ],
+    "mechanismSteps": [
+      "铜片放入浓硝酸中立即剧烈反应",
+      "产生红棕色、有刺激性气味的 NO₂ 气体",
+      "溶液很快变成蓝色或绿色",
+      "规律：浓硝酸的还原产物主要是 NO₂",
+      "安全备注：NO₂ 有毒，必须在通风橱中进行"
+    ],
+    "productStructure": {
+      "atoms": [
+        {
+          "id": 1,
+          "element": "Cu",
+          "x": 4.5981,
+          "y": 0.25,
+          "z": 0
+        },
+        {
+          "id": 2,
+          "element": "O",
+          "x": 2,
+          "y": 0.75,
+          "z": 0
+        },
+        {
+          "id": 3,
+          "element": "O",
+          "x": 3.7321,
+          "y": 0.75,
+          "z": 0
+        },
+        {
+          "id": 4,
+          "element": "O",
+          "x": 7.1962,
+          "y": 0.75,
+          "z": 0
+        },
+        {
+          "id": 5,
+          "element": "O",
+          "x": 5.4641,
+          "y": 0.75,
+          "z": 0
+        },
+        {
+          "id": 6,
+          "element": "O",
+          "x": 2.866,
+          "y": -0.75,
+          "z": 0
+        },
+        {
+          "id": 7,
+          "element": "O",
+          "x": 6.3301,
+          "y": -0.75,
+          "z": 0
+        },
+        {
+          "id": 8,
+          "element": "N",
+          "x": 2.866,
+          "y": 0.25,
+          "z": 0
+        },
+        {
+          "id": 9,
+          "element": "N",
+          "x": 6.3301,
+          "y": 0.25,
+          "z": 0
+        }
+      ],
+      "bonds": [
+        {
+          "source": 2,
+          "target": 8,
+          "order": 1
+        },
+        {
+          "source": 3,
+          "target": 8,
+          "order": 1
+        },
+        {
+          "source": 4,
+          "target": 9,
+          "order": 1
+        },
+        {
+          "source": 5,
+          "target": 9,
+          "order": 1
+        },
+        {
+          "source": 6,
+          "target": 8,
+          "order": 2
+        },
+        {
+          "source": 7,
+          "target": 9,
+          "order": 2
+        }
+      ]
+    },
+    "reviewed": true
+  }
+]
