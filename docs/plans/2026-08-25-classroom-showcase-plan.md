@@ -944,4 +944,6 @@ curl -sS "https://chemai101.guoweiwang.com$js" | grep -q "mode=present\|Textbook
 | 2026-08-25 | Task 7 | ALL_GREEN → 合并 main（fd02715..6d8f927）→ Pages 新 bundle index-BcLdNUOB.js 首轮验证命中 → 分享链接探针 200 → 证据归档 evidence-classroom/deploy-probes.md → Vault 同步完成。7.2 三项体验冒烟移交主人 | 6d8f927 |
 | 2026-08-25 | 终验 | 计划核心闭环完成：演示模式 + 教材反应库（40 条）+ 分享二维码全部上线。遗留：老师签核后补（勾 ✘ 条目按意见修订/下线）；三项体验冒烟由主人随手确认 | — |
 
+| 2026-08-25 | 热修 | 主人手机实测三问题修复并上线（9878b01，bundle index-Aa9x9gcm.js）：① 移动端滚动（100dvh＋父级 overflow-y-auto，桌面行为不变）② 条目子页点任意标签自动退出子页 ③ 教材反应库移至首位并设为默认落地页；附标题响应式与导航防溢出 | 9878b01 |
+
 > **本计划已完结（含一项移交主人的体验冒烟清单）。** 后续迭代新建计划文档。
