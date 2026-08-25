@@ -946,4 +946,6 @@ curl -sS "https://chemai101.guoweiwang.com$js" | grep -q "mode=present\|Textbook
 
 | 2026-08-25 | 热修 | 主人手机实测三问题修复并上线（9878b01，bundle index-Aa9x9gcm.js）：① 移动端滚动（100dvh＋父级 overflow-y-auto，桌面行为不变）② 条目子页点任意标签自动退出子页 ③ 教材反应库移至首位并设为默认落地页；附标题响应式与导航防溢出 | 9878b01 |
 
+| 2026-08-25 | 追加 | 主人提出并批准首页 Dashboard：新增 HomeModule 四卡片入口（教材库卡片带 40 条统计与签批徽章），home 为默认落地页，导航首位加 🏠 首页；沿用现有视觉风格。上线 bundle index-DWYgxkSB.js | 9f2b51a |
+
 > **本计划已完结（含一项移交主人的体验冒烟清单）。** 后续迭代新建计划文档。
