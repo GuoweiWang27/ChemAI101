@@ -120,3 +120,86 @@ describe('ChemAI proxy', () => {
     expect(upstream).not.toHaveBeenCalled();
   });
 });
+
+function compoundRequest(name: string, origin = allowedOrigin): Request {
+  return new Request(
+    `https://chemai101-api.guoweiwang27.workers.dev/v1/compound?name=${encodeURIComponent(name)}`,
+    { method: 'GET', headers: { origin } },
+  );
+}
+
+function compoundUpstream() {
+  return vi.fn<typeof fetch>(async (input: RequestInfo | URL) => {
+    const url = String(input);
+    if (url.includes('/cids/JSON')) {
+      return Response.json({ IdentifierList: { CID: [2244] } });
+    }
+    if (url.includes('record_type=3d')) {
+      return Response.json({
+        PC_Compounds: [
+          {
+            atoms: { element: [6, 8] },
+            bonds: { aid1: [1], aid2: [2], order: [2] },
+            coords: [{ conformers: [{ x: [0, 1.3], y: [0, 0.8], z: [0, 0] }] }],
+          },
+        ],
+      });
+    }
+    return Response.json({
+      PropertyTable: { Properties: [{ CID: 2244, MolecularFormula: 'C9H8O4' }] },
+    });
+  });
+}
+
+describe('compound proxy', () => {
+  it('blocks origins outside the ChemAI sites', async () => {
+    const response = await handleRequest(
+      compoundRequest('aspirin', 'https://attacker.example'),
+      env,
+      compoundUpstream(),
+    );
+    expect(response.status).toBe(403);
+  });
+
+  it('rejects invalid names without calling PubChem', async () => {
+    const upstream = compoundUpstream();
+    const long = 'a'.repeat(101);
+    for (const bad of ['', long, '<script>', 'aspirin;DROP']) {
+      const response = await handleRequest(compoundRequest(bad), env, upstream);
+      expect(response.status).toBe(400);
+    }
+    expect(upstream).not.toHaveBeenCalled();
+  });
+
+  it('returns a normalized PubChem record with CORS headers', async () => {
+    const response = await handleRequest(compoundRequest('aspirin'), env, compoundUpstream());
+    expect(response.status).toBe(200);
+    const body = (await response.json()) as {
+      cid: number;
+      molecularFormula?: string;
+      structure: { atoms: unknown[] };
+      structureType: string;
+    };
+    expect(body.cid).toBe(2244);
+    expect(body.molecularFormula).toBe('C9H8O4');
+    expect(body.structure.atoms.length).toBeGreaterThan(0);
+    expect(response.headers.get('access-control-allow-origin')).toBe(allowedOrigin);
+  });
+
+  it('maps PubChem not-found to 404', async () => {
+    const upstream = vi.fn<typeof fetch>(async () =>
+      Response.json({ Fault: { Code: 'PUGREST.NotFound', Message: '' } }, { status: 404 }),
+    );
+    const response = await handleRequest(compoundRequest('zzzz'), env, upstream);
+    expect(response.status).toBe(404);
+  });
+
+  it('rejects non-GET methods', async () => {
+    const request = new Request(
+      'https://chemai101-api.guoweiwang27.workers.dev/v1/compound?name=aspirin',
+      { method: 'POST', headers: { origin: allowedOrigin } },
+    );
+    const response = await handleRequest(request, env, compoundUpstream());
+    expect(response.status).toBe(405);
+  });
+});

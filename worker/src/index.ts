@@ -1,3 +1,5 @@
+import { lookupCompound, PubChemError } from './pubchem';
+
 const ALLOWED_ORIGINS = new Set([
   'https://chemai101.guoweiwang.com',
   'https://chemai101.pages.dev',
@@ -178,6 +180,7 @@ export async function handleRequest(
   request: Request,
   env: Env,
   fetcher: Fetcher = fetch,
+  cache?: Cache,
 ): Promise<Response> {
   const origin = request.headers.get('origin') ?? '';
   if (!ALLOWED_ORIGINS.has(origin)) {
@@ -185,12 +188,25 @@ export async function handleRequest(
   }
 
   const url = new URL(request.url);
-  if (url.pathname !== '/v1/analyze') {
-    return jsonResponse({ error: 'Not found' }, 404, origin);
-  }
   if (request.method === 'OPTIONS') {
     return new Response(null, { status: 204, headers: corsHeaders(origin) });
   }
+
+  if (url.pathname === '/v1/analyze') {
+    return handleAnalyze(request, env, origin, fetcher);
+  }
+  if (url.pathname === '/v1/compound') {
+    return handleCompound(request, env, origin, fetcher, cache);
+  }
+  return jsonResponse({ error: 'Not found' }, 404, origin);
+}
+
+async function handleAnalyze(
+  request: Request,
+  env: Env,
+  origin: string,
+  fetcher: Fetcher,
+): Promise<Response> {
   if (request.method !== 'POST') {
     return jsonResponse({ error: 'Method not allowed' }, 405, origin);
   }
@@ -273,8 +289,76 @@ export async function handleRequest(
   }
 }
 
+const COMPOUND_NAME_RE = /^[\p{L}\p{N}\s()\[\]\-,]{1,100}$/u;
+
+async function handleCompound(
+  request: Request,
+  env: Env,
+  origin: string,
+  fetcher: Fetcher,
+  cache?: Cache,
+): Promise<Response> {
+  if (request.method !== 'GET') {
+    return jsonResponse({ error: 'Method not allowed' }, 405, origin);
+  }
+
+  const url = new URL(request.url);
+  const name = (url.searchParams.get('name') ?? '').trim();
+  if (!COMPOUND_NAME_RE.test(name)) {
+    return jsonResponse({ error: 'Invalid compound name' }, 400, origin);
+  }
+
+  const cacheKey = new Request(`${url.origin}/v1/compound:${name.toLowerCase()}`);
+  if (cache) {
+    try {
+      const cached = await cache.match(cacheKey);
+      if (cached && cached.ok) {
+        const data = await cached.json();
+        return jsonResponse(data, 200, origin);
+      }
+    } catch {
+      // 缓存故障降级为直查
+    }
+  }
+
+  const actor = request.headers.get('cf-connecting-ip') || 'anonymous';
+  const rateLimit = await env.API_RATE_LIMITER.limit({ key: `${actor}:compound` });
+  if (!rateLimit.success) {
+    console.warn(JSON.stringify({ message: 'request rate limited', operation: 'compound' }));
+    return jsonResponse({ error: 'Too many requests' }, 429, origin);
+  }
+
+  try {
+    const record = await lookupCompound(name, fetcher);
+    if (cache) {
+      try {
+        const stored = new Response(JSON.stringify(record), {
+          headers: { 'content-type': 'application/json', 'cache-control': 'public, max-age=86400' },
+        });
+        await cache.put(cacheKey, stored.clone()); // clone 保返回体，put 消费副本
+      } catch {
+        // 缓存写入失败不影响响应
+      }
+    }
+    return jsonResponse(record, 200, origin);
+  } catch (error) {
+    if (error instanceof PubChemError && error.status === 404) {
+      return jsonResponse({ error: 'Compound not found' }, 404, origin);
+    }
+    console.error(
+      JSON.stringify({
+        message: 'pubchem lookup failed',
+        error: error instanceof Error ? error.message : 'Unknown error',
+      }),
+    );
+    return jsonResponse({ error: 'Chemistry data source unavailable' }, 503, origin);
+  }
+}
+
 export default {
   fetch(request: Request, env: Env): Promise<Response> {
-    return handleRequest(request, env);
+    // tsconfig 同时含 DOM 与 workers-types；取 workers 语义的 caches.default
+    const cache = (caches as unknown as { default?: Cache }).default;
+    return handleRequest(request, env, fetch, cache);
   },
 } satisfies ExportedHandler<Env>;
