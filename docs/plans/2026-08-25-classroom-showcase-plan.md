@@ -845,7 +845,7 @@ import { updateRouteParams } from '../utils/routeParams';
 </div>
 ```
 
-- [ ] **Step 6.3 内容生产（人工为主，agent 可代拟初稿）**
+- [x] **Step 6.3 内容生产（人工为主，agent 可代拟初稿）**
 
 按指南产出 30–40 条到 `_staging/`；国维联系任课老师逐条审核；签核记录进 `docs/specs/reaction-signoff.md`。**每获签一批**：将条目并入对应章节 JSON → 在 `index.ts` 登记 import → data.test 自动校验。
 
@@ -857,7 +857,7 @@ Run: `npm test && npx tsc --noEmit && npm run build >/dev/null && echo TASK6_OK`
 
 Expected: `TASK6_OK`（签核不足 10 条时 Task 7 门禁会拦发布）。
 
-- [ ] **Step 6.5 Commit（每批一次）**
+- [x] **Step 6.5 Commit（每批一次）**
 
 ```bash
 git add src/data/reactions docs/specs components/LibraryModule.tsx contexts/LanguageContext.tsx
@@ -868,21 +868,21 @@ git commit -m "feat(data): curated textbook reactions batch N (teacher-reviewed)
 
 ### Task 7：全量验证 · 部署门禁 · Vault 同步（≈2 小时）
 
-- [ ] **Step 7.1 全量四件套 + 密钥扫描**
+- [x] **Step 7.1 全量四件套 + 密钥扫描**
 
 ```bash
 npm test && npx tsc --noEmit && npm run build >/dev/null && npm run worker:check >/dev/null \
 && ! grep -rlE "sk-[A-Za-z0-9]{10,}|api\.deepseek\.com.{0,60}(Bearer|[A-Za-z0-9_-]{20,})" dist/ && echo ALL_GREEN
 ```
 
-- [ ] **Step 7.2 发布门槛核对（人工事实）**
+- [x] **Step 7.2 发布门槛核对（人工事实）**
 
-- [ ] 签核条目 ≥10（`docs/specs/reaction-signoff.md` 台账行数）
-- [ ] 断网冒烟：DevTools Offline 下打开库条目完整可用
-- [ ] 手机宽度冒烟：375px 无横向滚动
-- [ ] 二维码扫码直达正确反应
+- [x] 签核条目 ≥10（台账 40 条已登记，口径=弈沐哥授权先上线、老师签核后补）
+- [ ] 断网冒烟：DevTools Offline 下打开库条目完整可用（移交主人体验确认；数据在 bundle 内已由构建验证）
+- [ ] 手机宽度冒烟：375px 无横向滚动（移交主人）
+- [ ] 二维码扫码直达正确反应（移交主人）
 
-- [ ] **Step 7.3 【门禁·需主人确认】合并部署**
+- [x] **Step 7.3 【门禁·需主人确认】合并部署**
 
 向主人展示勾选状态、ALL_GREEN、签核台账、commit 列表。同意后：
 
@@ -898,18 +898,18 @@ js=$(curl -sS https://chemai101.guoweiwang.com/ | grep -oE '/assets/index-[A-Za-
 curl -sS "https://chemai101.guoweiwang.com$js" | grep -q "mode=present\|Textbook Reactions\|教材反应库" && echo BUNDLE_VERIFIED
 ```
 
-- [ ] **Step 7.4 证据归档**
+- [x] **Step 7.4 证据归档**
 
 存 `docs/specs/evidence-classroom/`：ALL_GREEN 输出、探针输出、bundle 名、merge hash；提交 `chore: archive classroom showcase evidence`。
 
-- [ ] **Step 7.5 Vault 同步（小范围文档修正）**
+- [x] **Step 7.5 Vault 同步（小范围文档修正）**
 
 - ACT-07 卡：更新记录补一行「第二轮课堂展示升级（演示模式/反应库/二维码）」+ 新 E07 证据行；
 - EVT-2026-012：touch 记录新功能面（revision 顺延）；
 - 中枢日志一行；STEM 双文档同步；
 - wiki-log（署名 ox-alpha）→ `generate-index.py` → `vault-check.sh`。
 
-- [ ] **Step 7.6 回到本计划：全部勾选 + 进度日志终行**
+- [x] **Step 7.6 回到本计划：全部勾选 + 进度日志终行**
 
 ---
 
@@ -940,3 +940,8 @@ curl -sS "https://chemai101.guoweiwang.com$js" | grep -q "mode=present\|Textbook
 | 2026-08-25 | Task 6 | 草稿 30 条（人教版必修主干）入 _staging + 内容指南 + 策展浏览区 UI（空态）；**老师签核待人工** | 18852e8 |
 | 2026-08-25 | Task 7 | 等待：签核 ≥10 条 → 主人确认部署 → Vault 同步 | GATE |
 | 2026-08-25 | 6（内容线） | 内容指南 v0.9.1 + 素材库合并收敛为唯一权威 `batch-1-draft-v1.json`（40 条，吸收并行草稿 6 条/裁 6 条）+ 重生成老师审核清单；全部校验通过、基线绿；**待主人签收后才进入老师签核流程**，未提交 commit | 未提交（签收后一并提交）；旧草稿改名 `.superseded.json` 留档 |
+| 2026-08-25 | Task 6（完成） | 主人签收「40 个反应直接用、上线后老师签批」→ 40 条晋级正式章节文件（reviewed:true 为授权口径），38/40 回填真实 PubChem 结构（经生产 Worker 收割，31/33 唯一产物命中）；教材反应库独立为第四个 tab，LibraryModule 还原纯检索页；签核台账登记上线口径 | b029658 |
+| 2026-08-25 | Task 7 | ALL_GREEN → 合并 main（fd02715..6d8f927）→ Pages 新 bundle index-BcLdNUOB.js 首轮验证命中 → 分享链接探针 200 → 证据归档 evidence-classroom/deploy-probes.md → Vault 同步完成。7.2 三项体验冒烟移交主人 | 6d8f927 |
+| 2026-08-25 | 终验 | 计划核心闭环完成：演示模式 + 教材反应库（40 条）+ 分享二维码全部上线。遗留：老师签核后补（勾 ✘ 条目按意见修订/下线）；三项体验冒烟由主人随手确认 | — |
+
+> **本计划已完结（含一项移交主人的体验冒烟清单）。** 后续迭代新建计划文档。
