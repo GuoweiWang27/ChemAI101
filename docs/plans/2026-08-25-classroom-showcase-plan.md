@@ -948,4 +948,6 @@ curl -sS "https://chemai101.guoweiwang.com$js" | grep -q "mode=present\|Textbook
 
 | 2026-08-25 | 追加 | 主人提出并批准首页 Dashboard：新增 HomeModule 四卡片入口（教材库卡片带 40 条统计与签批徽章），home 为默认落地页，导航首位加 🏠 首页；沿用现有视觉风格。上线 bundle index-DWYgxkSB.js | 9f2b51a |
 
+| 2026-08-25 | 追加 | 主人报告分子库中文搜索不可用（根因：PubChem 名称索引只认英文）→ Worker 新增中英化学名词典回退层（~130 条高中常见物质，404 时自动转英文名重查）；生产验证 阿司匹林/葡萄糖/小苏打/熟石灰 全部 200 且带结构，英文零回归，乱码名友好 404。Worker Version 7031c9d8；搜索框提示语同步更新 | 5fb3c6a |
+
 > **本计划已完结（含一项移交主人的体验冒烟清单）。** 后续迭代新建计划文档。
