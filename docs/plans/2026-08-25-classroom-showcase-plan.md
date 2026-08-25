@@ -939,3 +939,4 @@ curl -sS "https://chemai101.guoweiwang.com$js" | grep -q "mode=present\|Textbook
 | 2026-08-25 | Task 5 | qrcode 二维码面板 + 复制链接回退；移动端清单留 Task 7 冒烟 | f84aee5 |
 | 2026-08-25 | Task 6 | 草稿 30 条（人教版必修主干）入 _staging + 内容指南 + 策展浏览区 UI（空态）；**老师签核待人工** | 18852e8 |
 | 2026-08-25 | Task 7 | 等待：签核 ≥10 条 → 主人确认部署 → Vault 同步 | GATE |
+| 2026-08-25 | 6（内容线） | 内容指南 v0.9.1 + 素材库合并收敛为唯一权威 `batch-1-draft-v1.json`（40 条，吸收并行草稿 6 条/裁 6 条）+ 重生成老师审核清单；全部校验通过、基线绿；**待主人签收后才进入老师签核流程**，未提交 commit | 未提交（签收后一并提交）；旧草稿改名 `.superseded.json` 留档 |

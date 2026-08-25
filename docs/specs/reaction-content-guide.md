@@ -10,12 +10,12 @@
 | 数据文件 | 教材范围 | 首批条目数 |
 | --- | --- | --- |
 | `mustate-1-01.json` | 必修第一册 第一章 物质及其变化（离子反应/氧化还原，视需要） | 0 |
-| `mustate-1-02-na-cl.json` | 必修第一册 第二章 海水中的重要元素——钠和氯 | 15 |
-| `mustate-1-03-fe.json` | 必修第一册 第三章 铁 金属材料 | 5 |
+| `mustate-1-02-na-cl.json` | 必修第一册 第二章 海水中的重要元素——钠和氯 | 14 |
+| `mustate-1-03-fe.json` | 必修第一册 第三章 铁 金属材料 | 4 |
 | `mustate-1-04-periodicity.json` | 必修第一册 第四章 物质结构 元素周期律 | 0 |
-| `mustate-2-05-sn.json` | 必修第二册 第五章 化工生产中的重要非金属元素 | 10 |
-| `mustate-2-06-energy.json` | 必修第二册 第六章 化学反应与能量 | 2 |
-| `mustate-2-07-organic.json` | 必修第二册 第七章 有机化合物 | 8 |
+| `mustate-2-05-sn.json` | 必修第二册 第五章 化工生产中的重要非金属元素 | 11 |
+| `mustate-2-06-energy.json` | 必修第二册 第六章 化学反应与能量 | 4 |
+| `mustate-2-07-organic.json` | 必修第二册 第七章 有机化合物 | 7 |
 
 章节全名（写入条目 `chapter` 字段的唯一合法值，与上表右列一致）：
 
@@ -59,7 +59,7 @@
 1. 草稿放 `src/data/reactions/_staging/`（loader 不导入，不会进 bundle）；
 2. 打印本指南第 8 节清单或发微信给任课老师逐条勾确认；
 3. 签核结果登记到 `docs/specs/reaction-signoff.md`（日期 / 条目 id / 确认方式 / 备注含教材页码）；
-4. 已签条目从 `_staging/batch-N-draft.json` 按 `chapter` 归入对应正式章节 JSON，补 `"reviewed": true`；
+4. 已签条目从 `_staging/batch-N-draft.json` 按 `chapter` 归入对应正式章节 JSON，补 `"reviewed": true`，同时删除 staging 专用字段 `products_pubchem_main`；
 5. 在 `src/data/reactions/index.ts` 登记 import → `npm test` 由 `data.test.ts` 自动校验（slug 格式唯一、字段齐全、机理 2–5 步、结构元素/键合法性）；
 6. 每批一次 commit（计划 Task 6 Step 6.5 文案）。
 
@@ -117,9 +117,9 @@
 
 ## 八、首批 40 条总清单（人审速览版）
 
-下表供老师和主人逐条勾签；机读全文见 `_staging/batch-1-draft-v1.json`。
+下表供老师和主人逐条勾签；机读全文见 `_staging/batch-1-draft-v1.json`，逐条审核卡片版式见 `docs/specs/teacher-review-checklist.md`（打印用）。
 
-### 必修1·第二章 海水中的重要元素——钠和氯（15 条）
+### 必修1·第二章 海水中的重要元素——钠和氯（14 条）
 
 | # | id | 标题 | 方程式 | 条件 | 主产物(PubChem 名) |
 | --- | --- | --- | --- | --- | --- |
@@ -128,64 +128,67 @@
 | 3 | na2o2-h2o | 过氧化钠与水 | 2Na₂O₂ + 2H₂O = 4NaOH + O₂↑ | 常温 | Oxygen |
 | 4 | na2o2-co2 | 过氧化钠与二氧化碳 | 2Na₂O₂ + 2CO₂ = 2Na₂CO₃ + O₂ | 常温 | Carbon dioxide |
 | 5 | nahco3-hcl | 碳酸氢钠与盐酸 | NaHCO₃ + HCl = NaCl + H₂O + CO₂↑ | 常温 | Carbon dioxide |
-| 6 | na2co3-hcl | 碳酸钠与盐酸 | Na₂CO₃ + 2HCl = 2NaCl + H₂O + CO₂↑ | 常温 | Carbon dioxide |
-| 7 | nahco3-heat | 碳酸氢钠受热分解 | 2NaHCO₃ = Na₂CO₃ + H₂O + CO₂↑ | 加热 | Carbon dioxide |
-| 8 | cl2-na | 钠在氯气中燃烧 | 2Na + Cl₂ = 2NaCl | 点燃 | Sodium chloride |
-| 9 | cl2-fe | 铁在氯气中燃烧 | 2Fe + 3Cl₂ = 2FeCl₃ | 点燃 | Ferric chloride |
-| 10 | cl2-cu | 铜在氯气中燃烧 | Cu + Cl₂ = CuCl₂ | 点燃 | Cupric chloride |
-| 11 | cl2-h2 | 氢气在氯气中燃烧 | H₂ + Cl₂ = 2HCl | 点燃 | Hydrogen chloride |
-| 12 | cl2-h2o | 氯气与水（氯水） | Cl₂ + H₂O ⇌ HCl + HClO | 常温 | Hypochlorous acid |
+| 6 | nahco3-heat | 碳酸氢钠受热分解 | 2NaHCO₃ = Na₂CO₃ + H₂O + CO₂↑ | 加热 | Carbon dioxide |
+| 7 | cl2-na | 钠在氯气中燃烧 | 2Na + Cl₂ = 2NaCl | 点燃 | Sodium chloride |
+| 8 | cl2-fe | 铁在氯气中燃烧 | 2Fe + 3Cl₂ = 2FeCl₃ | 点燃 | Ferric chloride |
+| 9 | cl2-cu | 铜在氯气中燃烧 | Cu + Cl₂ = CuCl₂ | 点燃 | Cupric chloride |
+| 10 | cl2-h2 | 氢气在氯气中燃烧 | H₂ + Cl₂ = 2HCl | 点燃 | Hydrogen chloride |
+| 11 | cl2-h2o | 氯气与水（氯水） | Cl₂ + H₂O ⇌ HCl + HClO | 常温 | Hypochlorous acid |
+| 12 | cl2-nabr-displace | 氯气置换溴（与溴化钠） | Cl₂ + 2NaBr = 2NaCl + Br₂ | 常温 | Bromine |
 | 13 | cl2-naoh | 氯气与氢氧化钠（尾气吸收） | Cl₂ + 2NaOH = NaCl + NaClO + H₂O | 常温 | Sodium hypochlorite |
 | 14 | cl2-caoh2 | 氯气与石灰乳（制漂白粉） | 2Cl₂ + 2Ca(OH)₂ = Ca(ClO)₂ + CaCl₂ + 2H₂O | 常温 | Calcium hypochlorite |
-| 15 | caclo2-air | 漂白粉在空气中失效 | Ca(ClO)₂ + CO₂ + H₂O = CaCO₃↓ + 2HClO | 常温 | Hypochlorous acid |
 
-### 必修1·第三章 铁 金属材料（5 条）
-
-| # | id | 标题 | 方程式 | 条件 | 主产物(PubChem 名) |
-| --- | --- | --- | --- | --- | --- |
-| 16 | fe-h2o-steam | 铁与水蒸气 | 3Fe + 4H₂O(g) = Fe₃O₄ + 4H₂ | 高温 | Triiron tetraoxide |
-| 17 | fe-hcl | 铁与稀盐酸 | Fe + 2HCl = FeCl₂ + H₂↑ | 常温 | Ferrous chloride |
-| 18 | fecl2-cl2 | 氯气氧化氯化亚铁 | 2FeCl₂ + Cl₂ = 2FeCl₃ | 常温 | Ferric chloride |
-| 19 | fecl3-fe | 铁与氯化铁 | 2FeCl₃ + Fe = 3FeCl₂ | 常温 | Ferrous chloride |
-| 20 | fecl3-cu | 氯化铁与铜（电路板蚀刻） | 2FeCl₃ + Cu = 2FeCl₂ + CuCl₂ | 常温 | Cupric chloride |
-
-### 必修2·第五章 化工生产中的重要非金属元素（10 条）
+### 必修1·第三章 铁 金属材料（4 条）
 
 | # | id | 标题 | 方程式 | 条件 | 主产物(PubChem 名) |
 | --- | --- | --- | --- | --- | --- |
-| 21 | s-o2 | 硫在氧气中燃烧 | S + O₂ = SO₂ | 点燃 | Sulfur dioxide |
-| 22 | so2-water | 二氧化硫与水 | SO₂ + H₂O ⇌ H₂SO₃ | 常温 | Sulfurous acid |
-| 23 | cu-conc-h2so4 | 铜与浓硫酸 | Cu + 2H₂SO₄(浓) = CuSO₄ + SO₂↑ + 2H₂O | 加热 | Copper(II) sulfate |
-| 24 | n2-o2 | 氮气与氧气 | N₂ + O₂ = 2NO | 放电或高温 | Nitric oxide |
-| 25 | no2-h2o | 二氧化氮与水 | 3NO₂ + H₂O = 2HNO₃ + NO | 常温 | Nitric acid |
-| 26 | nh3-hcl-smoke | 氨与氯化氢（白烟） | NH₃ + HCl = NH₄Cl | 常温 | Ammonium chloride |
-| 27 | nh3-cat-oxidation | 氨的催化氧化 | 4NH₃ + 5O₂ = 4NO + 6H₂O | 催化剂·加热 | Nitric oxide |
-| 28 | nh4cl-caoh2-lab | 实验室制氨气 | 2NH₄Cl + Ca(OH)₂ = CaCl₂ + 2NH₃↑ + 2H₂O | 加热 | Ammonia |
-| 29 | cu-dil-hno3 | 铜与稀硝酸 | 3Cu + 8HNO₃(稀) = 3Cu(NO₃)₂ + 2NO↑ + 4H₂O | 常温 | Copper(II) nitrate |
-| 30 | cu-conc-hno3 | 铜与浓硝酸 | Cu + 4HNO₃(浓) = Cu(NO₃)₂ + 2NO₂↑ + 2H₂O | 常温 | Copper(II) nitrate |
+| 15 | fe-h2o-steam | 铁与水蒸气 | 3Fe + 4H₂O(g) = Fe₃O₄ + 4H₂ | 高温 | Triiron tetraoxide |
+| 16 | fecl2-cl2 | 氯气氧化氯化亚铁 | 2FeCl₂ + Cl₂ = 2FeCl₃ | 常温 | Ferric chloride |
+| 17 | fecl3-fe | 铁与氯化铁 | 2FeCl₃ + Fe = 3FeCl₂ | 常温 | Ferrous chloride |
+| 18 | fecl3-cu | 氯化铁与铜（电路板蚀刻） | 2FeCl₃ + Cu = 2FeCl₂ + CuCl₂ | 常温 | Cupric chloride |
 
-### 必修2·第六章 化学反应与能量（2 条）
+### 必修2·第五章 化工生产中的重要非金属元素（11 条）
 
 | # | id | 标题 | 方程式 | 条件 | 主产物(PubChem 名) |
 | --- | --- | --- | --- | --- | --- |
-| 31 | zn-cu-cell | 铜锌原电池（总反应） | Zn + H₂SO₄(稀) = ZnSO₄ + H₂↑ | 常温 | Zinc sulfate |
-| 32 | caco3-decompose | 碳酸钙高温分解 | CaCO₃ = CaO + CO₂↑ | 高温 | Calcium oxide |
+| 19 | s-o2 | 硫在氧气中燃烧 | S + O₂ = SO₂ | 点燃 | Sulfur dioxide |
+| 20 | so2-cat-oxidation | 二氧化硫催化氧化 | 2SO₂ + O₂ ⇌ 2SO₃ | 催化剂·加热 | Sulfur trioxide |
+| 21 | cu-conc-h2so4 | 铜与浓硫酸 | Cu + 2H₂SO₄(浓) = CuSO₄ + SO₂↑ + 2H₂O | 加热 | Copper(II) sulfate |
+| 22 | n2-o2 | 氮气与氧气 | N₂ + O₂ = 2NO | 放电或高温 | Nitric oxide |
+| 23 | no2-h2o | 二氧化氮与水 | 3NO₂ + H₂O = 2HNO₃ + NO | 常温 | Nitric acid |
+| 24 | nh3-fountain | 氨的喷泉实验 | NH₃ + H₂O ⇌ NH₃·H₂O | 常温 | Ammonia |
+| 25 | nh3-hcl-smoke | 氨与氯化氢（白烟） | NH₃ + HCl = NH₄Cl | 常温 | Ammonium chloride |
+| 26 | nh3-cat-oxidation | 氨的催化氧化 | 4NH₃ + 5O₂ = 4NO + 6H₂O | 催化剂·加热 | Nitric oxide |
+| 27 | nh4cl-caoh2-lab | 实验室制氨气 | 2NH₄Cl + Ca(OH)₂ = CaCl₂ + 2NH₃↑ + 2H₂O | 加热 | Ammonia |
+| 28 | cu-dil-hno3 | 铜与稀硝酸 | 3Cu + 8HNO₃(稀) = 3Cu(NO₃)₂ + 2NO↑ + 4H₂O | 常温 | Copper(II) nitrate |
+| 29 | cu-conc-hno3 | 铜与浓硝酸 | Cu + 4HNO₃(浓) = Cu(NO₃)₂ + 2NO₂↑ + 2H₂O | 常温 | Copper(II) nitrate |
 
-### 必修2·第七章 有机化合物（8 条）
+### 必修2·第六章 化学反应与能量（4 条）
 
 | # | id | 标题 | 方程式 | 条件 | 主产物(PubChem 名) |
 | --- | --- | --- | --- | --- | --- |
-| 33 | ch4-cl2-light | 甲烷与氯气取代 | CH₄ + Cl₂ → CH₃Cl + HCl | 光照 | Chloromethane |
-| 34 | c2h4-br2 | 乙烯与溴加成 | CH₂=CH₂ + Br₂ → CH₂Br—CH₂Br | 常温 | 1,2-Dibromoethane |
-| 35 | c2h4-hydration | 乙烯水化制乙醇 | CH₂=CH₂ + H₂O → CH₃CH₂OH | 催化剂·加压·加热 | Ethanol |
-| 36 | c2h4-polymerization | 乙烯聚合 | nCH₂=CH₂ → 聚乙烯 | 催化剂 | Polyethylene |
-| 37 | ethanol-na | 乙醇与钠 | 2C₂H₅OH + 2Na → 2C₂H₅ONa + H₂↑ | 常温 | Sodium ethoxide |
+| 30 | zn-cu-cell | 铜锌原电池（总反应） | Zn + H₂SO₄(稀) = ZnSO₄ + H₂↑ | 常温 | Zinc sulfate |
+| 31 | cao-water-exothermic | 生石灰与水（放热） | CaO + H₂O = Ca(OH)₂ | 常温 | Calcium hydroxide |
+| 32 | baoh2-nh4cl-endothermic | 氢氧化钡晶体与氯化铵（吸热） | Ba(OH)₂·8H₂O + 2NH₄Cl = BaCl₂ + 2NH₃↑ + 10H₂O | 常温 | Barium chloride |
+| 33 | al-fe2o3-thermite | 铝热反应 | 2Al + Fe₂O₃ = Al₂O₃ + 2Fe | 高温 | Iron |
+
+### 必修2·第七章 有机化合物（7 条）
+
+| # | id | 标题 | 方程式 | 条件 | 主产物(PubChem 名) |
+| --- | --- | --- | --- | --- | --- |
+| 34 | ch4-cl2-light | 甲烷与氯气取代 | CH₄ + Cl₂ → CH₃Cl + HCl | 光照 | Chloromethane |
+| 35 | c2h4-br2 | 乙烯与溴加成 | CH₂=CH₂ + Br₂ → CH₂Br—CH₂Br | 常温 | 1,2-Dibromoethane |
+| 36 | c2h4-hydration | 乙烯水化制乙醇 | CH₂=CH₂ + H₂O → CH₃CH₂OH | 催化剂·加压·加热 | Ethanol |
+| 37 | c2h4-polymerization | 乙烯聚合 | nCH₂=CH₂ → 聚乙烯 | 催化剂 | Polyethylene |
 | 38 | ethanol-cat-oxidation | 乙醇催化氧化 | 2C₂H₅OH + O₂ → 2CH₃CHO + 2H₂O | 催化剂(Cu)·加热 | Acetaldehyde |
 | 39 | esterification | 乙酸与乙醇酯化 | CH₃COOH + C₂H₅OH ⇌ CH₃COOC₂H₅ + H₂O | 浓硫酸·加热 | Ethyl acetate |
 | 40 | glucose-cuoh2 | 葡萄糖与新制氢氧化铜 | CH₂OH(CHOH)₄CHO + 2Cu(OH)₂ → CH₂OH(CHOH)₄COOH + Cu₂O↓ + 2H₂O | 加热 | Glucose |
+
+> 合并说明：早期另一份草稿 `draft-batch-v1.superseded.json`（31 条）与本清单初版已收敛为本清单；吸收对方独有的 6 条（cl2-nabr-displace、so2-cat-oxidation、nh3-fountain、cao-water-exothermic、baoh2-nh4cl-endothermic、al-fe2o3-thermite），裁掉独立教学价值较低的 6 条（na2co3-hcl 并入对比步、caclo2-air 并入保存提示、fe-hcl、so2-water、caco3-decompose、ethanol-na）。
 
 ## 九、变更记录
 
 | 日期 | 版本 | 说明 |
 | --- | --- | --- |
 | 2026-08-25 | v0.9 | 扩充为完整版：来源基线、字段规范细化、签核台账要求、样例、40 条素材清单（ox-alpha，待主人签收） |
+| 2026-08-25 | v0.9.1 | 与并行草稿（31 条）合并收敛为单一权威清单：吸收 6 条、裁掉 6 条、总数保持 40；重生成老师审核清单（ox-alpha，待主人签收） |
