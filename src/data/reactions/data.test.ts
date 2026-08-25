@@ -39,6 +39,12 @@ describe('curated reactions dataset', () => {
         expect(bond.order).toBeGreaterThanOrEqual(1);
         expect(bond.order).toBeLessThanOrEqual(3);
       }
+      if (r.stepAtomIds) {
+        expect(r.stepAtomIds).toHaveLength(r.mechanismSteps.length);
+        for (const group of r.stepAtomIds) {
+          for (const atomId of group) expect(ids.has(atomId)).toBe(true);
+        }
+      }
     }
   });
 

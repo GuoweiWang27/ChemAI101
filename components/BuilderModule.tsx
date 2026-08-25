@@ -71,6 +71,7 @@ export const BuilderModule: React.FC = () => {
   } | null>(null);
 
   const canvasRef = useRef<HTMLDivElement>(null);
+  const dragRef = useRef<{ id: string; dx: number; dy: number; snapshot: Snapshot; moved: boolean } | null>(null);
   const { t, language } = useLanguage();
 
   // 实时化学状态（纯本地计算，零网络）
@@ -99,6 +100,36 @@ export const BuilderModule: React.FC = () => {
       if (!source || !target) return false;
       return distToSegment(x, y, source.x, source.y, target.x, target.y) < 9;
     });
+
+  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (selectedTool !== 'move' || !canvasRef.current) return;
+    const rect = canvasRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const atom = hitAtom(x, y);
+    if (!atom) return;
+    dragRef.current = { id: atom.id, dx: x - atom.x, dy: y - atom.y, snapshot: { atoms: [...atoms], bonds: [...bonds] }, moved: false };
+    e.currentTarget.setPointerCapture(e.pointerId);
+  };
+
+  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    const drag = dragRef.current;
+    if (!drag || !canvasRef.current) return;
+    const rect = canvasRef.current.getBoundingClientRect();
+    const x = Math.max(20, Math.min(rect.width - 20, e.clientX - rect.left - drag.dx));
+    const y = Math.max(20, Math.min(rect.height - 20, e.clientY - rect.top - drag.dy));
+    drag.moved = true;
+    setAtoms((prev) => prev.map((a) => (a.id === drag.id ? { ...a, x, y } : a)));
+  };
+
+  const handlePointerEnd = () => {
+    const drag = dragRef.current;
+    if (!drag) return;
+    if (drag.moved) {
+      setHistory((prev) => [...prev.slice(-49), drag.snapshot]);
+    }
+    dragRef.current = null;
+  };
 
   const handleCanvasClick = (e: React.MouseEvent) => {
     if (!canvasRef.current) return;
@@ -355,9 +386,14 @@ export const BuilderModule: React.FC = () => {
       {/* Workspace */}
       <div className="flex-1 flex flex-col gap-6 min-w-0">
         <div
-          className="flex-1 min-h-[320px] bg-white rounded-2xl shadow-inner border border-[#e8d5b8] relative overflow-hidden cursor-crosshair group"
+          className={`flex-1 min-h-[320px] bg-white rounded-2xl shadow-inner border border-[#e8d5b8] relative overflow-hidden group ${selectedTool === 'move' ? 'cursor-move' : 'cursor-crosshair'}`}
           ref={canvasRef}
           onClick={handleCanvasClick}
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={handlePointerEnd}
+          onPointerCancel={handlePointerEnd}
+          style={{ touchAction: selectedTool === 'move' ? 'none' : 'auto' }}
         >
           <div className="absolute top-4 right-4 bg-white/80 backdrop-blur px-3 py-1 rounded text-xs text-[#866027] font-mono pointer-events-none z-10">
             {t('canvasStats', { atoms: atoms.length, bonds: bonds.length })}

@@ -9,6 +9,8 @@ interface PresentationModeProps {
   title: string;
   steps: string[];
   structure: MoleculeStructure | null;
+  /** 每步对应的原子 id（与 steps 平行；缺省步不高亮） */
+  highlightSteps?: number[][];
   onClose: () => void;
 }
 
@@ -18,9 +20,16 @@ export const PresentationMode: React.FC<PresentationModeProps> = ({
   title,
   steps,
   structure,
+  highlightSteps,
   onClose,
 }) => {
   const [stepIndex, setStepIndex] = useState(0);
+  const [pulseKey, setPulseKey] = useState(0);
+
+  // 步进时结构轻微脉动，给出明确的联动反馈
+  useEffect(() => {
+    setPulseKey((k) => k + 1);
+  }, [stepIndex]);
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
@@ -41,6 +50,7 @@ export const PresentationMode: React.FC<PresentationModeProps> = ({
 
   return (
     <div className="fixed inset-0 z-[100] bg-[#101418] text-white flex flex-col select-none">
+      <style>{'@keyframes chemai-pulse{0%{transform:scale(1)}40%{transform:scale(1.045)}100%{transform:scale(1)}}.chemai-pulse{animation:chemai-pulse 550ms ease}'}</style>
       {/* Top bar */}
       <header className="flex items-start justify-between gap-4 px-8 pt-6 pb-4">
         <div className="min-w-0">
@@ -89,8 +99,11 @@ export const PresentationMode: React.FC<PresentationModeProps> = ({
 
         {/* Structure */}
         {structure && (
-          <div className="md:w-[55%] min-h-[240px] md:min-h-0 rounded-3xl overflow-hidden bg-black/30">
-            <Molecule3DViewer structure={structure} />
+          <div key={pulseKey} className="chemai-pulse md:w-[55%] min-h-[240px] md:min-h-0 rounded-3xl overflow-hidden bg-black/30">
+            <Molecule3DViewer
+              structure={structure}
+              highlightAtomIds={highlightSteps?.[stepIndex]}
+            />
           </div>
         )}
       </div>

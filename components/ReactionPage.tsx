@@ -27,6 +27,7 @@ export const ReactionPage: React.FC<ReactionPageProps> = ({ reaction, present, o
         title={reaction.title}
         steps={reaction.mechanismSteps}
         structure={reaction.productStructure}
+        highlightSteps={reaction.stepAtomIds}
         onClose={() => updateRouteParams({ mode: null })}
       />
     );

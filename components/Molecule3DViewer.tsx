@@ -23,18 +23,27 @@ declare global {
 
 interface Molecule3DViewerProps {
   structure: MoleculeStructure;
+  /** 需要高亮的原子 id 列表（演示模式联动） */
+  highlightAtomIds?: number[];
 }
 
 const AtomMesh: React.FC<{
   position: [number, number, number];
   color: string;
   element: string;
-}> = ({ position, color, element }) => {
+  highlighted?: boolean;
+}> = ({ position, color, element, highlighted }) => {
   const radius = ELEMENT_RADII[element] || ELEMENT_RADII.default;
   return (
-    <mesh position={position}>
+    <mesh position={position} scale={highlighted ? 1.35 : 1}>
       <sphereGeometry args={[radius * 0.4, 32, 32]} />
-      <meshStandardMaterial color={color} roughness={0.2} metalness={0.1} />
+      <meshStandardMaterial
+        color={color}
+        roughness={0.2}
+        metalness={0.1}
+        emissive={highlighted ? '#FFC53D' : '#000000'}
+        emissiveIntensity={highlighted ? 0.85 : 0}
+      />
     </mesh>
   );
 };
@@ -100,7 +109,7 @@ const BondMesh: React.FC<{
   return <>{bonds}</>;
 };
 
-const SceneContent: React.FC<{ structure: MoleculeStructure }> = ({ structure }) => {
+const SceneContent: React.FC<{ structure: MoleculeStructure; highlightSet: Set<number> }> = ({ structure, highlightSet }) => {
   const groupRef = useRef<THREE.Group>(null);
   
   useFrame((state) => {
@@ -118,6 +127,7 @@ const SceneContent: React.FC<{ structure: MoleculeStructure }> = ({ structure })
             position={[atom.x, atom.y, atom.z]}
             element={atom.element}
             color={atom.color || ELEMENT_COLORS[atom.element] || '#cccccc'}
+            highlighted={highlightSet.has(atom.id)}
           />
         ))}
         {structure.bonds.map((bond, idx) => {
@@ -138,8 +148,9 @@ const SceneContent: React.FC<{ structure: MoleculeStructure }> = ({ structure })
   );
 };
 
-export const Molecule3DViewer: React.FC<Molecule3DViewerProps> = ({ structure }) => {
+export const Molecule3DViewer: React.FC<Molecule3DViewerProps> = ({ structure, highlightAtomIds }) => {
   const { t } = useLanguage();
+  const highlightSet = useMemo(() => new Set(highlightAtomIds ?? []), [highlightAtomIds]);
   return (
     <div className="w-full h-full min-h-[400px] bg-[#1a1a1a] rounded-lg overflow-hidden relative shadow-inner">
       <div className="absolute top-4 left-4 z-10 bg-black/50 text-white text-xs px-2 py-1 rounded backdrop-blur-sm">
@@ -149,7 +160,7 @@ export const Molecule3DViewer: React.FC<Molecule3DViewerProps> = ({ structure })
         <ambientLight intensity={0.5} />
         <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={1} />
         <pointLight position={[-10, -10, -10]} intensity={0.5} />
-        <SceneContent structure={structure} />
+        <SceneContent structure={structure} highlightSet={highlightSet} />
         <OrbitControls makeDefault />
         <Environment preset="city" />
       </Canvas>

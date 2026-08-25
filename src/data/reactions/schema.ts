@@ -12,6 +12,9 @@ export interface CuratedReaction {
   products: string[];
   mechanismSteps: string[]; // 2–5 步
   productStructure: MoleculeStructure | null; // 允许缺失（设计 §7）
+  /** 演示模式联动：与 mechanismSteps 平行的原子 id 组（引用 productStructure.atoms.id）。
+   *  需要化学判断，逐条人工标注；缺省步不高亮。 */
+  stepAtomIds?: number[][];
   smiles?: string;
   reviewed: true;
 }
