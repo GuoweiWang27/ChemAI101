@@ -28,7 +28,7 @@ export const ReactionPage: React.FC<ReactionPageProps> = ({ reaction, present, o
     );
   }
   return (
-    <div className="flex flex-col h-full gap-6 p-6 overflow-y-auto">
+    <div className="flex flex-col gap-6 p-4 sm:p-6 lg:h-full lg:overflow-y-auto">
       <div className="bg-white p-6 rounded-2xl shadow-lg border border-[#f0ece4]">
         <div className="flex items-center justify-between mb-4">
           <button
@@ -41,8 +41,8 @@ export const ReactionPage: React.FC<ReactionPageProps> = ({ reaction, present, o
             {reaction.chapter}
           </span>
         </div>
-        <h2 className="text-2xl font-bold font-display text-[#1a1a1a] mb-3">{reaction.title}</h2>
-        <div className="p-4 bg-science-50 rounded-xl border border-science-200 font-mono text-lg text-science-800 break-words mb-3">
+        <h2 className="text-xl sm:text-2xl font-bold font-display text-[#1a1a1a] mb-3">{reaction.title}</h2>
+        <div className="p-4 bg-science-50 rounded-xl border border-science-200 font-mono text-base sm:text-lg text-science-800 break-words mb-3">
           {reaction.equation}
         </div>
         <p className="text-sm text-[#5c5549] mb-4">
