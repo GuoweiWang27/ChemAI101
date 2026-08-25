@@ -43,7 +43,7 @@
 | 数据引擎 | Task 1 类型扩展 / Task 2 pubchem 模块 / Task 3 compound 路由 | ✅ 完成 | 2026-08-25 |
 | 校验闭环 | Task 4 verify 模块与 analyze 集成 | ✅ 完成 | 2026-08-25 |
 | 前端 | Task 5 服务层 / Task 6 分子库页 / Task 7 校验徽章 | ✅ 完成 | 2026-08-25 |
-| 收尾 | Task 8 全量验证·文档·部署门禁 / Task 9 Vault 同步 | 8.1–8.3 ✅；**8.4 等主人确认部署**；9 未开始 | 2026-08-25 |
+| 收尾 | Task 8 全量验证·文档·部署门禁 / Task 9 Vault 同步 | ✅ 全部完成（Worker 186693f3 + main 5d62628 已发布） | 2026-08-25 |
 
 ## File Structure（改动全景）
 
@@ -1384,7 +1384,7 @@ Expected: `ALL_GREEN`。任何一项红：回到对应 Task 修复，不许带�
 git add README.md CLOUDFLARE_SETUP.md && git commit -m "docs: rewrite README and align setup guide with API base variable"
 ```
 
-- [ ] **Step 8.4 【门禁·需主人确认】合并并部署**
+- [x] **Step 8.4 【门禁·需主人确认】合并并部署**
 
 向主人展示：本计划勾选状态、ALL_GREEN 证据、commit 列表（`git log --oneline main..feat/data-engine`）。获得明确同意后：
 
@@ -1393,7 +1393,7 @@ git checkout main && git merge --ff-only feat/data-engine && git push origin mai
 npm run worker:deploy                                                              # 部署 Worker（需 wrangler 已登录）
 ```
 
-- [ ] **Step 8.5 线上验收探针**
+- [x] **Step 8.5 线上验收探针**
 
 ```bash
 sleep 90  # 等 Pages 构建完成
@@ -1405,7 +1405,7 @@ curl -sS -o /dev/null -w "bad-origin:%{http_code}\n" "https://chemai101-api.guow
 
 Expected: `front:200`、`preflight:204`、compound 返回含 `"cid":2244` 的 JSON、`bad-origin:403`。（compound 真实请求走一次 PubChem，不消耗 DeepSeek 配额。）
 
-- [ ] **Step 8.6 证据归档**
+- [x] **Step 8.6 证据归档**
 
 把以下证据存到 `docs/plans/evidence-20260825/`（文本即可）：ALL_GREEN 输出、Step 8.5 四条探针原始输出、merge commit hash、Worker 部署版本号（`npm run worker:deploy` 尾行 Version ID）。提交：
 
@@ -1419,12 +1419,12 @@ git add docs/plans/evidence-20260825 && git commit -m "chore: archive upgrade ve
 
 所有改动只涉及 Vault 文档（小范围修正，可直接做），逐项执行：
 
-- [ ] **Step 9.1** `📂背景档案/活动与荣誉事实库/activities/ACT-07-ChemAI101化学可视化工具.md`：证据表追加一行 ACT07-E06/E07（E3）：本轮升级的 GitHub commit 区间、线上探针证据文件路径；叙述段补一句「2026-09 升级：接入 PubChem 权威结构库并为 AI 输出加装确定性校验层」（时间以实际完成为准）。
-- [ ] **Step 9.2** `📚事件证据库/events/EVT-2026-012-ChemAI101代码与部署快照.md`：按该卡既有格式 touch 一轮，记录升级后技术栈变化（新增 Worker /v1/compound + verify 层 + PubChem 数据源）。
-- [ ] **Step 9.3** `00_大米留学项目中枢.md` 日志表追加一行（格式照抄现有行：日期｜标题｜一句摘要）。
-- [ ] **Step 9.4** `📋材料准备/💻STEM项目/ChemAI101.md` 与 `STEM项目总览.md`：状态与功能清单同步（114文件数字如有变化一并更新）。
-- [ ] **Step 9.5** Wiki 三件套：wiki-log 追加（署名 `ox-alpha`）→ `python3 99_⚙️System/scripts/generate-index.py > 99_⚙️System/wiki-index.md` → `bash 99_⚙️System/scripts/vault-check.sh`。
-- [ ] **Step 9.6** 回到本文件：勾掉剩余步骤，「总进度」表全部置 DONE，进度日志写终行。
+- [x] **Step 9.1** `📂背景档案/活动与荣誉事实库/activities/ACT-07-ChemAI101化学可视化工具.md`：证据表追加一行 ACT07-E06/E07（E3）：本轮升级的 GitHub commit 区间、线上探针证据文件路径；叙述段补一句「2026-09 升级：接入 PubChem 权威结构库并为 AI 输出加装确定性校验层」（时间以实际完成为准）。
+- [x] **Step 9.2** `📚事件证据库/events/EVT-2026-012-ChemAI101代码与部署快照.md`：按该卡既有格式 touch 一轮，记录升级后技术栈变化（新增 Worker /v1/compound + verify 层 + PubChem 数据源）。
+- [x] **Step 9.3** `00_大米留学项目中枢.md` 日志表追加一行（格式照抄现有行：日期｜标题｜一句摘要）。
+- [x] **Step 9.4** `📋材料准备/💻STEM项目/ChemAI101.md` 与 `STEM项目总览.md`：状态与功能清单同步（114文件数字如有变化一并更新）。
+- [x] **Step 9.5** Wiki 三件套：wiki-log 追加（署名 `ox-alpha`）→ `python3 99_⚙️System/scripts/generate-index.py > 99_⚙️System/wiki-index.md` → `bash 99_⚙️System/scripts/vault-check.sh`。
+- [x] **Step 9.6** 回到本文件：勾掉剩余步骤，「总进度」表全部置 DONE，进度日志写终行。
 
 ---
 
@@ -1464,4 +1464,10 @@ git add docs/plans/evidence-20260825 && git commit -m "chore: archive upgrade ve
 | 2026-08-25 | Task 8.1 | 模型卫生：官方目录确认 deepseek-v4-flash 为当前快速模型 ID，无需改动 | — |
 | 2026-08-25 | Task 8.2 | 全量四件套 + dist 密钥扫描 = ALL_GREEN（22 测试） | — |
 | 2026-08-25 | Task 8.3 | README 重写清除 AI Studio 残留；CLOUDFLARE_SETUP 对齐 VITE_CHEMAI_API_BASE | af64243 |
-| 2026-08-25 | Task 8.4 | **GATE：等待主人确认合并部署**（commit 列表 main..feat/data-engine 已备好） | — |
+| 2026-08-25 | Task 8.4 | 主人 wrangler login 授权并明确「部署吧」→ Worker 上线 Version 186693f3；随后主人确认「合并上线」→ main ff 至 5d62628 并 push（Pages 自动构建） | 5d62628 |
+| 2026-08-25 | Task 8.5 | 线上探针全绿：aspirin 真实查询 200（CID 2244·C9H8O4·3D 21原子，Cloudflare 出口不受本机限流影响）；403/400 防护回归；analyze 预检 204 | 见证据文件 |
+| 2026-08-25 | Task 8.6 | 证据归档 prod-deploy-probes.md + prod-aspirin-response.json；本地验证记录先前已归档 | e6a9cda / 5d62628 |
+| 2026-08-25 | Task 9 | Vault 同步完成：ACT07-E06、EVT-2026-012 rev8（CLM-13/14 + EVD-07）、中枢日志行、STEM 双文档更新、wiki-log×5 + 索引再生 + vault-check 通过 | — |
+| 2026-08-25 | 终验 | 生产前端 bundle 含分子库代码（index-dF3_la66.js）；计划 48/48 步骤全部勾选，**升级闭环** | — |
+
+> **本计划已完结。** 第二轮候选（课堂套件等）见「明确不做」清单；接手新工作时新建计划文档，不要在本文件续写。
