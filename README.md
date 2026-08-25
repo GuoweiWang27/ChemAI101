@@ -1,13 +1,26 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# ChemAI101
 
-# Run and deploy ChemAI Pro
+AI-assisted chemistry visualization for classroom demos: reaction prediction,
+molecule building, IUPAC naming, and a PubChem-backed 3D molecule library.
+Built as a showcase product of Guowei Wang's chemistry club; the club's
+chemistry teacher uses it for reaction demos in class.
 
-The browser application calls a Cloudflare Worker proxy. No AI provider key is
-required or permitted in the Vite build.
+## Architecture
 
-View your app in AI Studio: https://ai.studio/apps/drive/19Kw0VNvpvSmAbiD6LngVyCeBdMmEa-OV
+```
+Browser (Cloudflare Pages: chemai101.guoweiwang.com)
+  └─ Cloudflare Worker: chemai101-api
+       ├─ /v1/analyze   → DeepSeek API (deepseek-v4-flash): reaction prediction & naming,
+       │                   with deterministic chemistry verification (valence, connectivity,
+       │                   heavy-atom composition vs SMILES) attached to every result
+       └─ /v1/compound  → PubChem PUG REST: authoritative 2D/3D structures, formula & MW
+                           (cached 24h, retried once on ServerBusy, no API key required)
+```
+
+The browser never holds an AI provider key. The Worker injects
+`DEEPSEEK_API_KEY` from its Secret binding and enforces origin allowlisting,
+request size caps, per-IP rate limiting, and JSON error responses that never
+leak upstream bodies.
 
 ## Run Locally
 
@@ -19,7 +32,7 @@ View your app in AI Studio: https://ai.studio/apps/drive/19Kw0VNvpvSmAbiD6LngVyC
    `npm run dev`
 
 The local frontend uses the production Worker by default. Override only the
-non-secret endpoint with `VITE_CHEMAI_API_URL` when testing another Worker.
+non-secret base URL with `VITE_CHEMAI_API_BASE` when testing another Worker.
 
 ## Verify
 

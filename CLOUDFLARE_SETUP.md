@@ -28,12 +28,13 @@ npm run worker:deploy
 ## 前端发布
 
 Cloudflare Pages 从 GitHub `GuoweiWang27/ChemAI101` 的 `main` 分支构建。
-前端默认访问：
+前端默认 Worker 根地址：
 
-`https://chemai101-api.guoweiwang27.workers.dev/v1/analyze`
+`https://chemai101-api.guoweiwang27.workers.dev`
+（分析端点 `/v1/analyze`，化合物检索端点 `/v1/compound`）
 
-如需临时指向另一套非敏感代理地址，只设置
-`VITE_CHEMAI_API_URL`。不要设置 `GEMINI_API_KEY`、
+如需临时指向另一套非敏感代理地址，只设置 Worker 根地址变量
+`VITE_CHEMAI_API_BASE`。不要设置 `GEMINI_API_KEY`、
 `VITE_GEMINI_API_KEY`、`DEEPSEEK_API_KEY` 或
 `VITE_DEEPSEEK_API_KEY`。
 
