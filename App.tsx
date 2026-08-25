@@ -1,13 +1,30 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ReactionLab } from './components/ReactionLab';
 import { BuilderModule } from './components/BuilderModule';
 import { LibraryModule } from './components/LibraryModule';
+import { ReactionPage } from './components/ReactionPage';
 import { Atom, Database, FlaskConical, Languages } from 'lucide-react';
 import { useLanguage } from './contexts/LanguageContext';
+import { parseRoute, updateRouteParams, RouteTarget } from './utils/routeParams';
+import { getReaction } from './src/data/reactions';
 
 function App() {
   const [activeTab, setActiveTab] = useState<'reaction' | 'builder' | 'library'>('reaction');
+  const [route, setRoute] = useState<RouteTarget>(() => parseRoute(window.location.search));
   const { language, setLanguage, t } = useLanguage();
+
+  useEffect(() => {
+    const sync = () => setRoute(parseRoute(window.location.search));
+    window.addEventListener('popstate', sync);
+    window.addEventListener('chemai-route', sync);
+    return () => {
+      window.removeEventListener('popstate', sync);
+      window.removeEventListener('chemai-route', sync);
+    };
+  }, []);
+
+  const reaction = route.slug ? getReaction(route.slug) : undefined;
+  const exitReaction = () => updateRouteParams({ r: null, mode: null });
 
   const toggleLanguage = () => {
     setLanguage(language === 'en' ? 'zh' : 'en');
@@ -78,7 +95,15 @@ function App() {
       {/* Main Content */}
       <main className="flex-1 max-w-7xl w-full mx-auto">
         <div className="h-[calc(100vh-64px)] overflow-hidden">
-           {activeTab === 'reaction' ? <ReactionLab /> : activeTab === 'library' ? <LibraryModule /> : <BuilderModule />}
+           {reaction ? (
+             <ReactionPage reaction={reaction} present={route.present} onExit={exitReaction} />
+           ) : activeTab === 'reaction' ? (
+             <ReactionLab />
+           ) : activeTab === 'library' ? (
+             <LibraryModule />
+           ) : (
+             <BuilderModule />
+           )}
         </div>
       </main>
     </div>

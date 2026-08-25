@@ -69,7 +69,16 @@ const translations: Translations = {
     networkErrorMsg: "Could not load compound data.",
     verifyVerified: "Passed deterministic chemistry checks",
     verifyWarning: "Failed some chemistry checks — treat as reference only",
-    verifyUnknown: "Structure not automatically verifiable"
+    verifyUnknown: "Structure not automatically verifiable",
+    navLibraryCurated: "Textbook Reactions",
+    curatedEmpty: "The first batch is being reviewed by our chemistry teacher. Coming soon.",
+    backBtn: "Back",
+    demoBtn: "Present",
+    qrBtn: "QR Code",
+    linkCopied: "Link copied!",
+    mechanismLabel: "Mechanism Steps",
+    conditionsLabel: "Conditions",
+    noStructureMsg: "No 3D structure available for this reaction."
   },
   zh: {
     appTitle: "化学AI专家",
@@ -131,7 +140,16 @@ const translations: Translations = {
     networkErrorMsg: "无法加载化合物数据。",
     verifyVerified: "已通过确定性化学校验",
     verifyWarning: "未完全通过化学校验，仅供参考",
-    verifyUnknown: "结构暂无法自动校验"
+    verifyUnknown: "结构暂无法自动校验",
+    navLibraryCurated: "教材反应库",
+    curatedEmpty: "首批内容正在由化学老师审核签核中，敬请期待。",
+    backBtn: "返回",
+    demoBtn: "演示模式",
+    qrBtn: "扫码学习",
+    linkCopied: "链接已复制！",
+    mechanismLabel: "机理步骤",
+    conditionsLabel: "反应条件",
+    noStructureMsg: "该反应暂无 3D 结构数据。"
   }
 };
 
