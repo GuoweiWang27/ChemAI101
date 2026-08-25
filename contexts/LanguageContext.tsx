@@ -88,7 +88,15 @@ const translations: Translations = {
     homeCardBuilderDesc: "Build molecules by hand, get IUPAC names",
     homeCardPubchemDesc: "Official PubChem database — search a name, see it in 3D",
     homeReadyReactions: "{{count}} classroom-ready reactions",
-    homeReviewBadge: "Teacher review in progress"
+    homeReviewBadge: "Teacher review in progress",
+    builderLiveFormula: "Current formula",
+    builderTemplates: "Quick templates",
+    officialMatch: "Database match",
+    noMatchHint: "No PubChem match for this composition.",
+    aiFallbackBtn: "AI naming (beta)",
+    fragmentsWarning: "{{count}} disconnected fragments on canvas",
+    undoTitle: "Undo",
+    chainHint: "Pick an element and keep clicking — new atoms auto-bond to the previous one."
   },
   zh: {
     appTitle: "化学AI专家",
@@ -169,7 +177,15 @@ const translations: Translations = {
     homeCardBuilderDesc: "动手搭建分子，获取 IUPAC 命名",
     homeCardPubchemDesc: "PubChem 官方数据库，搜名字出 3D 结构",
     homeReadyReactions: "{{count}} 个课堂就绪反应",
-    homeReviewBadge: "老师签批进行中"
+    homeReviewBadge: "老师签批进行中",
+    builderLiveFormula: "当前分子式",
+    builderTemplates: "常用模板",
+    officialMatch: "数据库匹配",
+    noMatchHint: "PubChem 未收录该组成。",
+    aiFallbackBtn: "AI 命名（实验性）",
+    fragmentsWarning: "画布上有 {{count}} 个独立碎片",
+    undoTitle: "撤销",
+    chainHint: "提示：选中元素后连续点击，新原子会自动与上一个成键。"
   }
 };
 

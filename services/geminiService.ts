@@ -49,6 +49,34 @@ export const nameMoleculeFromGraph = async (
     language,
   });
 
+export interface IdentifyCandidate {
+  cid: number;
+  title?: string;
+  iupacName?: string;
+  molecularFormula?: string;
+}
+
+export interface IdentifyResult {
+  formula: string;
+  candidates: IdentifyCandidate[];
+}
+
+/** 结构构建器识别：元素组成 -> Hill 分子式 -> PubChem 官方候选 */
+export async function identifyStructure(
+  atoms: Array<{ element: string }>,
+  bonds: Array<{ sourceId: number; targetId: number; order: number }>,
+  signal?: AbortSignal,
+): Promise<IdentifyResult> {
+  const response = await fetch(`${API_BASE}/v1/identify`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ atoms, bonds }),
+    signal,
+  });
+  if (!response.ok) throw new Error(`ChemAI service error (${response.status})`);
+  return (await response.json()) as IdentifyResult;
+}
+
 export class CompoundNotFoundError extends Error {
   constructor() {
     super('Compound not found');
