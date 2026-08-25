@@ -135,7 +135,7 @@ const translations: Translations = {
     systematicNameLabel: "系统命名",
     navLibrary: "分子库",
     libraryIntro: "按名称检索任意化合物，加载 PubChem 官方 3D 结构。",
-    searchPlaceholder: "例如：阿司匹林、咖啡因、葡萄糖",
+    searchPlaceholder: "支持中文／英文，如：阿司匹林、aspirin",
     searchBtn: "加载结构",
     searchingBtn: "加载中...",
     formulaLabel: "分子式",

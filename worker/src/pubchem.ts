@@ -1,4 +1,5 @@
 import { CompoundRecord, MoleculeStructure } from '../../types';
+import { ZH_TO_EN } from './zh-names';
 
 const PUBCHEM_BASE = 'https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound';
 
@@ -107,6 +108,18 @@ export function normalizeStructure(comp: PcCompound): {
 }
 
 async function resolveCid(name: string, fetcher: Fetcher): Promise<number> {
+  try {
+    return await fetchCidByName(name, fetcher);
+  } catch (error) {
+    // PubChem 名称索引基本只认英文：中文名（或其他未命中名称）404 时回退中英词典
+    if (error instanceof PubChemError && error.status === 404 && ZH_TO_EN[name]) {
+      return fetchCidByName(ZH_TO_EN[name], fetcher);
+    }
+    throw error;
+  }
+}
+
+async function fetchCidByName(name: string, fetcher: Fetcher): Promise<number> {
   const data = (await getJsonWithRetry(
     `${PUBCHEM_BASE}/name/${encodeURIComponent(name)}/cids/JSON`,
     fetcher,

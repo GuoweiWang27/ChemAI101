@@ -107,3 +107,36 @@ describe('pubchem module', () => {
     expect(cidsCalls).toBe(2);
   });
 });
+
+describe('chinese name fallback', () => {
+  it('resolves a Chinese compound name via the zh-en dictionary', async () => {
+    const cidBody = { IdentifierList: { CID: [2244] } };
+    const propBody = {
+      PropertyTable: { Properties: [{ CID: 2244, MolecularFormula: 'C9H8O4' }] },
+    };
+    const record3d = pcMethane3d();
+    record3d.PC_Compounds[0].atoms.element = [6, 8];
+    record3d.PC_Compounds[0].bonds = { aid1: [1], aid2: [2], order: [2] };
+
+    let sawEnglish = false;
+    const fn = vi.fn<typeof fetch>(async (input: RequestInfo | URL) => {
+      const url = String(input);
+      if (url.includes('/name/') && url.includes('/cids/JSON')) {
+        const decoded = decodeURIComponent(url.split('/name/')[1].split('/cids')[0]);
+        if (decoded === '阿司匹林') {
+          return Response.json({ Fault: { Code: 'PUGREST.NotFound', Message: '' } }, { status: 404 });
+        }
+        expect(decoded).toBe('Aspirin');
+        sawEnglish = true;
+        return Response.json(cidBody);
+      }
+      if (url.includes('record_type=3d')) return Response.json(record3d);
+      return Response.json(propBody);
+    });
+
+    const rec = await lookupCompound('阿司匹林', fn);
+    expect(sawEnglish).toBe(true);
+    expect(rec.cid).toBe(2244);
+    expect(rec.molecularFormula).toBe('C9H8O4');
+  });
+});
