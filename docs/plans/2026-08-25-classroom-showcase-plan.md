@@ -952,4 +952,6 @@ curl -sS "https://chemai101.guoweiwang.com$js" | grep -q "mode=present\|Textbook
 
 | 2026-08-25 | 追加 | 主人报告结构构建器缺陷（2H+1O 分析失败、交互笨拙）→ Builder v2 重构：链式放置自动成键、键级点击循环/删键、撤销栈、实时分子式（Hill 规则本地计算）、5 个分子模板、分析改走新端点 /v1/identify（PubChem fastformula 官方候选优先，AI 降级为兜底按钮）。Worker Version 020ed61f；生产探针 H₂O→Water(CID 962)、CO₂→Carbon Dioxide；45 测试全绿 | 81bbe8b |
 
+| 2026-08-25 | 追加 | 主人点名三件套上线：① 匿名使用计数器（KV 唯一 key 天然原子、90 天滚动、四模块埋点、/v1/stats 聚合、首页显示累计服务次数；Worker Version 0c84bb43）② 构建器原子拖拽（move 工具指针拖动、触摸支持、拖动才记撤销）③ 演示模式联动（步进脉冲动画＋每步原子高亮基础设施，stepAtomIds schema 预留逐条标注）。49 测试全绿；探针 track 204/stats 聚合正常/bundle 含全部标记 | 3a5c4b9 |
+
 > **本计划已完结（含一项移交主人的体验冒烟清单）。** 后续迭代新建计划文档。
