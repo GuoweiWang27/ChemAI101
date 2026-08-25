@@ -27,10 +27,10 @@ export const HomeModule: React.FC<HomeModuleProps> = ({ onOpen }) => {
       desc: t('homeCardCuratedDesc'),
       extra: (
         <div className="flex flex-wrap items-center gap-2 mt-3">
-          <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-science-600 text-white">
+          <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-[#eef3f1] text-science-700 border border-science-200">
             {t('homeReadyReactions', { count: ALL_REACTIONS.length })}
           </span>
-          <span className="px-2.5 py-1 rounded-full text-xs font-medium bg-[#fdf3e0] text-[#8a6116] border border-[#ecd9ae]">
+          <span className="px-2.5 py-1 rounded-full text-xs bg-[#faf8f5] text-[#8a6116] border border-[#ecd9ae]">
             {t('homeReviewBadge')}
           </span>
         </div>
@@ -41,18 +41,33 @@ export const HomeModule: React.FC<HomeModuleProps> = ({ onOpen }) => {
       icon: <FlaskConical className="w-7 h-7" />,
       title: t('navReaction'),
       desc: t('homeCardLabDesc'),
+      extra: (
+        <div className="flex flex-wrap items-center gap-2 mt-3">
+          <span className="px-2.5 py-1 rounded-full text-xs bg-[#faf8f5] text-[#6f685d] border border-[#e8d5b8]">{t('homeLabBadge')}</span>
+        </div>
+      ),
     },
     {
       tab: 'builder',
       icon: <Atom className="w-7 h-7" />,
       title: t('navBuilder'),
       desc: t('homeCardBuilderDesc'),
+      extra: (
+        <div className="flex flex-wrap items-center gap-2 mt-3">
+          <span className="px-2.5 py-1 rounded-full text-xs bg-[#faf8f5] text-[#6f685d] border border-[#e8d5b8]">{t('homeBuilderBadge')}</span>
+        </div>
+      ),
     },
     {
       tab: 'library',
       icon: <Database className="w-7 h-7" />,
       title: t('navLibrary'),
       desc: t('homeCardPubchemDesc'),
+      extra: (
+        <div className="flex flex-wrap items-center gap-2 mt-3">
+          <span className="px-2.5 py-1 rounded-full text-xs bg-[#faf8f5] text-[#6f685d] border border-[#e8d5b8]">{t('homePubchemBadge')}</span>
+        </div>
+      ),
     },
   ];
 
