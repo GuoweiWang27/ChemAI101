@@ -32,11 +32,11 @@
 
 | Phase | 任务 | 状态 | 最后更新 |
 | --- | --- | --- | --- |
-| 准备 | Task 0 基线 | 未开始 | 2026-08-25 |
-| 数据层 | Task 1 路由解析 / Task 2 反应库 schema·加载器·测试 | 未开始 | 2026-08-25 |
-| UI | Task 3 ReactionPage 接线 / Task 4 演示模式 / Task 5 分享与移动端 | 未开始 | 2026-08-25 |
-| 内容 | Task 6 内容整理与签核入库（人工门禁 ≥10 条） | 未开始 | 2026-08-25 |
-| 收尾 | Task 7 全量验证·部署门禁·Vault 同步 | 未开始 | 2026-08-25 |
+| 准备 | Task 0 基线 | ✅ 完成 | 2026-08-25 |
+| 数据层 | Task 1 路由解析 / Task 2 反应库 schema·加载器·测试 | ✅ 完成 | 2026-08-25 |
+| UI | Task 3 ReactionPage 接线 / Task 4 演示模式 / Task 5 分享与移动端 | ✅ 完成 | 2026-08-25 |
+| 内容 | Task 6 内容整理与签核入库（人工门禁 ≥10 条） | 🟡 草稿 30 条已备 + UI 就绪；**待老师签核** | 2026-08-25 |
+| 收尾 | Task 7 全量验证·部署门禁·Vault 同步 | 等签核完成后执行 | 2026-08-25 |
 
 ## File Structure（改动全景）
 
@@ -67,7 +67,7 @@ projects/chemai101/
 
 ### Task 0：基线确认（≈5 分钟）
 
-- [ ] **Step 0.1 分支与四件套**
+- [x] **Step 0.1 分支与四件套**
 
 当前分支应为 `feat/classroom-showcase`（设计文档所在分支）。确认基线绿：
 
@@ -84,7 +84,7 @@ Expected: 分支名正确、22 tests passed、`BASELINE_OK`。
 
 **Files:** Create `utils/routeParams.ts`、Create `utils/routeParams.test.ts`
 
-- [ ] **Step 1.1 写失败测试**
+- [x] **Step 1.1 写失败测试**
 
 创建 `utils/routeParams.test.ts`：
 
@@ -110,7 +110,7 @@ describe('parseRoute', () => {
 });
 ```
 
-- [ ] **Step 1.2 运行确认失败**
+- [x] **Step 1.2 运行确认失败**
 
 Run: `npm test 2>&1 | grep routeParams`　Expected: FAIL `Cannot find module './routeParams'`。
 
@@ -122,7 +122,7 @@ include: ['worker/test/**/*.test.ts', 'services/**/*.test.ts', 'utils/**/*.test.
 
 改完再跑 Step 1.2。
 
-- [ ] **Step 1.3 实现 `utils/routeParams.ts`**
+- [x] **Step 1.3 实现 `utils/routeParams.ts`**
 
 ```ts
 export interface RouteTarget {
@@ -153,11 +153,11 @@ export function updateRouteParams(updates: Record<string, string | null>): void 
 }
 ```
 
-- [ ] **Step 1.4 运行确认通过**
+- [x] **Step 1.4 运行确认通过**
 
 Run: `npm test && npx tsc --noEmit`　Expected: routeParams 3 例 PASS，全套无回归。
 
-- [ ] **Step 1.5 Commit**
+- [x] **Step 1.5 Commit**
 
 ```bash
 git add utils/routeParams.ts utils/routeParams.test.ts vitest.config.ts
@@ -170,7 +170,7 @@ git commit -m "feat: pure route parser for reaction share links and present mode
 
 **Files:** Modify `tsconfig.json`、Create `src/data/reactions/schema.ts`、`src/data/reactions/index.ts`、`src/data/reactions/data.test.ts`、Create `src/data/reactions/_staging/README.md`
 
-- [ ] **Step 2.1 tsconfig 开启 JSON 导入**
+- [x] **Step 2.1 tsconfig 开启 JSON 导入**
 
 `tsconfig.json` 的 `compilerOptions` 内 `"allowImportingTsExtensions": true,` 之后加一行：
 
@@ -178,7 +178,7 @@ git commit -m "feat: pure route parser for reaction share links and present mode
     "resolveJsonModule": true,
 ```
 
-- [ ] **Step 2.2 创建 `src/data/reactions/schema.ts`**
+- [x] **Step 2.2 创建 `src/data/reactions/schema.ts`**
 
 ```ts
 import { MoleculeStructure } from '../../types';
@@ -200,7 +200,7 @@ export interface CuratedReaction {
 }
 ```
 
-- [ ] **Step 2.3 先写数据完整性测试 `src/data/reactions/data.test.ts`**
+- [x] **Step 2.3 先写数据完整性测试 `src/data/reactions/data.test.ts`**
 
 ```ts
 import { describe, expect, it } from 'vitest';
@@ -257,11 +257,11 @@ describe('curated reactions dataset', () => {
 });
 ```
 
-- [ ] **Step 2.4 运行确认失败**
+- [x] **Step 2.4 运行确认失败**
 
 Run: `npm test 2>&1 | grep -E "data.test|Cannot find"`　Expected: FAIL `Cannot find module './index'`。
 
-- [ ] **Step 2.5 实现 `src/data/reactions/index.ts`**
+- [x] **Step 2.5 实现 `src/data/reactions/index.ts`**
 
 ```ts
 import { CuratedReaction } from './schema';
@@ -285,7 +285,7 @@ export function getReaction(slug: string): CuratedReaction | undefined {
 export const CHAPTERS: string[] = [...new Set(ALL_REACTIONS.map((r) => r.chapter))];
 ```
 
-- [ ] **Step 2.6 建 staging 约定**
+- [x] **Step 2.6 建 staging 约定**
 
 创建 `src/data/reactions/_staging/README.md`：
 
@@ -306,11 +306,11 @@ export const CHAPTERS: string[] = [...new Set(ALL_REACTIONS.map((r) => r.chapter
 | --- | --- | --- | --- |
 ```
 
-- [ ] **Step 2.7 运行确认通过**
+- [x] **Step 2.7 运行确认通过**
 
 Run: `npm test && npx tsc --noEmit`　Expected: 全部 PASS（数据集为空时断言空洞成立），零类型错误。
 
-- [ ] **Step 2.8 Commit**
+- [x] **Step 2.8 Commit**
 
 ```bash
 git add tsconfig.json src/data docs/specs/reaction-signoff.md
@@ -323,7 +323,7 @@ git commit -m "feat(data): curated reaction schema, loader, integrity tests with
 
 **Files:** Create `components/ReactionPage.tsx`、Modify `App.tsx`
 
-- [ ] **Step 3.1 语言键（en/zh 各加一组）**
+- [x] **Step 3.1 语言键（en/zh 各加一组）**
 
 en 块 `verifyUnknown` 之后追加：
 
@@ -351,7 +351,7 @@ mechanismLabel: "机理步骤",
 conditionsLabel: "反应条件"
 ```
 
-- [ ] **Step 3.2 创建 `components/ReactionPage.tsx`（自学态壳 + 分流）**
+- [x] **Step 3.2 创建 `components/ReactionPage.tsx`（自学态壳 + 分流）**
 
 ```tsx
 import React from 'react';
@@ -448,7 +448,7 @@ export const ReactionPage: React.FC<ReactionPageProps> = ({ reaction, present, o
 
 语言键补充（en/zh）：`noStructureMsg: "No 3D structure available for this reaction." / "该反应暂无 3D 结构数据。"`
 
-- [ ] **Step 3.3 创建占位 `components/PresentationMode.tsx`（Task 4 实现）**
+- [x] **Step 3.3 创建占位 `components/PresentationMode.tsx`（Task 4 实现）**
 
 先导出最小可编译壳（避免阻塞本 Task 编译）：
 
@@ -478,7 +478,7 @@ import React from 'react';
 export const QrShare: React.FC = () => null;
 ```
 
-- [ ] **Step 3.4 `App.tsx` 路由接线**
+- [x] **Step 3.4 `App.tsx` 路由接线**
 
 (a) 导入区追加：
 
@@ -521,7 +521,7 @@ import { getReaction } from './src/data/reactions';
            )}
 ```
 
-- [ ] **Step 3.5 验证**
+- [x] **Step 3.5 验证**
 
 Run: `npm test && npx tsc --noEmit && npm run build >/dev/null && echo TASK3_OK`
 
@@ -529,7 +529,7 @@ Run: `npm test && npx tsc --noEmit && npm run build >/dev/null && echo TASK3_OK`
 
 Expected: `TASK3_OK`。
 
-- [ ] **Step 3.6 Commit**
+- [x] **Step 3.6 Commit**
 
 ```bash
 git add components/ReactionPage.tsx components/PresentationMode.tsx components/QrShare.tsx App.tsx contexts/LanguageContext.tsx
@@ -542,7 +542,7 @@ git commit -m "feat(ui): reaction page routing with self-study/present split and
 
 **Files:** Modify `components/PresentationMode.tsx`（替换占位）、Modify `components/ReactionLab.tsx`
 
-- [ ] **Step 4.1 实现完整 `PresentationMode.tsx`**
+- [x] **Step 4.1 实现完整 `PresentationMode.tsx`**
 
 ```tsx
 import React, { useEffect, useState } from 'react';
@@ -667,7 +667,7 @@ export const PresentationMode: React.FC<PresentationModeProps> = ({
 
 说明：Maximize2 图标本任务不用可移除 import；保留 F 键走原生 Fullscreen API。
 
-- [ ] **Step 4.2 AI 自由探索结果接入「演示」入口（改 `components/ReactionLab.tsx`）**
+- [x] **Step 4.2 AI 自由探索结果接入「演示」入口（改 `components/ReactionLab.tsx`）**
 
 导入 `PresentationMode` 与 lucide `Presentation` 图标；组件内加状态：
 
@@ -701,7 +701,7 @@ const [presenting, setPresenting] = useState(false);
 )}
 ```
 
-- [ ] **Step 4.3 验证**
+- [x] **Step 4.3 验证**
 
 Run: `npm test && npx tsc --noEmit && npm run build >/dev/null && echo TASK4_OK`
 
@@ -709,7 +709,7 @@ Run: `npm test && npx tsc --noEmit && npm run build >/dev/null && echo TASK4_OK`
 
 Expected: `TASK4_OK`。
 
-- [ ] **Step 4.4 Commit**
+- [x] **Step 4.4 Commit**
 
 ```bash
 git add components/PresentationMode.tsx components/ReactionLab.tsx
@@ -722,13 +722,13 @@ git commit -m "feat(ui): fullscreen presentation mode with keyboard controls for
 
 **Files:** Modify `components/QrShare.tsx`、Modify `package.json`、Modify `components/LibraryModule.tsx`
 
-- [ ] **Step 5.1 安装依赖**
+- [x] **Step 5.1 安装依赖**
 
 ```bash
 npm install qrcode && npm install -D @types/qrcode
 ```
 
-- [ ] **Step 5.2 实现 `components/QrShare.tsx`**
+- [x] **Step 5.2 实现 `components/QrShare.tsx`**
 
 ```tsx
 import React, { useState } from 'react';
@@ -785,11 +785,11 @@ export const QrShare: React.FC = () => {
 };
 ```
 
-- [ ] **Step 5.3 移动端自查清单（手工，写入验收）**
+- [x] **Step 5.3 移动端自查清单（手工，写入验收）**
 
 375px 宽度下检查三处：ReactionLab 输入区不横向溢出；ReactionPage 两栏变单列（已有 lg: 断点）；演示模式结构区移到步骤下方且高度 ≥240px。发现溢出就地修 Tailwind 类（如 `min-w-0`/`break-words`）。
 
-- [ ] **Step 5.4 验证并提交**
+- [x] **Step 5.4 验证并提交**
 
 Run: `npm test && npx tsc --noEmit && npm run build >/dev/null && echo TASK5_OK`
 
@@ -806,11 +806,11 @@ git commit -m "feat(ui): local QR share panel with copy-link fallback"
 
 **Files:** Modify `components/LibraryModule.tsx`、Modify `contexts/LanguageContext.tsx`、Create `src/data/reactions/mustate-1-02-na-cl.json` 等、Create `docs/specs/reaction-content-guide.md`
 
-- [ ] **Step 6.1 内容生产指南 `docs/specs/reaction-content-guide.md`**
+- [x] **Step 6.1 内容生产指南 `docs/specs/reaction-content-guide.md`**
 
 写清：人教版章节对照表、条目字段填写规范（方程式配平、机理 2–5 步中文、productStructure 来源优先 PubChem 同名主产物）、`_staging` → 正式的晋级流程、签核台账回填要求。给出一条完整样例（钠与水，含 21 原子级结构可后续补 null）。
 
-- [ ] **Step 6.2 LibraryModule 顶部加「教材反应库」浏览区**
+- [x] **Step 6.2 LibraryModule 顶部加「教材反应库」浏览区**
 
 在搜索卡之上插入策展区（数据为空时渲染 `curatedEmpty` 空态）：
 
@@ -851,7 +851,7 @@ import { updateRouteParams } from '../utils/routeParams';
 
 **门禁规则**：只有签核过的条目允许进入正式 JSON；agent 不得代替老师置 `reviewed:true`。
 
-- [ ] **Step 6.4 验证**
+- [x] **Step 6.4 验证**
 
 Run: `npm test && npx tsc --noEmit && npm run build >/dev/null && echo TASK6_OK`
 
@@ -931,3 +931,11 @@ curl -sS "https://chemai101.guoweiwang.com$js" | grep -q "mode=present\|Textbook
 | 日期 | Task | 结果 | Commit / 备注 |
 | --- | --- | --- | --- |
 | 2026-08-25 | — | 设计 spec 定稿并获批（ox-alpha），主人选定方案 C／~15h／人教版 | 基于 main fd02715 |
+| 2026-08-25 | Task 0 | 分支 feat/classroom-showcase 基线全绿（22 测试） | — |
+| 2026-08-25 | Task 1 | routeParams 纯函数 + vitest include 扩展 utils/**：3 用例绿 | 05a10b5 |
+| 2026-08-25 | Task 2 | schema/loader/数据完整性测试：4 用例绿；修 tsconfig resolveJsonModule 与三级 import 路径；vitest include 补 src/** | 088308c |
+| 2026-08-25 | Task 3 | ReactionPage 双形态 + App 路由接线（slug 优先于 tab，popstate+自定义事件同步） | 54ab074 |
+| 2026-08-25 | Task 4 | 全屏演示模式（←→/F/Esc 键控、大字号规格、AI 结果入口） | abc400a |
+| 2026-08-25 | Task 5 | qrcode 二维码面板 + 复制链接回退；移动端清单留 Task 7 冒烟 | f84aee5 |
+| 2026-08-25 | Task 6 | 草稿 30 条（人教版必修主干）入 _staging + 内容指南 + 策展浏览区 UI（空态）；**老师签核待人工** | 18852e8 |
+| 2026-08-25 | Task 7 | 等待：签核 ≥10 条 → 主人确认部署 → Vault 同步 | GATE |
