@@ -1,4 +1,5 @@
-import { lookupCompound, PubChemError } from './pubchem';
+import { lookupCompound, PubChemError, searchByFormula } from './pubchem';
+import { hillFormula } from '../../utils/moleculeAnalysis';
 import { verifyReactionResult } from './verify';
 
 const ALLOWED_ORIGINS = new Set([
@@ -200,6 +201,9 @@ export async function handleRequest(
   if (url.pathname === '/v1/compound') {
     return handleCompound(request, env, origin, fetcher, cache);
   }
+  if (url.pathname === '/v1/identify') {
+    return handleIdentify(request, env, origin, fetcher);
+  }
   return jsonResponse({ error: 'Not found' }, 404, origin);
 }
 
@@ -359,6 +363,79 @@ async function handleCompound(
       }),
     );
     return jsonResponse({ error: 'Chemistry data source unavailable' }, 503, origin);
+  }
+}
+
+const IDENTIFY_MAX_ATOMS = 128;
+
+interface IdentifyBody {
+  atoms: Array<{ element: string }>;
+}
+
+function asIdentifyRequest(value: unknown): IdentifyBody | null {
+  if (!value || typeof value !== 'object') return null;
+  const body = value as Record<string, unknown>;
+  if (!Array.isArray(body.atoms) || body.atoms.length === 0 || body.atoms.length > IDENTIFY_MAX_ATOMS) {
+    return null;
+  }
+  const atoms: Array<{ element: string }> = [];
+  for (const atom of body.atoms) {
+    if (!atom || typeof atom !== 'object') return null;
+    const element = (atom as Record<string, unknown>).element;
+    if (typeof element !== 'string' || element.length < 1 || element.length > 4) return null;
+    atoms.push({ element });
+  }
+  return { atoms };
+}
+
+/** 结构构建器识别：由元素组成计算 Hill 分子式，检索 PubChem 官方候选命名。 */
+async function handleIdentify(
+  request: Request,
+  env: Env,
+  origin: string,
+  fetcher: Fetcher,
+): Promise<Response> {
+  if (request.method !== 'POST') {
+    return jsonResponse({ error: 'Method not allowed' }, 405, origin);
+  }
+
+  let raw: unknown;
+  try {
+    raw = await readJsonWithLimit(request.body, MAX_REQUEST_BYTES);
+  } catch (error) {
+    if (error instanceof PayloadTooLargeError) {
+      return jsonResponse({ error: 'Request too large' }, 413, origin);
+    }
+    return jsonResponse({ error: 'Invalid JSON' }, 400, origin);
+  }
+  const body = asIdentifyRequest(raw);
+  if (!body) return jsonResponse({ error: 'Invalid request' }, 400, origin);
+
+  const actor = request.headers.get('cf-connecting-ip') || 'anonymous';
+  const rateLimit = await env.API_RATE_LIMITER.limit({ key: `${actor}:identify` });
+  if (!rateLimit.success) {
+    console.warn(JSON.stringify({ message: 'request rate limited', operation: 'identify' }));
+    return jsonResponse({ error: 'Too many requests' }, 429, origin);
+  }
+
+  const formula = hillFormula(body.atoms);
+  if (!formula) return jsonResponse({ error: 'Empty structure' }, 400, origin);
+
+  try {
+    const candidates = await searchByFormula(formula, fetcher);
+    return jsonResponse({ formula, candidates }, 200, origin);
+  } catch (error) {
+    // PubChem 无此分子式记录属于正常空结果，不是服务故障
+    if (error instanceof PubChemError && error.status === 404) {
+      return jsonResponse({ formula, candidates: [] }, 200, origin);
+    }
+    console.error(
+      JSON.stringify({
+        message: 'identify failed',
+        error: error instanceof Error ? error.message : 'Unknown error',
+      }),
+    );
+    return jsonResponse({ error: 'Identification service unavailable' }, 502, origin);
   }
 }
 

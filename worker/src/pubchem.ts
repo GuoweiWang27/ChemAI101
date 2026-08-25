@@ -57,19 +57,6 @@ async function getJson(url: string, fetcher: Fetcher): Promise<unknown> {
   return payload;
 }
 
-/** ServerBusy 是常态而非异常：静默重试一次（间隔 300ms） */
-async function getJsonWithRetry(url: string, fetcher: Fetcher): Promise<unknown> {
-  try {
-    return await getJson(url, fetcher);
-  } catch (error) {
-    if (error instanceof PubChemError && error.status === 503) {
-      await new Promise((resolve) => setTimeout(resolve, 300));
-      return getJson(url, fetcher);
-    }
-    throw error;
-  }
-}
-
 export function normalizeStructure(comp: PcCompound): {
   structure: MoleculeStructure;
   structureType: '3d' | '2d';
@@ -162,6 +149,53 @@ async function fetchCompoundProperties(
   } catch {
     return {}; // 属性缺失不影响结构展示
   }
+}
+
+export async function getJsonWithRetry(url: string, fetcher: Fetcher): Promise<unknown> {
+  try {
+    return await getJson(url, fetcher);
+  } catch (error) {
+    if (error instanceof PubChemError && error.status === 503) {
+      await new Promise((resolve) => setTimeout(resolve, 300));
+      return getJson(url, fetcher);
+    }
+    throw error;
+  }
+}
+
+export interface FormulaCandidate {
+  cid: number;
+  title?: string;
+  iupacName?: string;
+  molecularFormula?: string;
+}
+
+/** 按分子式检索（Hill 规则 ASCII 式），返回前 3 个候选的官方命名信息。 */
+export async function searchByFormula(formula: string, fetcher: Fetcher): Promise<FormulaCandidate[]> {
+  const data = (await getJsonWithRetry(
+    `${PUBCHEM_BASE}/fastformula/${encodeURIComponent(formula)}/cids/JSON`,
+    fetcher,
+  )) as { IdentifierList?: { CID?: number[] } };
+  const cids = (data.IdentifierList?.CID ?? []).slice(0, 3);
+  const candidates: FormulaCandidate[] = [];
+  for (const cid of cids) {
+    try {
+      const props = (await getJsonWithRetry(
+        `${PUBCHEM_BASE}/cid/${cid}/property/Title,IUPACName,MolecularFormula/JSON`,
+        fetcher,
+      )) as { PropertyTable?: { Properties?: Array<Record<string, unknown>> } };
+      const prop = props.PropertyTable?.Properties?.[0] ?? {};
+      candidates.push({
+        cid,
+        title: prop.Title as string | undefined,
+        iupacName: prop.IUPACName as string | undefined,
+        molecularFormula: prop.MolecularFormula as string | undefined,
+      });
+    } catch {
+      candidates.push({ cid }); // 属性缺失不影响候选资格
+    }
+  }
+  return candidates;
 }
 
 export async function lookupCompound(
