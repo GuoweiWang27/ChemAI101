@@ -19,14 +19,12 @@ export const HomeModule: React.FC<HomeModuleProps> = ({ onOpen }) => {
     title: string;
     desc: string;
     extra?: React.ReactNode;
-    accent?: boolean;
   }> = [
     {
       tab: 'textbook',
       icon: <BookOpen className="w-7 h-7" />,
       title: t('navLibraryCurated'),
       desc: t('homeCardCuratedDesc'),
-      accent: true,
       extra: (
         <div className="flex flex-wrap items-center gap-2 mt-3">
           <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-science-600 text-white">
@@ -75,18 +73,10 @@ export const HomeModule: React.FC<HomeModuleProps> = ({ onOpen }) => {
             <button
               key={card.tab}
               onClick={() => onOpen(card.tab)}
-              className={`group text-left p-6 rounded-2xl shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-xl flex flex-col ${
-                card.accent
-                  ? 'bg-gradient-to-br from-white to-science-50 border-2 border-science-300'
-                  : 'bg-white border border-[#f0ece4] hover:border-science-200'
-              }`}
+              className="group text-left p-6 rounded-2xl shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-science-300 hover:bg-science-50/50 flex flex-col bg-white border border-[#f0ece4]"
             >
               <div className="flex items-start justify-between mb-3">
-                <div
-                  className={`p-2.5 rounded-xl ${
-                    card.accent ? 'bg-science-600 text-white' : 'bg-[#f0ece4] text-science-600'
-                  } group-hover:bg-science-600 group-hover:text-white transition-colors`}
-                >
+                <div className="p-2.5 rounded-xl bg-[#f0ece4] text-science-600 group-hover:bg-science-600 group-hover:text-white transition-colors">
                   {card.icon}
                 </div>
                 <ChevronRight className="w-5 h-5 text-[#c9bda5] group-hover:text-science-500 group-hover:translate-x-1 transition-all" />
