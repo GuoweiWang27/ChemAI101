@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { predictReaction } from '../services/geminiService';
 import { ReactionResult } from '../types';
 import { Molecule3DViewer } from './Molecule3DViewer';
-import { Play, Pause, FastForward, Loader2, Beaker, Flame, Wind } from 'lucide-react';
+import { Play, Pause, FastForward, Loader2, Beaker, Flame, Wind, ShieldCheck, ShieldAlert, ShieldQuestion } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
 export const ReactionLab: React.FC = () => {
@@ -144,6 +144,37 @@ export const ReactionLab: React.FC = () => {
                  <div className="p-4 bg-science-50 rounded-xl border border-science-200 font-mono text-lg text-science-800 break-words">
                    {result.equation}
                  </div>
+                 {result.verification && (
+                   <div className={`mt-3 p-3 rounded-xl border text-sm ${
+                     result.verification.status === 'verified'
+                       ? 'bg-[#e8f5ec] border-[#bfe3cc] text-[#1f7a44]'
+                       : result.verification.status === 'warning'
+                         ? 'bg-[#fdf3e0] border-[#ecd9ae] text-[#8a6116]'
+                         : 'bg-[#f5f0e8] border-[#e8d5b8] text-[#5c5549]'
+                   }`}>
+                     <div className="flex items-center gap-2 font-semibold">
+                       {result.verification.status === 'verified'
+                         ? <ShieldCheck className="w-4 h-4" />
+                         : result.verification.status === 'warning'
+                           ? <ShieldAlert className="w-4 h-4" />
+                           : <ShieldQuestion className="w-4 h-4" />}
+                       <span>
+                         {result.verification.status === 'verified'
+                           ? t('verifyVerified')
+                           : result.verification.status === 'warning'
+                             ? t('verifyWarning')
+                             : t('verifyUnknown')}
+                       </span>
+                     </div>
+                     {result.verification.issues.length > 0 && (
+                       <ul className="mt-1 list-disc pl-5 space-y-0.5">
+                         {result.verification.issues.map((issue, i) => (
+                           <li key={i}>{issue}</li>
+                         ))}
+                       </ul>
+                     )}
+                   </div>
+                 )}
                </div>
                
                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
