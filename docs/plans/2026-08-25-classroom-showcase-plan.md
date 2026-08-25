@@ -950,4 +950,6 @@ curl -sS "https://chemai101.guoweiwang.com$js" | grep -q "mode=present\|Textbook
 
 | 2026-08-25 | 追加 | 主人报告分子库中文搜索不可用（根因：PubChem 名称索引只认英文）→ Worker 新增中英化学名词典回退层（~130 条高中常见物质，404 时自动转英文名重查）；生产验证 阿司匹林/葡萄糖/小苏打/熟石灰 全部 200 且带结构，英文零回归，乱码名友好 404。Worker Version 7031c9d8；搜索框提示语同步更新 | 5fb3c6a |
 
+| 2026-08-25 | 追加 | 主人报告结构构建器缺陷（2H+1O 分析失败、交互笨拙）→ Builder v2 重构：链式放置自动成键、键级点击循环/删键、撤销栈、实时分子式（Hill 规则本地计算）、5 个分子模板、分析改走新端点 /v1/identify（PubChem fastformula 官方候选优先，AI 降级为兜底按钮）。Worker Version 020ed61f；生产探针 H₂O→Water(CID 962)、CO₂→Carbon Dioxide；45 测试全绿 | 81bbe8b |
+
 > **本计划已完结（含一项移交主人的体验冒烟清单）。** 后续迭代新建计划文档。
