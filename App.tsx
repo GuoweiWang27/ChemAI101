@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { ReactionLab } from './components/ReactionLab';
 import { BuilderModule } from './components/BuilderModule';
-import { Atom, FlaskConical, Languages } from 'lucide-react';
+import { LibraryModule } from './components/LibraryModule';
+import { Atom, Database, FlaskConical, Languages } from 'lucide-react';
 import { useLanguage } from './contexts/LanguageContext';
 
 function App() {
-  const [activeTab, setActiveTab] = useState<'reaction' | 'builder'>('reaction');
+  const [activeTab, setActiveTab] = useState<'reaction' | 'builder' | 'library'>('reaction');
   const { language, setLanguage, t } = useLanguage();
 
   const toggleLanguage = () => {
@@ -48,6 +49,16 @@ function App() {
                  <Atom className="w-4 h-4" />
                  <span className="hidden sm:inline">{t('navBuilder')}</span>
                </button>
+               <button
+                 onClick={() => setActiveTab('library')}
+                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2
+                   ${activeTab === 'library'
+                     ? 'bg-white text-science-700 shadow-sm'
+                     : 'text-[#6f685d] hover:text-[#1a1a1a] hover:bg-white'}`}
+               >
+                 <Database className="w-4 h-4" />
+                 <span className="hidden sm:inline">{t('navLibrary')}</span>
+               </button>
             </nav>
 
             <button
@@ -67,7 +78,7 @@ function App() {
       {/* Main Content */}
       <main className="flex-1 max-w-7xl w-full mx-auto">
         <div className="h-[calc(100vh-64px)] overflow-hidden">
-           {activeTab === 'reaction' ? <ReactionLab /> : <BuilderModule />}
+           {activeTab === 'reaction' ? <ReactionLab /> : activeTab === 'library' ? <LibraryModule /> : <BuilderModule />}
         </div>
       </main>
     </div>

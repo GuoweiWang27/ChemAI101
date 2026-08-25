@@ -51,7 +51,25 @@ const translations: Translations = {
       clear: "Clear All"
     },
     commonNameLabel: "Common Name",
-    systematicNameLabel: "Systematic Name"
+    systematicNameLabel: "Systematic Name",
+    navLibrary: "Molecule Library",
+    libraryIntro: "Search any compound by name to load its official PubChem 3D structure.",
+    searchPlaceholder: "e.g. aspirin, caffeine, glucose",
+    searchBtn: "Load Structure",
+    searchingBtn: "Loading...",
+    formulaLabel: "Molecular Formula",
+    weightLabel: "Molecular Weight",
+    gPerMol: "g/mol",
+    iupacLabel: "IUPAC Name",
+    sourceBadge: "PubChem Data",
+    structure3dBadge: "3D Structure",
+    structure2dBadge: "2D Structure",
+    notFoundMsg: "No compound found with that name. Try the English name.",
+    dataBusyMsg: "The chemistry database is busy. Please try again shortly.",
+    networkErrorMsg: "Could not load compound data.",
+    verifyVerified: "Passed deterministic chemistry checks",
+    verifyWarning: "Failed some chemistry checks — treat as reference only",
+    verifyUnknown: "Structure not automatically verifiable"
   },
   zh: {
     appTitle: "化学AI专家",
@@ -95,7 +113,25 @@ const translations: Translations = {
       clear: "清空全部"
     },
     commonNameLabel: "俗名",
-    systematicNameLabel: "系统命名"
+    systematicNameLabel: "系统命名",
+    navLibrary: "分子库",
+    libraryIntro: "按名称检索任意化合物，加载 PubChem 官方 3D 结构。",
+    searchPlaceholder: "例如：阿司匹林、咖啡因、葡萄糖",
+    searchBtn: "加载结构",
+    searchingBtn: "加载中...",
+    formulaLabel: "分子式",
+    weightLabel: "分子量",
+    gPerMol: "g/mol",
+    iupacLabel: "IUPAC 命名",
+    sourceBadge: "PubChem 数据",
+    structure3dBadge: "3D 结构",
+    structure2dBadge: "2D 结构",
+    notFoundMsg: "没有找到该化合物，换个名字或试试英文名。",
+    dataBusyMsg: "化学数据库正忙，请稍后再试。",
+    networkErrorMsg: "无法加载化合物数据。",
+    verifyVerified: "已通过确定性化学校验",
+    verifyWarning: "未完全通过化学校验，仅供参考",
+    verifyUnknown: "结构暂无法自动校验"
   }
 };
 
