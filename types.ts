@@ -18,12 +18,32 @@ export interface MoleculeStructure {
   bonds: Bond3D[];
 }
 
+export type VerificationStatus = 'verified' | 'warning' | 'unknown';
+
+export interface Verification {
+  status: VerificationStatus;
+  /** 未通过的检查明细（中文短句，可直接展示） */
+  issues: string[];
+  /** 各项检查是否实际执行 */
+  checks: { structure: boolean; smiles: boolean };
+}
+
+export interface CompoundRecord {
+  cid: number;
+  iupacName?: string;
+  molecularFormula?: string;
+  molecularWeight?: string;
+  structureType: '3d' | '2d';
+  structure: MoleculeStructure;
+}
+
 export interface ReactionResult {
   equation: string;
   products: string[];
   mechanismSteps: string[];
   productStructure: MoleculeStructure; // Main product structure
   vseprInfo: string;
+  verification?: Verification;
 }
 
 export interface NamingResult {
