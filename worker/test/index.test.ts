@@ -44,6 +44,24 @@ describe('ChemAI proxy', () => {
   });
 
   it('keeps the API key server-side and returns parsed reaction JSON', async () => {
+    const reactionContent = JSON.stringify({
+      equation: 'CH4 + 2O2 -> CO2 + 2H2O',
+      products: ['CO2', 'H2O'],
+      mechanismSteps: [],
+      vseprInfo: '',
+      productSmiles: 'O=C=O',
+      productStructure: {
+        atoms: [
+          { id: 1, element: 'C', x: 0, y: 0, z: 0, color: '#909090' },
+          { id: 2, element: 'O', x: 1.2, y: 0, z: 0, color: '#FF0D0D' },
+          { id: 3, element: 'O', x: -1.2, y: 0, z: 0, color: '#FF0D0D' },
+        ],
+        bonds: [
+          { source: 1, target: 2, order: 2 },
+          { source: 1, target: 3, order: 2 },
+        ],
+      },
+    });
     const upstream = vi.fn<typeof fetch>(async (input, init) => {
       expect(String(input)).toBe(env.UPSTREAM_URL);
       expect(new Headers(init?.headers).get('authorization')).toBe(
@@ -54,8 +72,9 @@ describe('ChemAI proxy', () => {
       expect(upstreamBody.thinking).toEqual({ type: 'disabled' });
       expect(upstreamBody.max_tokens).toBe(4096);
       expect(upstreamBody.messages[0].content).toContain('H2 + O2');
+      expect(upstreamBody.messages[0].content).toContain('productSmiles');
       return Response.json({
-        choices: [{ message: { content: '{"equation":"2H2 + O2 → 2H2O"}' } }],
+        choices: [{ message: { content: reactionContent } }],
       });
     });
 
@@ -71,7 +90,10 @@ describe('ChemAI proxy', () => {
     );
 
     expect(response.status).toBe(200);
-    expect(await response.json()).toEqual({ equation: '2H2 + O2 → 2H2O' });
+    expect(await response.json()).toMatchObject({
+      equation: 'CH4 + 2O2 -> CO2 + 2H2O',
+      verification: { status: 'verified', checks: { structure: true, smiles: true } },
+    });
     expect(response.headers.get('access-control-allow-origin')).toBe(allowedOrigin);
   });
 

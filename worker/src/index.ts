@@ -1,4 +1,5 @@
 import { lookupCompound, PubChemError } from './pubchem';
+import { verifyReactionResult } from './verify';
 
 const ALLOWED_ORIGINS = new Set([
   'https://chemai101.guoweiwang.com',
@@ -160,6 +161,7 @@ Return strictly JSON matching this structure:
 {
   "equation": "string",
   "products": ["string"],
+  "productSmiles": "canonical SMILES of the main product",
   "mechanismSteps": ["string"],
   "vseprInfo": "string",
   "productStructure": {
@@ -277,7 +279,12 @@ async function handleAnalyze(
     const content = (message as Record<string, unknown>).content;
     if (typeof content !== 'string') throw new Error('Missing upstream content');
 
-    return jsonResponse(JSON.parse(content), 200, origin);
+    const parsed: unknown = JSON.parse(content);
+    return jsonResponse(
+      { ...(parsed as object), verification: verifyReactionResult(parsed) },
+      200,
+      origin,
+    );
   } catch (error) {
     console.error(
       JSON.stringify({
