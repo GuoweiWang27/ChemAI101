@@ -39,11 +39,11 @@
 
 | Phase | 任务 | 状态 | 最后更新 |
 | --- | --- | --- | --- |
-| 准备 | Task 0 分支与基线 | 未开始 | 2026-08-25 |
-| 数据引擎 | Task 1 类型扩展 / Task 2 pubchem 模块 / Task 3 compound 路由 | 未开始 | 2026-08-25 |
-| 校验闭环 | Task 4 verify 模块与 analyze 集成 | 未开始 | 2026-08-25 |
-| 前端 | Task 5 服务层 / Task 6 分子库页 / Task 7 校验徽章 | 未开始 | 2026-08-25 |
-| 收尾 | Task 8 全量验证·文档·部署门禁 / Task 9 Vault 同步 | 未开始 | 2026-08-25 |
+| 准备 | Task 0 分支与基线 | ✅ 完成 | 2026-08-25 |
+| 数据引擎 | Task 1 类型扩展 / Task 2 pubchem 模块 / Task 3 compound 路由 | ✅ 完成 | 2026-08-25 |
+| 校验闭环 | Task 4 verify 模块与 analyze 集成 | ✅ 完成 | 2026-08-25 |
+| 前端 | Task 5 服务层 / Task 6 分子库页 / Task 7 校验徽章 | ✅ 完成 | 2026-08-25 |
+| 收尾 | Task 8 全量验证·文档·部署门禁 / Task 9 Vault 同步 | 8.1–8.3 ✅；**8.4 等主人确认部署**；9 未开始 | 2026-08-25 |
 
 ## File Structure（改动全景）
 
@@ -74,7 +74,7 @@ projects/chemai101/
 
 ### Task 0：分支与基线（≈10 分钟）
 
-- [ ] **Step 0.1 建特性分支**
+- [x] **Step 0.1 建特性分支**
 
 ```bash
 cd /Users/yimu/Documents/Guowei/Engineering/projects/chemai101
@@ -83,7 +83,7 @@ git checkout main && git pull --ff-only && git checkout -b feat/data-engine
 
 Expected: `Switched to a new branch 'feat/data-engine'`。
 
-- [ ] **Step 0.2 基线四件套确认全绿**
+- [x] **Step 0.2 基线四件套确认全绿**
 
 ```bash
 npm test && npx tsc --noEmit && npm run build >/dev/null && npm run worker:check >/dev/null && echo BASELINE_OK
@@ -97,7 +97,7 @@ Expected: 末行输出 `BASELINE_OK`（6 个测试通过）。若基线就不绿
 
 **Files:** Modify `types.ts`
 
-- [ ] **Step 1.1 写失败用法（临时 tsc 探针）**
+- [x] **Step 1.1 写失败用法（临时 tsc 探针）**
 
 在 `types.ts` 末尾临时加一行引用不存在的类型：
 
@@ -107,7 +107,7 @@ export type __Probe = Verification;
 
 Run: `npx tsc --noEmit`　Expected: FAIL `Cannot find name 'Verification'`。
 
-- [ ] **Step 1.2 实现类型**
+- [x] **Step 1.2 实现类型**
 
 删除探针行，在 `types.ts` 中 `ReactionResult` 定义之前加入：
 
@@ -145,11 +145,11 @@ export interface ReactionResult {
 }
 ```
 
-- [ ] **Step 1.3 验证**
+- [x] **Step 1.3 验证**
 
 Run: `npx tsc --noEmit`　Expected: 通过（无输出）。
 
-- [ ] **Step 1.4 Commit**
+- [x] **Step 1.4 Commit**
 
 ```bash
 git add types.ts && git commit -m "feat: add Verification and CompoundRecord shared types"
@@ -161,7 +161,7 @@ git add types.ts && git commit -m "feat: add Verification and CompoundRecord sha
 
 **Files:** Create `worker/src/pubchem.ts`、Create `worker/test/pubchem.test.ts`
 
-- [ ] **Step 2.1 写失败测试**
+- [x] **Step 2.1 写失败测试**
 
 创建 `worker/test/pubchem.test.ts`：
 
@@ -277,11 +277,11 @@ describe('pubchem module', () => {
 });
 ```
 
-- [ ] **Step 2.2 运行确认失败**
+- [x] **Step 2.2 运行确认失败**
 
 Run: `npm test`　Expected: FAIL，`Cannot find module '../src/pubchem'`。
 
-- [ ] **Step 2.3 实现 `worker/src/pubchem.ts`**
+- [x] **Step 2.3 实现 `worker/src/pubchem.ts`**
 
 ```ts
 import { CompoundRecord, MoleculeStructure } from '../../types';
@@ -461,11 +461,11 @@ export async function lookupCompound(
 }
 ```
 
-- [ ] **Step 2.4 运行确认通过**
+- [x] **Step 2.4 运行确认通过**
 
 Run: `npm test`　Expected: pubchem.test.ts 全部 PASS（原有用例不受影响）。
 
-- [ ] **Step 2.5 Commit**
+- [x] **Step 2.5 Commit**
 
 ```bash
 git add worker/src/pubchem.ts worker/test/pubchem.test.ts
@@ -480,7 +480,7 @@ git commit -m "feat(worker): PubChem lookup with Z-table normalization, busy ret
 
 设计要点：缓存存「数据」而不是 HTTP 响应——命中后用当次请求的 origin 重建 CORS 头，避免跨源缓存污染；测试默认不注入 cache（DI 参数），生产由 default export 传 `caches.default`。
 
-- [ ] **Step 3.1 先加失败测试（追加到 `worker/test/index.test.ts` 末尾）**
+- [x] **Step 3.1 先加失败测试（追加到 `worker/test/index.test.ts` 末尾）**
 
 ```ts
 function compoundRequest(name: string, origin = allowedOrigin): Request {
@@ -567,11 +567,11 @@ describe('compound proxy', () => {
 });
 ```
 
-- [ ] **Step 3.2 运行确认失败**
+- [x] **Step 3.2 运行确认失败**
 
 Run: `npm test`　Expected: 新增 compound 用例 FAIL（404/500，因为路由不存在）。
 
-- [ ] **Step 3.3 改造 `worker/src/index.ts`**
+- [x] **Step 3.3 改造 `worker/src/index.ts`**
 
 三处修改：
 
@@ -688,11 +688,11 @@ export default {
 } satisfies ExportedHandler<Env>;
 ```
 
-- [ ] **Step 3.4 运行确认通过**
+- [x] **Step 3.4 运行确认通过**
 
 Run: `npm test`　Expected: 全部 PASS（含原有 6 例 + pubchem + compound 新例）。`npx tsc --noEmit` 同时零错误。
 
-- [ ] **Step 3.5 Commit**
+- [x] **Step 3.5 Commit**
 
 ```bash
 git add worker/src/index.ts worker/test/index.test.ts
@@ -707,7 +707,7 @@ git commit -m "feat(worker): GET /v1/compound proxy with cache-API data cache, p
 
 设计说明：`utils/molecularWeight.ts` 的 SMILES 解析不统计隐式氢（已知局限），所以交叉核对只用**重原子组成**（剔除 H 后逐元素计数比对）——这是诚实且确定性的口径；化合价表用主族常见最高价，过渡金属跳过。
 
-- [ ] **Step 4.1 写失败测试 `worker/test/verify.test.ts`**
+- [x] **Step 4.1 写失败测试 `worker/test/verify.test.ts`**
 
 ```ts
 import { describe, expect, it } from 'vitest';
@@ -768,11 +768,11 @@ describe('verifyReactionResult', () => {
 });
 ```
 
-- [ ] **Step 4.2 运行确认失败**
+- [x] **Step 4.2 运行确认失败**
 
 Run: `npm test`　Expected: FAIL `Cannot find module '../src/verify'`。
 
-- [ ] **Step 4.3 实现 `worker/src/verify.ts`**
+- [x] **Step 4.3 实现 `worker/src/verify.ts`**
 
 ```ts
 import { Atom3D, Bond3D, Verification } from '../../types';
@@ -904,7 +904,7 @@ export function verifyReactionResult(payload: unknown): Verification {
 }
 ```
 
-- [ ] **Step 4.4 更新既有 analyze 用例并加集成断言（改 `worker/test/index.test.ts`）**
+- [x] **Step 4.4 更新既有 analyze 用例并加集成断言（改 `worker/test/index.test.ts`）**
 
 原「keeps the API key server-side…」用例中 mock 上游的 `content` 改为带结构与 SMILES 的完整 JSON，并同步期望响应（响应现在多出 `verification` 字段）：
 
@@ -946,7 +946,7 @@ expect(await response.json()).toMatchObject({
 expect(upstreamBody.messages[0].content).toContain('productSmiles');
 ```
 
-- [ ] **Step 4.5 接入 `worker/src/index.ts`**
+- [x] **Step 4.5 接入 `worker/src/index.ts`**
 
 (a) 导入：`import { verifyReactionResult } from './verify';`
 
@@ -969,11 +969,11 @@ const parsed: unknown = JSON.parse(content);
 return jsonResponse({ ...(parsed as object), verification: verifyReactionResult(parsed) }, 200, origin);
 ```
 
-- [ ] **Step 4.6 运行确认通过**
+- [x] **Step 4.6 运行确认通过**
 
 Run: `npm test && npx tsc --noEmit`　Expected: 全部 PASS、零类型错误。
 
-- [ ] **Step 4.7 Commit**
+- [x] **Step 4.7 Commit**
 
 ```bash
 git add worker/src/verify.ts worker/test/verify.test.ts worker/src/index.ts worker/test/index.test.ts
@@ -986,7 +986,7 @@ git commit -m "feat(worker): deterministic chemistry verification attached to an
 
 **Files:** Modify `services/geminiService.ts`、Modify `services/geminiService.test.ts`
 
-- [ ] **Step 5.1 先改失败测试**
+- [x] **Step 5.1 先改失败测试**
 
 在 `services/geminiService.test.ts` 顶部改导入并追加用例：
 
@@ -1020,11 +1020,11 @@ it('raises a dedicated error when the compound is unknown', async () => {
 
 既有 predictReaction 用例无需改动：默认 `API_BASE` 相同，原 URL 断言继续成立。
 
-- [ ] **Step 5.2 运行确认失败**
+- [x] **Step 5.2 运行确认失败**
 
 Run: `npm test`　Expected: FAIL `fetchCompound is not exported`。
 
-- [ ] **Step 5.3 实现 `services/geminiService.ts` 改动**
+- [x] **Step 5.3 实现 `services/geminiService.ts` 改动**
 
 顶部常量区替换为：
 
@@ -1062,11 +1062,11 @@ export async function fetchCompound(name: string, signal?: AbortSignal): Promise
 
 （把 `import { CompoundRecord } …` 移到文件顶部 import 区，与其他 import 合并。）
 
-- [ ] **Step 5.4 运行确认通过**
+- [x] **Step 5.4 运行确认通过**
 
 Run: `npm test && npx tsc --noEmit`　Expected: 全绿。
 
-- [ ] **Step 5.5 Commit**
+- [x] **Step 5.5 Commit**
 
 ```bash
 git add services/geminiService.ts services/geminiService.test.ts
@@ -1079,7 +1079,7 @@ git commit -m "feat(client): shared API base + fetchCompound client with dedicat
 
 **Files:** Create `components/LibraryModule.tsx`、Modify `contexts/LanguageContext.tsx`、Modify `App.tsx`
 
-- [ ] **Step 6.1 语言键（en/zh 两个块各加一组）**
+- [x] **Step 6.1 语言键（en/zh 两个块各加一组）**
 
 en 块 `commonNameLabel` 之前插入：
 
@@ -1121,7 +1121,7 @@ dataBusyMsg: "化学数据库正忙，请稍后再试。",
 networkErrorMsg: "无法加载化合物数据。",
 ```
 
-- [ ] **Step 6.2 新建 `components/LibraryModule.tsx`**
+- [x] **Step 6.2 新建 `components/LibraryModule.tsx`**
 
 ```tsx
 import React, { useState } from 'react';
@@ -1250,7 +1250,7 @@ export const LibraryModule: React.FC = () => {
 };
 ```
 
-- [ ] **Step 6.3 `App.tsx` 加第三页签**
+- [x] **Step 6.3 `App.tsx` 加第三页签**
 
 tab 联合类型与状态：`useState<'reaction' | 'builder' | 'library'>('reaction')`；导入 `LibraryModule` 与 lucide 图标 `Database`；nav 中 builder 按钮后仿写：
 
@@ -1273,7 +1273,7 @@ tab 联合类型与状态：`useState<'reaction' | 'builder' | 'library'>('react
 {activeTab === 'reaction' ? <ReactionLab /> : activeTab === 'library' ? <LibraryModule /> : <BuilderModule />}
 ```
 
-- [ ] **Step 6.4 验证**
+- [x] **Step 6.4 验证**
 
 Run: `npm test && npx tsc --noEmit && npm run build >/dev/null && echo TASK6_OK`
 
@@ -1281,7 +1281,7 @@ Run: `npm test && npx tsc --noEmit && npm run build >/dev/null && echo TASK6_OK`
 
 Expected: 末行 `TASK6_OK`。
 
-- [ ] **Step 6.5 Commit**
+- [x] **Step 6.5 Commit**
 
 ```bash
 git add components/LibraryModule.tsx contexts/LanguageContext.tsx App.tsx
@@ -1294,7 +1294,7 @@ git commit -m "feat(ui): Molecule Library tab backed by PubChem worker proxy"
 
 **Files:** Modify `components/ReactionLab.tsx`
 
-- [ ] **Step 7.1 渲染徽章**
+- [x] **Step 7.1 渲染徽章**
 
 导入 `ShieldCheck, ShieldAlert, ShieldQuestion`（lucide）。在 `result.equation` 所在 `<div className="p-4 bg-science-50 …">` 之后、`grid grid-cols-1 md:grid-cols-2` 之前插入：
 
@@ -1346,11 +1346,11 @@ verifyWarning: "未完全通过化学校验，仅供参考",
 verifyUnknown: "结构暂无法自动校验",
 ```
 
-- [ ] **Step 7.2 验证**
+- [x] **Step 7.2 验证**
 
 Run: `npm test && npx tsc --noEmit && npm run build >/dev/null && echo TASK7_OK`　Expected: `TASK7_OK`。
 
-- [ ] **Step 7.3 Commit**
+- [x] **Step 7.3 Commit**
 
 ```bash
 git add components/ReactionLab.tsx contexts/LanguageContext.tsx
@@ -1361,13 +1361,13 @@ git commit -m "feat(ui): verification badge on reaction results with bilingual c
 
 ### Task 8：模型卫生、全量验证、文档与部署门禁（≈2 小时）
 
-- [ ] **Step 8.1 模型卫生决策（方向③）**
+- [x] **Step 8.1 模型卫生决策（方向③）**
 
 打开 https://api-docs.deepseek.com 查当前推荐的低成本快速对话模型 ID：
 - 若仍是 `deepseek-v4-flash`：无需改动，在进度日志记「模型已是最新」。
 - 若有更新的官方推荐 ID：改 `wrangler.jsonc` 的 `vars.MODEL_NAME`，运行 `npm test && npm run worker:check`，单独提交 `chore: bump MODEL_NAME to <id>`。
 
-- [ ] **Step 8.2 全量四件套 + 密钥扫描**
+- [x] **Step 8.2 全量四件套 + 密钥扫描**
 
 ```bash
 npm test && npx tsc --noEmit && npm run build >/dev/null && npm run worker:check >/dev/null \
@@ -1376,7 +1376,7 @@ npm test && npx tsc --noEmit && npm run build >/dev/null && npm run worker:check
 
 Expected: `ALL_GREEN`。任何一项红：回到对应 Task 修复，不许带病进 Step 8.3。
 
-- [ ] **Step 8.3 重写 README.md（清除 AI Studio 残留）**
+- [x] **Step 8.3 重写 README.md（清除 AI Studio 残留）**
 
 新 README 要点（保留英文，简洁）：项目一句话（AI-assisted chemistry visualization for classroom demos）；架构图一行（Browser → CF Pages 前端 → Worker `chemai101-api` → DeepSeek（分析）/ PubChem（权威结构数据））；本地开发与四件套验证命令沿用现有段落；安全红线段落原文保留；删掉 AI Studio 链接与 "GHBanner" 图片段。同时把 `CLOUDFLARE_SETUP.md` 里对 `VITE_CHEMAI_API_URL` 的表述改为 `VITE_CHEMAI_API_BASE`。完成后提交：
 
@@ -1453,3 +1453,15 @@ git add docs/plans/evidence-20260825 && git commit -m "chore: archive upgrade ve
 | 日期 | Task | 结果 | Commit / 备注 |
 | --- | --- | --- | --- |
 | 2026-08-25 | — | 计划定稿（ox-alpha），主人拍板方向①+③ | 基于 773e5e8 |
+| 2026-08-25 | Task 0 | 分支 feat/data-engine 建立，计划文档入库，基线四件套全绿 | 472aab8 |
+| 2026-08-25 | Task 1 | 共享类型 Verification / CompoundRecord，探针先红后绿 | 14dd200 |
+| 2026-08-25 | Task 2 | pubchem 模块：4 用例绿（归一化/2D回退/404/ServerBusy重试） | fcc41ac |
+| 2026-08-25 | Task 3 | /v1/compound 路由：5 用例绿；修 DOM/workers-types CacheStorage.default 类型冲突（窄化转换） | f7ad751 |
+| 2026-08-25 | Task 4 | verify 引擎 5 用例 + analyze 集成断言（CO₂ verified）绿；prompt 增加 productSmiles | 372de51 |
+| 2026-08-25 | Task 5 | fetchCompound 客户端 + CompoundNotFoundError：2 用例绿 | 10fafd4 |
+| 2026-08-25 | Task 6 | 分子库页签 + 双语文案上线（浏览器人工冒烟留到部署验收一起做） | 4653c6b |
+| 2026-08-25 | Task 7 | 反应结果校验徽章上线（verified/warning/unknown 三态） | 6551585 |
+| 2026-08-25 | Task 8.1 | 模型卫生：官方目录确认 deepseek-v4-flash 为当前快速模型 ID，无需改动 | — |
+| 2026-08-25 | Task 8.2 | 全量四件套 + dist 密钥扫描 = ALL_GREEN（22 测试） | — |
+| 2026-08-25 | Task 8.3 | README 重写清除 AI Studio 残留；CLOUDFLARE_SETUP 对齐 VITE_CHEMAI_API_BASE | af64243 |
+| 2026-08-25 | Task 8.4 | **GATE：等待主人确认合并部署**（commit 列表 main..feat/data-engine 已备好） | — |
