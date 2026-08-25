@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { CompoundNotFoundError, fetchCompound } from '../services/geminiService';
 import { CompoundRecord } from '../types';
+import { ALL_REACTIONS } from '../src/data/reactions';
 import { Molecule3DViewer } from './Molecule3DViewer';
-import { Database, FlaskConical, Loader2, Search } from 'lucide-react';
+import { BookOpen, Database, FlaskConical, Loader2, Search } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { updateRouteParams } from '../utils/routeParams';
 
 type LoadState =
   | { kind: 'idle' }
@@ -37,7 +39,30 @@ export const LibraryModule: React.FC = () => {
       : '';
 
   return (
-    <div className="flex flex-col h-full gap-6 p-6">
+    <div className="flex flex-col h-full gap-6 p-6 overflow-y-auto">
+      {/* Curated textbook library */}
+      <div className="bg-white p-6 rounded-2xl shadow-lg border border-[#f0ece4]">
+        <h2 className="text-lg font-bold font-display text-[#1a1a1a] mb-3 flex items-center gap-2">
+          <BookOpen className="w-5 h-5 text-science-600" /> {t('navLibraryCurated')}
+        </h2>
+        {ALL_REACTIONS.length === 0 ? (
+          <p className="text-sm text-[#6f685d]">{t('curatedEmpty')}</p>
+        ) : (
+          <div className="flex flex-wrap gap-2">
+            {ALL_REACTIONS.map((r) => (
+              <button
+                key={r.id}
+                onClick={() => updateRouteParams({ r: r.id })}
+                title={`${r.chapter} · ${r.title}`}
+                className="px-3 py-1.5 rounded-full text-sm border border-[#e8d5b8] hover:border-science-400 hover:text-science-700 transition-colors"
+              >
+                {r.title}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+
       {/* Search bar */}
       <div className="bg-white p-6 rounded-2xl shadow-lg border border-[#f0ece4]">
         <h2 className="text-xl font-bold font-display text-[#1a1a1a] mb-1 flex items-center gap-2">
