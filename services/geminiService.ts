@@ -49,6 +49,31 @@ export const nameMoleculeFromGraph = async (
     language,
   });
 
+export type TrackEvent = 'reaction' | 'builder' | 'compound' | 'textbook';
+
+/** 匿名使用计数：发后即忘，绝不阻塞或打断主流程 */
+export function trackEvent(event: TrackEvent, slug?: string): void {
+  const body = slug ? { event, slug } : { event };
+  fetch(`${API_BASE}/v1/track`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+    keepalive: true,
+  }).catch(() => {});
+}
+
+export interface UsageStats {
+  totals: Record<string, number>;
+  today: Record<string, number>;
+  total: number;
+}
+
+export async function fetchUsageStats(signal?: AbortSignal): Promise<UsageStats> {
+  const response = await fetch(`${API_BASE}/v1/stats`, { signal });
+  if (!response.ok) throw new Error(`ChemAI service error (${response.status})`);
+  return (await response.json()) as UsageStats;
+}
+
 export interface IdentifyCandidate {
   cid: number;
   title?: string;

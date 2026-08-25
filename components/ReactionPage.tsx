@@ -4,6 +4,7 @@ import { Molecule3DViewer } from './Molecule3DViewer';
 import { PresentationMode } from './PresentationMode';
 import { QrShare } from './QrShare';
 import { updateRouteParams } from '../utils/routeParams';
+import { trackEvent } from '../services/geminiService';
 import { ArrowLeft, Presentation as PresentationIcon } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
@@ -15,6 +16,9 @@ interface ReactionPageProps {
 
 export const ReactionPage: React.FC<ReactionPageProps> = ({ reaction, present, onExit }) => {
   const { t } = useLanguage();
+  React.useEffect(() => {
+    trackEvent('textbook', reaction.id);
+  }, [reaction.id]);
   if (present) {
     return (
       <PresentationMode

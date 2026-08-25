@@ -2,6 +2,7 @@ import React, { useMemo, useState, useRef } from 'react';
 import { BuilderAtom, BuilderBond, ElementType, ELEMENT_COLORS } from '../types';
 import {
   identifyStructure,
+  trackEvent,
   nameMoleculeFromGraph,
   IdentifyCandidate,
 } from '../services/geminiService';
@@ -231,6 +232,7 @@ export const BuilderModule: React.FC = () => {
       const payload = toIdentifyPayload(atoms, bonds);
       const res = await identifyStructure(payload.atoms, payload.bonds);
       setIdentifyResult({ formulaDisplay: toSubscript(res.formula), candidates: res.candidates });
+      trackEvent('builder');
     } catch {
       alert(t('failedToName'));
     } finally {

@@ -204,6 +204,12 @@ export async function handleRequest(
   if (url.pathname === '/v1/identify') {
     return handleIdentify(request, env, origin, fetcher);
   }
+  if (url.pathname === '/v1/track') {
+    return handleTrack(request, env, origin);
+  }
+  if (url.pathname === '/v1/stats') {
+    return handleStats(request, env, origin);
+  }
   return jsonResponse({ error: 'Not found' }, 404, origin);
 }
 
@@ -437,6 +443,89 @@ async function handleIdentify(
     );
     return jsonResponse({ error: 'Identification service unavailable' }, 502, origin);
   }
+}
+
+const TRACK_EVENTS = new Set(['reaction', 'builder', 'compound', 'textbook']);
+const SLUG_RE = /^[a-z0-9-]{1,64}$/;
+const TRACK_TTL_SECONDS = 7776000; // 90 天
+
+function todayStamp(): string {
+  return new Date().toISOString().slice(0, 10).replace(/-/g, '');
+}
+
+/** 匿名使用计数：每次使用写一个唯一 key（天然原子，无读改写竞态），读取时按前缀聚合计数。 */
+async function handleTrack(request: Request, env: Env, origin: string): Promise<Response> {
+  if (request.method !== 'POST') {
+    return jsonResponse({ error: 'Method not allowed' }, 405, origin);
+  }
+
+  let raw: unknown;
+  try {
+    raw = await readJsonWithLimit(request.body, 1024);
+  } catch {
+    return jsonResponse({ error: 'Invalid JSON' }, 400, origin);
+  }
+  const body = (raw ?? {}) as Record<string, unknown>;
+  const event = typeof body.event === 'string' ? body.event : '';
+  if (!TRACK_EVENTS.has(event)) {
+    return jsonResponse({ error: 'Invalid event' }, 400, origin);
+  }
+  let slug = '';
+  if (body.slug !== undefined) {
+    if (typeof body.slug !== 'string' || !SLUG_RE.test(body.slug)) {
+      return jsonResponse({ error: 'Invalid slug' }, 400, origin);
+    }
+    slug = body.slug;
+  }
+
+  const actor = request.headers.get('cf-connecting-ip') || 'anonymous';
+  const rateLimit = await env.API_RATE_LIMITER.limit({ key: `${actor}:track` });
+  if (!rateLimit.success) {
+    return jsonResponse({ error: 'Too many requests' }, 429, origin);
+  }
+
+  try {
+    const key = `t:${event}:${todayStamp()}:${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    await env.COUNTERS.put(key, slug, { expirationTtl: TRACK_TTL_SECONDS });
+  } catch (error) {
+    // 计数失败绝不影响主功能
+    console.error(
+      JSON.stringify({ message: 'track write failed', error: error instanceof Error ? error.message : 'unknown' }),
+    );
+  }
+  return new Response(null, { status: 204 });
+}
+
+async function countPrefix(env: Env, prefix: string): Promise<number> {
+  let count = 0;
+  let cursor: string | undefined;
+  for (;;) {
+    const page = (await env.COUNTERS.list({ prefix, cursor })) as {
+      keys: Array<{ name: string }>;
+      list_complete: boolean;
+      cursor?: string;
+    };
+    count += page.keys.length;
+    if (page.list_complete) break;
+    cursor = page.cursor;
+  }
+  return count;
+}
+
+async function handleStats(request: Request, env: Env, origin: string): Promise<Response> {
+  if (request.method !== 'GET') {
+    return jsonResponse({ error: 'Method not allowed' }, 405, origin);
+  }
+  const totals: Record<string, number> = {};
+  const today: Record<string, number> = {};
+  const stamp = todayStamp();
+  let total = 0;
+  for (const event of TRACK_EVENTS) {
+    totals[event] = await countPrefix(env, `t:${event}:`);
+    today[event] = await countPrefix(env, `t:${event}:${stamp}`);
+    total += totals[event];
+  }
+  return jsonResponse({ totals, today, total }, 200, origin);
 }
 
 export default {

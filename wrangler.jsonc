@@ -22,6 +22,12 @@
       }
     }
   ],
+  "kv_namespaces": [
+    {
+      "binding": "COUNTERS",
+      "id": "5909c39bf85e41b79be5c0343742210a"
+    }
+  ],
   "observability": {
     "enabled": true,
     "logs": {

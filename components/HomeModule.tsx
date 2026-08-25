@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Atom, BookOpen, ChevronRight, Database, FlaskConical } from 'lucide-react';
 import { ALL_REACTIONS } from '../src/data/reactions';
+import { fetchUsageStats, UsageStats } from '../services/geminiService';
 import { useLanguage } from '../contexts/LanguageContext';
 
 export type HomeTab = 'textbook' | 'reaction' | 'builder' | 'library';
@@ -12,6 +13,15 @@ interface HomeModuleProps {
 /** 首页 Dashboard：四大模块入口卡片，默认落地页。 */
 export const HomeModule: React.FC<HomeModuleProps> = ({ onOpen }) => {
   const { t } = useLanguage();
+  const [stats, setStats] = useState<UsageStats | null>(null);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    fetchUsageStats(controller.signal)
+      .then(setStats)
+      .catch(() => {});
+    return () => controller.abort();
+  }, []);
 
   const cards: Array<{
     tab: HomeTab;
@@ -80,6 +90,11 @@ export const HomeModule: React.FC<HomeModuleProps> = ({ onOpen }) => {
           <h2 className="text-2xl sm:text-4xl font-bold font-display text-[#1a1a1a] leading-tight">
             {t('homeTagline')}
           </h2>
+          {stats && stats.total > 0 && (
+            <p className="mt-3 text-sm text-[#a39a89]">
+              {t('homeStatsLine', { count: stats.total })}
+            </p>
+          )}
         </div>
 
         {/* Module cards */}

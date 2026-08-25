@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { predictReaction } from '../services/geminiService';
+import { predictReaction, trackEvent } from '../services/geminiService';
 import { ReactionResult } from '../types';
 import { Molecule3DViewer } from './Molecule3DViewer';
 import { Play, Pause, FastForward, Loader2, Beaker, Flame, Wind, ShieldCheck, ShieldAlert, ShieldQuestion, Presentation } from 'lucide-react';
@@ -25,6 +25,7 @@ export const ReactionLab: React.FC = () => {
     try {
       const data = await predictReaction(reactants, conditions, language);
       setResult(data);
+      trackEvent('reaction');
     } catch (e) {
       alert(t('failedToAnalyze'));
     } finally {

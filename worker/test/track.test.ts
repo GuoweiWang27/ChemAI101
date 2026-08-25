@@ -1,0 +1,63 @@
+import { env } from 'cloudflare:test';
+import { describe, expect, it } from 'vitest';
+import { handleRequest } from '../src/index';
+
+const allowedOrigin = 'https://chemai101.guoweiwang.com';
+
+function trackRequest(event: string, slug?: string, origin = allowedOrigin): Request {
+  return new Request('https://chemai101-api.guoweiwang27.workers.dev/v1/track', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json', origin },
+    body: JSON.stringify(slug ? { event, slug } : { event }),
+  });
+}
+
+function statsRequest(origin = allowedOrigin): Request {
+  return new Request('https://chemai101-api.guoweiwang27.workers.dev/v1/stats', {
+    method: 'GET',
+    headers: { origin },
+  });
+}
+
+describe('anonymous usage counters', () => {
+  it('records events and aggregates them in stats', async () => {
+    const t1 = await handleRequest(trackRequest('reaction'), env, fetch);
+    expect(t1.status).toBe(204);
+
+    await handleRequest(trackRequest('textbook', 'na-h2o'), env, fetch);
+    await handleRequest(trackRequest('textbook', 'fe-cl2'), env, fetch);
+
+    const stats = await handleRequest(statsRequest(), env, fetch);
+    expect(stats.status).toBe(200);
+    const body = (await stats.json()) as {
+      totals: Record<string, number>;
+      today: Record<string, number>;
+      total: number;
+    };
+    expect(body.totals.reaction).toBeGreaterThanOrEqual(1);
+    expect(body.totals.textbook).toBeGreaterThanOrEqual(2);
+    expect(body.today.reaction).toBeGreaterThanOrEqual(1);
+    expect(body.total).toBeGreaterThanOrEqual(3);
+  });
+
+  it('rejects unknown events and malformed slugs', async () => {
+    for (const bad of [trackRequest('hack'), trackRequest('reaction', 'Bad_Slug!')]) {
+      const response = await handleRequest(bad, env, fetch);
+      expect(response.status).toBe(400);
+    }
+  });
+
+  it('blocks foreign origins', async () => {
+    const response = await handleRequest(trackRequest('reaction', undefined, 'https://evil.example'), env, fetch);
+    expect(response.status).toBe(403);
+  });
+
+  it('rejects non-GET on stats', async () => {
+    const request = new Request('https://chemai101-api.guoweiwang27.workers.dev/v1/stats', {
+      method: 'POST',
+      headers: { origin: allowedOrigin },
+    });
+    const response = await handleRequest(request, env, fetch);
+    expect(response.status).toBe(405);
+  });
+});

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CompoundNotFoundError, fetchCompound } from '../services/geminiService';
+import { CompoundNotFoundError, fetchCompound, trackEvent } from '../services/geminiService';
 import { CompoundRecord } from '../types';
 import { Molecule3DViewer } from './Molecule3DViewer';
 import { Database, FlaskConical, Loader2, Search } from 'lucide-react';
@@ -23,6 +23,7 @@ export const LibraryModule: React.FC = () => {
     try {
       const record = await fetchCompound(name);
       setState({ kind: 'ready', record });
+      trackEvent('compound');
     } catch (error) {
       if (error instanceof CompoundNotFoundError) setState({ kind: 'error', variant: 'notFound' });
       else if (error instanceof Error && error.message.endsWith('(503)')) {
