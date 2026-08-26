@@ -59,9 +59,9 @@ const lerpPalette = (a: Palette, b: Palette, k: number): Palette => ({
 const rgba = (c: RGB, alpha: number) => `rgba(${c.r | 0},${c.g | 0},${c.b | 0},${alpha})`;
 
 const CYCLE_MS = 6000;
-// 离屏缓冲分辨率（低分辨率 + 模糊 = 柔软火舌）
-const W = 150;
-const H = 200;
+// 离屏缓冲分辨率（低分辨率 + 模糊 = 柔软火舌）；横幅比例匹配窗口
+const W = 170;
+const H = 140;
 
 export const FlameHeroCanvas: React.FC = () => {
   const { language } = useLanguage();
@@ -106,21 +106,21 @@ export const FlameHeroCanvas: React.FC = () => {
       last = now;
 
       // 调色板渐变
-      paletteRef.current = lerpPalette(paletteRef.current, targetRef.current, 1 - Math.exp(-dt * 5));
+      paletteRef.current = lerpPalette(paletteRef.current, targetRef.current, 1 - Math.exp(-dt * 6));
       const pal = paletteRef.current;
 
       // 1) 整帧上移（火上升）
       ctx.globalCompositeOperation = 'source-over';
-      ctx.drawImage(canvas, 0, -2.4);
+      ctx.drawImage(canvas, 0, -3.4);
       // 2) 向黑衰减（火苗冷却）
-      ctx.fillStyle = 'rgba(8,3,1,0.24)';
+      ctx.fillStyle = 'rgba(8,3,1,0.115)';
       ctx.fillRect(0, 0, W, H);
       // 3) 底部生成新火团（加色混合）
       ctx.globalCompositeOperation = 'lighter';
-      for (let i = 0; i < 3; i++) {
-        const x = W * 0.5 + (Math.random() - 0.5) * W * 0.4;
-        const y = H - 5 - Math.random() * 7;
-        const r = 8 + Math.random() * 12;
+      for (let i = 0; i < 4; i++) {
+        const x = W * 0.5 + (Math.random() - 0.5) * W * 0.44;
+        const y = H - 4 - Math.random() * 8;
+        const r = 10 + Math.random() * 14;
         const g = ctx.createRadialGradient(x, y, 0, x, y, r);
         g.addColorStop(0, rgba(pal.hot, 0.85));
         g.addColorStop(0.45, rgba(pal.main, 0.55));
@@ -165,11 +165,11 @@ export const FlameHeroCanvas: React.FC = () => {
       <canvas
         ref={canvasRef}
         className="w-full h-full"
-        style={{ filter: 'blur(6px) saturate(1.3) contrast(1.18)', transform: 'scale(1.1)' }}
+        style={{ filter: 'blur(5px) saturate(1.35) contrast(1.2)', transform: 'scale(1.08)' }}
       />
       {/* 元素切换 */}
       <div
-        className="absolute bottom-2.5 inset-x-0 flex justify-center gap-1 sm:gap-1.5 flex-wrap px-2"
+        className="absolute bottom-2 inset-x-0 flex justify-center gap-1 flex-nowrap px-1.5 overflow-hidden"
         style={{ pointerEvents: 'auto' }}
       >
         {FLAME_ELEMENTS.map((el, i) => (
@@ -179,7 +179,7 @@ export const FlameHeroCanvas: React.FC = () => {
               userTouched.current = true;
               setIndex(i);
             }}
-            className={`flex items-center gap-1 px-2 py-1 rounded-full text-[11px] font-medium backdrop-blur-sm border transition-all ${
+            className={`flex items-center gap-0.5 px-1.5 py-0.5 rounded-full text-[10px] font-medium backdrop-blur-sm border whitespace-nowrap transition-all ${
               i === index
                 ? 'bg-white/20 border-white/60 text-white scale-105'
                 : 'bg-black/20 border-white/15 text-white/55 hover:text-white/90 hover:border-white/40'
