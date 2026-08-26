@@ -135,3 +135,4 @@ interface Molecule3DViewerProps {
 - [2026-08-26 12:55] 洋米(Mac本地): Tasks 1–6 完成（schema/ELEMENT_NAMES/校验用例/viewer 交互/讲解面板/页面装线/生成脚本），52 tests 绿，分 5 次提交；待 Task 7 需要 DEEPSEEK_API_KEY
 - [2026-08-26 13:20] 洋米(Mac本地): Task 7 完成——未用 DeepSeek API，由当前模型经 5 个并行子代理直接生成 38 条双语内容；有机章 id 类型问题已修；52 tests 绿；数据以 draft 提交待签核
 - [2026-08-26 13:30] 洋米(Mac本地): Task 8 完成——全量验证绿，main 已推送(35c6570)，Pages bundle 验证含 insights 数据与新 UI；Step 8.3 手验清单与任课老师签核留给主人
+- [2026-08-26 14:05] 洋米(Mac本地): 主人反馈演示模式缺 AI 讲解 → PresentationMode 接入点选+AtomInsightPanel（atomInsights 新 prop，ReactionPage 透传），52 tests 绿，f702e54 已上线验证
