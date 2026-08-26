@@ -33,6 +33,7 @@ export const ReactionPage: React.FC<ReactionPageProps> = ({ reaction, present, o
         steps={reaction.mechanismSteps}
         structure={reaction.productStructure}
         highlightSteps={reaction.stepAtomIds}
+        atomInsights={reaction.atomInsights}
         onClose={() => updateRouteParams({ mode: null })}
       />
     );
