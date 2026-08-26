@@ -77,6 +77,34 @@ export const interpretPhenomenon = async (
   return data;
 };
 
+/** AI 认分子候选：从特征描述里认出的候选物质 */
+export interface MoleculeCandidate {
+  /** 标准物质名（可直接用于 PubChem 查询） */
+  name: string;
+  formula: string;
+  rationale: string;
+}
+
+export interface MoleculeIdentifyResult {
+  candidates: MoleculeCandidate[];
+  note?: string;
+}
+
+export const identifyMoleculeByDesc = async (
+  description: string,
+  language: Language,
+): Promise<MoleculeIdentifyResult> => {
+  const data = await requestChemAI<MoleculeIdentifyResult>({
+    operation: 'identifyMoleculeByDesc',
+    description,
+    language,
+  });
+  if (!Array.isArray(data.candidates)) {
+    throw new Error('Invalid identify payload');
+  }
+  return data;
+};
+
 export type TrackEvent = 'reaction' | 'builder' | 'compound' | 'textbook';
 
 /** 匿名使用计数：发后即忘，绝不阻塞或打断主流程 */
