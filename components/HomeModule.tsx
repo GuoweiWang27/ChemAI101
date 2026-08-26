@@ -92,7 +92,7 @@ export const HomeModule: React.FC<HomeModuleProps> = ({ onOpen }) => {
           </h2>
           {stats && stats.total > 0 && (
             <p className="mt-3 text-sm text-[#a39a89]">
-              {t('homeStatsLine', { count: stats.total })}
+              {t('homeStatsLine', { count: stats.total.toLocaleString('en-US') })}
             </p>
           )}
         </div>
