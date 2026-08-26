@@ -266,7 +266,13 @@ export const ReactionLab: React.FC = () => {
 
       {/* Right Panel: Visualization & Result */}
       <div className="w-full lg:w-2/3 flex flex-col gap-6">
-        {result ? (
+        {loading ? (
+          <div className="h-full min-h-[400px] flex flex-col items-center justify-center text-[#6f685d] bg-white rounded-3xl border-2 border-dashed border-science-300 shadow-inner animate-pulse">
+            <Loader2 className="w-14 h-14 mb-5 animate-spin text-science-500" />
+            <p className="text-lg font-medium text-[#1a1a1a]">{t('generatingTitle')}</p>
+            <p className="text-sm mt-2 max-w-sm text-center leading-relaxed">{t('generatingHint')}</p>
+          </div>
+        ) : result ? (
           <>
             <div className="bg-white p-6 rounded-2xl shadow-lg border border-science-100">
                <div className="mb-4">
