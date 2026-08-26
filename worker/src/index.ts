@@ -171,6 +171,10 @@ function buildPrompt(body: AnalyzeRequest): string {
   const languageInstruction =
     body.language === 'zh' ? 'Provide output in Simplified Chinese.' : 'Provide output in English.';
 
+  if (body.operation === 'interpretPhenomenon') {
+    return buildInterpretPrompt(body);
+  }
+
   if (body.operation === 'predictReaction') {
     return `
 Analyze reaction: ${body.reactants} under ${body.conditions}.

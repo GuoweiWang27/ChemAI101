@@ -49,6 +49,34 @@ export const nameMoleculeFromGraph = async (
     language,
   });
 
+/** 现象解读候选：AI 从大白话描述里认出的候选反应 */
+export interface ReactionCandidate {
+  reactants: string;
+  conditions: string;
+  equation: string;
+  rationale: string;
+}
+
+export interface InterpretResult {
+  candidates: ReactionCandidate[];
+  note?: string;
+}
+
+export const interpretPhenomenon = async (
+  phenomenon: string,
+  language: Language,
+): Promise<InterpretResult> => {
+  const data = await requestChemAI<InterpretResult>({
+    operation: 'interpretPhenomenon',
+    phenomenon,
+    language,
+  });
+  if (!Array.isArray(data.candidates)) {
+    throw new Error('Invalid interpretation payload');
+  }
+  return data;
+};
+
 export type TrackEvent = 'reaction' | 'builder' | 'compound' | 'textbook';
 
 /** 匿名使用计数：发后即忘，绝不阻塞或打断主流程 */
