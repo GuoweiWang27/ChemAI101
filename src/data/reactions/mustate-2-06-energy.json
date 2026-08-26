@@ -85,7 +85,87 @@
         }
       ]
     },
-    "reviewed": true
+    "reviewed": true,
+    "atomInsights": {
+      "1": {
+        "role": {
+          "zh": "负极（锌）活性物质，失电子被氧化",
+          "en": "Active material at the negative electrode, oxidized by losing electrons"
+        },
+        "detail": {
+          "zh": "锌从 0 价失去 2 个电子变成 Zn²⁺，发生氧化反应；放出的电子经外电路导线流向铜片，推动电流表指针偏转，是本装置电子和电能的来源。锌的失电子把化学能转变为电能，放电后锌逐渐溶解变薄，这正是原电池能量转化的根源。",
+          "en": "Zinc goes from 0 to +2 by losing two electrons and is oxidized; these electrons travel through the external wire to the copper electrode and deflect the ammeter. Zn is the source of both electrons and electrical energy, and its loss of electrons is what turns chemical energy into electrical energy."
+        }
+      },
+      "2": {
+        "role": {
+          "zh": "硫酸根的中心原子，旁观离子",
+          "en": "Central atom of the sulfate ion, a spectator species"
+        },
+        "detail": {
+          "zh": "硫以 +6 价存在于 SO₄²⁻ 中，整个反应中氧化数保持不变，不参与电子得失。它只是从稀硫酸里的 SO₄²⁻ 转变成 ZnSO₄ 里的 SO₄²⁻，作为旁观离子随 Zn²⁺ 迁移，维持溶液的电中性。",
+          "en": "Sulfur stays at +6 in SO₄²⁻ and keeps that oxidation state throughout, taking no part in electron transfer. It simply moves from the sulfate in dilute sulfuric acid to the sulfate in ZnSO₄, migrating with Zn²⁺ as a spectator ion to keep the solution electrically neutral."
+        }
+      },
+      "3": {
+        "role": {
+          "zh": "硫酸根中的氧原子（单键氧），旁观成分",
+          "en": "Single-bonded oxygen of the sulfate group, a spectator component"
+        },
+        "detail": {
+          "zh": "该氧以 -2 价经 O–S 单键与硫相连，反应中不失去也不得到电子。它随 SO₄²⁻ 从 H₂SO₄ 迁到 ZnSO₄，化学环境基本未变，只是旁观地维持溶液电荷平衡。",
+          "en": "This oxygen sits at −2 and is joined to sulfur by a single O–S bond; it neither gains nor loses electrons during the reaction. It travels with the sulfate ion from H₂SO₄ to ZnSO₄ with essentially no change in its environment, acting as a spectator that merely preserves charge neutrality."
+        }
+      },
+      "4": {
+        "role": {
+          "zh": "硫酸根中的氧原子（单键氧），旁观成分",
+          "en": "Single-bonded oxygen of the sulfate group, a spectator component"
+        },
+        "detail": {
+          "zh": "该氧始终保持 -2 价，以 O–S 单键与硫成键，氧化数在整个电极反应中不变。它与硫一起在稀硫酸和硫酸锌之间迁移，不参与放电，只保证溶液的离子平衡。",
+          "en": "This oxygen keeps the −2 oxidation state and bonds to sulfur through a single O–S bond, so its oxidation number never changes during the electrode reactions. Along with sulfur it is carried between the dilute acid and zinc sulfate, contributing nothing to the discharge and only keeping the ionic balance of the solution."
+        }
+      },
+      "5": {
+        "role": {
+          "zh": "硫酸根中的氧原子（双键氧），旁观成分",
+          "en": "Double-bonded oxygen of the sulfate group, a spectator component"
+        },
+        "detail": {
+          "zh": "该氧以 -2 价经 O–S 双键与硫相连，配位方式与单键氧不同，但同样不参与得失电子。反应前后它仍属硫酸根，仅在溶液中作为旁观成分迁移，离子周围环境几乎不变。",
+          "en": "This oxygen is at −2 and links to sulfur through an O–S double bond; its coordination differs from the single-bonded oxygens, yet it still takes no part in electron transfer. It remains within the sulfate ion before and after the reaction, moving through the solution as a spectator with an almost unchanged local environment."
+        }
+      },
+      "6": {
+        "role": {
+          "zh": "硫酸根中的氧原子（双键氧），旁观成分",
+          "en": "Double-bonded oxygen of the sulfate group, a spectator component"
+        },
+        "detail": {
+          "zh": "该氧氧化数保持 -2，以 O–S 双键与硫结合，不参与氧化还原。它随硫酸根从稀硫酸进入硫酸锌，键的断裂与生成均未涉及它，是典型的旁观原子，只为溶液维持电中性。",
+          "en": "This oxygen holds the −2 oxidation state and is bound to sulfur by an O–S double bond with no role in the redox. Carried with the sulfate ion from the dilute acid into zinc sulfate, it is touched by neither bond breaking nor bond forming, so it is a classic spectator atom that only keeps the solution neutral."
+        }
+      }
+    },
+    "stepAtomIds": [
+      [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      [
+        1
+      ],
+      [
+        1
+      ],
+      [],
+      []
+    ]
   },
   {
     "id": "cao-water-exothermic",
@@ -155,7 +235,72 @@
         }
       ]
     },
-    "reviewed": true
+    "reviewed": true,
+    "atomInsights": {
+      "1": {
+        "role": {
+          "zh": "CaO 中的钙离子，转化为氢氧化钙中的钙",
+          "en": "Calcium in CaO that becomes the calcium of calcium hydroxide"
+        },
+        "detail": {
+          "zh": "钙在 CaO 中已是 +2 价，反应中氧化数不变，所以这不是氧化还原。反应时 Ca–O 离子键断裂，Ca²⁺ 转而与两个 OH⁻ 结合生成 Ca(OH)₂。整个过程放热，因为生成新离子键和 O–H 键放出的能量大于拆开 CaO 与 H₂O 旧键所需的能量。",
+          "en": "Calcium is already +2 in CaO and keeps that oxidation state, so this is not a redox reaction. As the reaction proceeds the Ca–O ionic bond breaks and Ca²⁺ recombines with two hydroxide ions to form Ca(OH)₂. It is exothermic because the energy released in forming the new ionic bonds and the O–H bonds exceeds the energy needed to break the old CaO and water bonds."
+        }
+      },
+      "2": {
+        "role": {
+          "zh": "来自 CaO 的氧原子（O²⁻），参与生成 OH⁻",
+          "en": "The oxygen from CaO (O²⁻) that helps form hydroxide"
+        },
+        "detail": {
+          "zh": "在 CaO 中氧为 -2 价的 O²⁻，反应中与来自水的氢结合，形成 OH⁻ 进入 Ca(OH)₂。氧始终保持在 -2 价，不参与电子得失；该放热反应的能量来源之一就是生成 O–H 键以及 Ca(OH)₂ 离子键时释放的能量。",
+          "en": "In CaO the oxygen is the O²⁻ ion at −2; during the reaction it combines with a hydrogen from water to form hydroxide in Ca(OH)₂. Oxygen stays at −2 and exchanges no electrons, and part of the heat released comes from forming the O–H bond and the ionic bonds of Ca(OH)₂."
+        }
+      },
+      "3": {
+        "role": {
+          "zh": "水分子中的氧原子，转化为氢氧根中的氧",
+          "en": "Oxygen from the water molecule that becomes hydroxide oxygen"
+        },
+        "detail": {
+          "zh": "该氧是 H₂O 中的氧，反应中其 O–H 键与 CaO 相互作用，最终以 OH⁻ 的形式出现在 Ca(OH)₂ 中，氧化数保持 -2。它与 Ca²⁺ 形成新的离子键，这一过程也是反应明显放热的来源之一。",
+          "en": "This oxygen belongs to water; as its O–H bond interacts with CaO it ends up as hydroxide in Ca(OH)₂ while keeping the −2 oxidation state. The new ionic bond it forms with Ca²⁺ is one of the sources of the pronounced heat given off."
+        }
+      },
+      "4": {
+        "role": {
+          "zh": "来自水的氢原子，并入氢氧根",
+          "en": "Hydrogen from water that joins the hydroxide group"
+        },
+        "detail": {
+          "zh": "氢以 +1 价通过 O–H 共价键与氧相连，反应后进入 Ca(OH)₂ 的羟基。其氧化数不变，因此属于非氧化还原；它参与了把水中的旧 O–H 键重组成产物氢氧键的过程，这一成键过程放出热量。",
+          "en": "Hydrogen is at +1 and bonded to oxygen by a covalent O–H bond; after the reaction it sits in the hydroxide group of Ca(OH)₂. Its oxidation state is unchanged, so the process is not redox, and this hydrogen takes part in restructuring the old water bond into the new hydroxide bond, which releases heat."
+        }
+      },
+      "5": {
+        "role": {
+          "zh": "来自水的氢原子，并入氢氧根",
+          "en": "Hydrogen from water that joins the hydroxide group"
+        },
+        "detail": {
+          "zh": "该氢的氧化数为 +1，通过 O–H 键与氧结合，反应后成为 Ca(OH)₂ 中羟基的一部分。它不参与电子得失，只随 O–H 键的重组而迁移，是放热反应中成键放热能量来源的参与原子之一。",
+          "en": "This hydrogen has the +1 oxidation number and is joined to oxygen through an O–H bond; after the reaction it becomes part of a hydroxide group in Ca(OH)₂. It exchanges no electrons and simply moves as the O–H bonds reorganize, making it one of the atoms that contributes the bond-forming energy released in the exothermic process."
+        }
+      }
+    },
+    "stepAtomIds": [
+      [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      [],
+      [],
+      [],
+      []
+    ]
   },
   {
     "id": "baoh2-nh4cl-endothermic",
@@ -213,7 +358,50 @@
         }
       ]
     },
-    "reviewed": true
+    "reviewed": true,
+    "atomInsights": {
+      "1": {
+        "role": {
+          "zh": "Ba(OH)₂·8H₂O 中的 Ba²⁺，进入产物 BaCl₂",
+          "en": "Ba²⁺ from Ba(OH)₂·8H₂O that ends up in the product BaCl₂"
+        },
+        "detail": {
+          "zh": "钡始终为 +2 价，因此这不是氧化还原。反应中 Ba²⁺ 的配体由 OH⁻ 变为 Cl⁻，生成 BaCl₂。过程吸热，是因为拆开 Ba(OH)₂·8H₂O 晶格（含 8 个结晶水的氢键）与 NH₄Cl 晶格所消耗的能量大于生成 BaCl₂ 及 NH₃ 等新键放出的能量。",
+          "en": "Barium keeps the +2 oxidation state, so this is not a redox reaction. In the reaction Ba²⁺ swaps its hydroxide ligands for chloride to form BaCl₂. It is endothermic because breaking apart the Ba(OH)₂·8H₂O lattice (with its eight waters of crystallization) and the NH₄Cl lattice consumes more energy than forming the new bonds of BaCl₂ and NH₃ releases."
+        }
+      },
+      "2": {
+        "role": {
+          "zh": "NH₄Cl 中的 Cl⁻，转入产物 BaCl₂",
+          "en": "Chloride from NH₄Cl that moves into BaCl₂"
+        },
+        "detail": {
+          "zh": "氯的氧化数为 -1，不参与电子得失。反应中该 Cl⁻ 从 NH₄Cl 晶体进入溶液并与 Ba²⁺ 结合成 BaCl₂，属于离子重组。它与 Ba²⁺ 成键放出的能量难以弥补晶格拆解的吸热，故整体表现为吸热。",
+          "en": "Chlorine is at −1 and takes no part in electron transfer. In the reaction this chloride ion leaves the NH₄Cl lattice and combines with Ba²⁺ to form BaCl₂ in an ionic rearrangement. The energy it releases when bonding with Ba²⁺ is not enough to offset the energy absorbed in breaking the lattice, so the process is endothermic on balance."
+        }
+      },
+      "3": {
+        "role": {
+          "zh": "NH₄Cl 中的 Cl⁻，转入产物 BaCl₂",
+          "en": "Chloride from NH₄Cl that moves into BaCl₂"
+        },
+        "detail": {
+          "zh": "该氯同样为 -1 价，氧化数不变，只随离子重新组合而改变结合对象。它与另一个 Cl⁻ 一起离开 NH₄Cl 晶格，与 Ba²⁺ 结合为 BaCl₂，是典型的无电子得失的离子重组，成键放热不足以抵消断键吸热。",
+          "en": "This chlorine is also at −1 with an unchanged oxidation number, and it simply changes its bonding partner during the ionic rearrangement. Together with the other chloride it leaves the NH₄Cl lattice and combines with Ba²⁺ to give BaCl₂ in a classic case of ion recombination with no electron transfer, where the bond-forming heat cannot offset the bond-breaking heat."
+        }
+      }
+    },
+    "stepAtomIds": [
+      [
+        1,
+        2,
+        3
+      ],
+      [],
+      [],
+      [],
+      []
+    ]
   },
   {
     "id": "al-fe2o3-thermite",
@@ -245,6 +433,33 @@
       ],
       "bonds": []
     },
-    "reviewed": true
+    "reviewed": true,
+    "atomInsights": {
+      "1": {
+        "role": {
+          "zh": "氧化铁中的 Fe³⁺，被铝还原为铁单质",
+          "en": "Fe³⁺ in iron(III) oxide that is reduced to elemental iron by aluminum"
+        },
+        "detail": {
+          "zh": "铁在 Fe₂O₃ 中为 +3 价，反应中得到 3 个电子被还原为 0 价铁单质，以熔融铁水形式析出；铝则失去电子被氧化。这是典型的置换反应，也是剧烈的氧化还原反应，因断裂与生成键的键能差而释放大量热，温度可超过 2000 ℃。",
+          "en": "Iron is +3 in Fe₂O₃ and gains three electrons to be reduced to elemental iron, which emerges as molten metal, while aluminum loses electrons and is oxidized. This is a classic displacement and a vigorous redox reaction in which the difference between the energies of the bonds broken and formed releases a large amount of heat, driving the temperature above 2000 °C."
+        }
+      }
+    },
+    "stepAtomIds": [
+      [
+        1
+      ],
+      [
+        1
+      ],
+      [
+        1
+      ],
+      [
+        1
+      ],
+      []
+    ]
   }
 ]

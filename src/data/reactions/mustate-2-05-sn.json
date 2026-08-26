@@ -52,7 +52,59 @@
         }
       ]
     },
-    "reviewed": true
+    "reviewed": true,
+    "atomInsights": {
+      "1": {
+        "role": {
+          "zh": "硫原子，二氧化硫的中心原子，燃烧时被氧化。",
+          "en": "The sulfur atom, the central atom of SO2, which is oxidised during combustion."
+        },
+        "detail": {
+          "zh": "硫单质在点燃条件下与氧气化合，硫原子失去电子，化合价从 0 升到 +4。它是硫在空气中发出淡蓝色、在氧气中发出明亮蓝紫色火焰的根源。生成的二氧化硫中，硫以两根 S=O 双键连接两个氧原子。",
+          "en": "Elemental sulfur combines with oxygen when ignited; the atom loses electrons and its oxidation state rises from 0 to +4. It is the source of the faint blue flame in air and the bright blue-violet flame in oxygen. In the SO2 formed, sulfur is held to two oxygen atoms by two S=O double bonds."
+        }
+      },
+      "2": {
+        "role": {
+          "zh": "氧原子，来自氧气，与硫以双键结合成二氧化硫。",
+          "en": "An oxygen atom from O2, bonded to sulfur by a double bond to form SO2."
+        },
+        "detail": {
+          "zh": "氧分子中的氧原子先断开 O=O 双键，再与硫共用电子对，形成 S=O 双键。它相当于得到电子，整体表现出硫被氧化、氧被还原。这个氧原子的存在使二氧化硫成为酸性氧化物，可用于进一步制取硫酸。",
+          "en": "The oxygen atom first breaks the O=O double bond in the oxygen molecule, then shares an electron pair with sulfur to form an S=O double bond. It effectively gains electrons, so sulfur is oxidised while oxygen is reduced. The presence of this oxygen makes SO2 an acidic oxide that can be used to make sulfuric acid."
+        }
+      },
+      "3": {
+        "role": {
+          "zh": "另一个氧原子，与硫形成第二个 S=O 双键。",
+          "en": "The other oxygen atom, forming a second S=O double bond with sulfur."
+        },
+        "detail": {
+          "zh": "它和 2 号氧同源地来自氧气，与硫以双键相连。两个氧共同使中心硫达到 +4 价。这两个氧与硫构成的二氧化硫是无色、有刺激性气味的气体，正是这种气味在实验中让人警觉。",
+          "en": "It comes from oxygen like O-2 and is attached to sulfur by a double bond. Together the two oxygens bring the central sulfur to +4. The SO2 molecule built from these two oxygens and sulfur is a colourless gas with a sharp, pungent smell."
+        }
+      }
+    },
+    "stepAtomIds": [
+      [
+        1
+      ],
+      [
+        1,
+        2,
+        3
+      ],
+      [
+        1,
+        2,
+        3
+      ],
+      [
+        1,
+        2,
+        3
+      ]
+    ]
   },
   {
     "id": "so2-cat-oxidation",
@@ -120,7 +172,76 @@
         }
       ]
     },
-    "reviewed": true
+    "reviewed": true,
+    "atomInsights": {
+      "1": {
+        "role": {
+          "zh": "三氧化硫的中心硫原子，由 +4 价被氧化到 +6 价。",
+          "en": "The central sulfur atom of SO3, oxidised from +4 to +6."
+        },
+        "detail": {
+          "zh": "二氧化硫中的硫（+4 价）在钒催化剂表面被氧气氧化，升到 +6 价，生成 SO3。硫的部分电子被氧夺走，因此它是还原剂。这是接触法制硫酸的关键一步，硫价态的升高对应着反应的正方向。",
+          "en": "The sulfur in SO2 (+4) is oxidised by oxygen on a vanadium(V) oxide catalyst surface, rising to +6 in SO3. It loses some electron density to oxygen, so it is the reducing agent. This is the key step of the contact process for making sulfuric acid, and the rise in sulfur's oxidation state corresponds to the forward direction."
+        }
+      },
+      "2": {
+        "role": {
+          "zh": "SO3 中与硫以双键相连的氧原子之一。",
+          "en": "One of the oxygen atoms bonded to sulfur by a double bond in SO3."
+        },
+        "detail": {
+          "zh": "它可能保留自原来的二氧化硫，也可能来自新加入的氧气，最终都让中心硫达到 +6 价，与硫形成 S=O 双键（简化表示）。三个氧原子共同使 SO3 成为硫酸的酸酐，遇水即生成 H2SO4。",
+          "en": "It may be an oxygen retained from the original SO2 or one newly supplied by O2; either way it takes the central sulfur to +6 and forms an S=O double bond with it (a simplified representation). Together the three oxygens make SO3 the acid anhydride of sulfuric acid: on contact with water it gives H2SO4."
+        }
+      },
+      "3": {
+        "role": {
+          "zh": "SO3 中与硫以双键相连的另一个氧原子。",
+          "en": "Another oxygen atom of SO3 bonded to sulfur by a double bond."
+        },
+        "detail": {
+          "zh": "它和 2 号氧在结构上等价，都是 S=O 双键中的氧，在二氧化硫的催化氧化中被保留在产物里。加入这样的氧原子正是“加氧”氧化反应的核心，使硫的氧化态上升。",
+          "en": "It is structurally equivalent to O-2, being part of an S=O double bond, and is retained in the product when SO2 is oxidised over the catalyst. Adding such an oxygen is the essence of the oxidation process, raising sulfur's oxidation state."
+        }
+      },
+      "4": {
+        "role": {
+          "zh": "新加入的氧原子，使硫从 +4 升到 +6 价。",
+          "en": "The newly added oxygen atom that raises sulfur from +4 to +6."
+        },
+        "detail": {
+          "zh": "这个氧来自参与反应的氧气分子，正是“氧化”的关键：没有它，硫不能从 +4 升到 +6。工业上通过增大氧气浓度推动可逆反应向生成 SO3 的方向进行，供给的就是这种氧原子。",
+          "en": "This oxygen comes from the O2 taking part in the reaction and is the essence of the term 'oxidation': without it sulfur cannot rise from +4 to +6. Industrially, increasing the oxygen concentration pushes the reversible equilibrium towards SO3 by supplying more of this oxygen."
+        }
+      }
+    },
+    "stepAtomIds": [
+      [
+        1,
+        2,
+        3,
+        4
+      ],
+      [
+        1,
+        2,
+        3,
+        4
+      ],
+      [
+        1,
+        2,
+        3,
+        4
+      ],
+      [
+        1,
+        2,
+        3,
+        4
+      ],
+      []
+    ]
   },
   {
     "id": "cu-conc-h2so4",
@@ -209,7 +330,85 @@
         }
       ]
     },
-    "reviewed": true
+    "reviewed": true,
+    "atomInsights": {
+      "1": {
+        "role": {
+          "zh": "铜原子，被浓硫酸氧化，生成蓝色的 Cu2+。",
+          "en": "The copper atom, oxidised by concentrated sulfuric acid to blue Cu2+."
+        },
+        "detail": {
+          "zh": "铜在常温不与稀硫酸反应，但加热时能被浓硫酸的强氧化性氧化。铜失去 2 个电子，从 0 价升到 +2 价（Cu2+），使溶液显蓝色。铜是还原剂，它的溶解既是氧化过程，也是生成硫酸铜的过程。",
+          "en": "Copper does not react with dilute sulfuric acid at room temperature, but on heating the strong oxidising power of the concentrated acid attacks it. Copper loses two electrons, rising from 0 to +2 (Cu2+), which colours the solution blue. Copper is the reducing agent, and its dissolving is both an oxidation and the formation of copper(II) sulfate."
+        }
+      },
+      "2": {
+        "role": {
+          "zh": "硫酸根中 +6 价的中心硫原子，是浓硫酸氧化性的来源。",
+          "en": "The +6 central sulfur of the sulfate ion, the source of the oxidising power of concentrated sulfuric acid."
+        },
+        "detail": {
+          "zh": "在浓硫酸（H2SO4）中硫为 +6 价。加热时它被铜还原为 +4 价，生成 SO2（有刺激性气味、能使品红褪色），表现出强氧化性；同时另一些 H2SO4 中的 +6 硫不改变价态，以 SO4(2-) 形式与 Cu2+ 结合，表现出酸性。同一个“硫中心”恰好解释了浓硫酸既显强氧化性又显酸性。",
+          "en": "In concentrated H2SO4 sulfur is +6. On heating, copper reduces it to +4, releasing SO2 (pungent, and bleaching the colour of magenta) and showing strong oxidising power; meanwhile other H2SO4 molecules keep sulfur at +6 and form SO4(2-) with Cu2+, showing acidity. A single sulfur centre neatly explains why concentrated sulfuric acid acts both as a strong oxidant and as an acid."
+        }
+      },
+      "3": {
+        "role": {
+          "zh": "硫酸根中与硫单键相连的氧原子。",
+          "en": "An oxygen atom singly bonded to sulfur in the sulfate ion."
+        },
+        "detail": {
+          "zh": "它与硫共用一对电子，保留在硫酸根中并随 Cu2+ 进入 CuSO4。这类氧在反应中基本不变价，体现的是浓硫酸的“酸性”一面。它与硫形成的 S-O 单键是硫酸根四面体骨架的一部分。",
+          "en": "It shares one electron pair with sulfur and stays in the sulfate ion, entering CuSO4 with Cu2+. This kind of oxygen hardly changes oxidation state, reflecting the 'acidic' role of the concentrated acid. Its S-O single bond is part of the tetrahedral sulfate framework."
+        }
+      },
+      "4": {
+        "role": {
+          "zh": "硫酸根中与硫单键相连的另一个氧原子。",
+          "en": "Another oxygen atom singly bonded to sulfur in the sulfate ion."
+        },
+        "detail": {
+          "zh": "与 3 号氧同属 S-O 单键结构。这类氧使硫酸根整体带 2 价负电荷（SO4 2-），与 +2 价的 Cu2+ 结合成电中性的硫酸铜。反应中它们不变价，体现浓硫酸的酸性。",
+          "en": "Like O-3 it belongs to the S-O single-bonded set. These oxygens give the sulfate ion its 2- charge (SO4 2-), which pairs with Cu2+ to form electrically neutral copper(II) sulfate. They keep their oxidation state in the reaction, reflecting the acidic role of the concentrated acid."
+        }
+      },
+      "5": {
+        "role": {
+          "zh": "硫酸根中以双键与硫相连的氧原子。",
+          "en": "An oxygen atom double-bonded to sulfur in the sulfate ion."
+        },
+        "detail": {
+          "zh": "它与硫形成 S=O 双键（简化表示），对应硫 +6 的高价态。这个双键氧让硫酸根更稳定，也与浓硫酸的氧化性相联系。在该反应里它随硫酸根进入 CuSO4。",
+          "en": "It forms an S=O double bond with sulfur (a simplified representation), matching sulfur's high +6 state. This double-bonded oxygen stabilises the sulfate ion and is linked to the oxidising nature of the concentrated acid. In this reaction it passes into CuSO4 with the sulfate group."
+        }
+      },
+      "6": {
+        "role": {
+          "zh": "硫酸根中另一个双键氧原子。",
+          "en": "The other double-bonded oxygen in the sulfate ion."
+        },
+        "detail": {
+          "zh": "与 5 号氧结构等价，同样以 S=O 双键与硫相连，为硫的高氧化态提供结构支持。它随硫酸根留在溶液中，成为硫酸铜的组成部分。",
+          "en": "Structurally equivalent to O-5, it is also joined to sulfur by a double bond, supporting sulfur's high oxidation state. It remains in solution with the sulfate ion as part of the copper(II) sulfate."
+        }
+      }
+    },
+    "stepAtomIds": [
+      [],
+      [
+        1,
+        2
+      ],
+      [
+        2
+      ],
+      [
+        1
+      ],
+      [
+        2
+      ]
+    ]
   },
   {
     "id": "n2-o2",
@@ -253,7 +452,50 @@
         }
       ]
     },
-    "reviewed": true
+    "reviewed": true,
+    "atomInsights": {
+      "2": {
+        "role": {
+          "zh": "氮原子，从 N2 中的 0 价被氧化到 +2 价。",
+          "en": "The nitrogen atom, oxidised from 0 in N2 to +2 in NO."
+        },
+        "detail": {
+          "zh": "氮气分子含极其牢固的 N 三键，键能大、常温很稳定，所以氮气化学性质不活泼。但在放电或高温条件下，N 三键断裂，氮原子与氧结合，化合价从 0 升到 +2，生成无色的一氧化氮。这是雷雨天气自然固氮的关键反应，也是 NO 进入大气、造成污染（进而生成 NO2）的起点。",
+          "en": "The N2 molecule has an extremely strong N≡N triple bond and is stable and unreactive at room temperature. Under an electric discharge or high temperature, though, the triple bond breaks and the nitrogen atom combines with oxygen, rising from 0 to +2 to give colourless NO. This is the key natural nitrogen-fixation reaction in thunderstorms, and the point where NO enters the atmosphere to cause pollution (later forming NO2)."
+        }
+      },
+      "1": {
+        "role": {
+          "zh": "氧原子，来自 O2，与氮形成 NO。",
+          "en": "The oxygen atom from O2 that combines with nitrogen to give NO."
+        },
+        "detail": {
+          "zh": "氧原子在放电或高温条件下与氮共用电子对，形成 N=O 双键（NO 为双原子分子，可用三电子键近似描述）。它相对得到电子，使氮被氧化。生成的 NO 无色、不溶于水，但在空气中会迅速被 O2 继续氧化成红棕色的 NO2。",
+          "en": "Under discharge or high temperature the oxygen atom shares an electron pair with nitrogen, forming an N=O double bond (NO is diatomic; a three-electron bond is an acceptable approximation). It relatively gains electrons, oxidising the nitrogen. The NO formed is colourless and insoluble in water, but in air it is rapidly oxidised further by O2 to reddish-brown NO2."
+        }
+      }
+    },
+    "stepAtomIds": [
+      [
+        2
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        2
+      ]
+    ]
   },
   {
     "id": "no2-h2o",
@@ -333,7 +575,79 @@
         }
       ]
     },
-    "reviewed": true
+    "reviewed": true,
+    "atomInsights": {
+      "4": {
+        "role": {
+          "zh": "硝酸中的中心氮原子（+5 价），由 NO2 歧化而来。",
+          "en": "The central nitrogen atom of HNO3 (+5), formed by disproportionation of NO2."
+        },
+        "detail": {
+          "zh": "二氧化氮（+4 价）溶于水发生自身氧化还原（歧化）反应：一部分氮被氧化到 +5 生成硝酸 HNO3，另一部分被还原到 +2 生成 NO。氮在硝酸中以 N=O 和 N-O 与氧相连，保持最高价 +5，这正是硝酸具有强氧化性的原因（+5 价氮易得电子被还原）。",
+          "en": "When NO2 (+4) dissolves in water it disproportionates: part of the nitrogen is oxidised to +5, giving HNO3, and part is reduced to +2, giving NO. In nitric acid the nitrogen is held to oxygen by N=O and N-O links and keeps the maximum oxidation state +5, which is why nitric acid is a strong oxidant (the +5 nitrogen is easily reduced)."
+        }
+      },
+      "5": {
+        "role": {
+          "zh": "硝酸的氢原子，能电离出 H+。",
+          "en": "The hydrogen atom of nitric acid, which can ionise as H+."
+        },
+        "detail": {
+          "zh": "氢原子与一个氧形成 O-H 共价键，在水溶液中电离出 H+，使 HNO3 显示强酸性。它来源于水分子（H2O）。在成盐和氧化还原反应中，正是这个 H+ 决定了硝酸的酸性性质。",
+          "en": "The hydrogen atom forms an O-H covalent bond and ionises in water as H+, making HNO3 a strong acid. It comes from the water molecule. In salt-formation and redox reactions this H+ gives nitric acid its acidic character."
+        }
+      },
+      "1": {
+        "role": {
+          "zh": "同时连接氢和氮的氧原子（-OH 基团中的氧）。",
+          "en": "The oxygen atom bonded to both hydrogen and nitrogen (the oxygen of the -OH group)."
+        },
+        "detail": {
+          "zh": "它一端与 H 成 O-H 键、另一端与 N 成 N-O 键，构成硝酸中的 -OH 基团。正是这个氧让硝酸能电离出 H+ 而显酸性。当硝酸作为氧化剂时，它与氮之间的键会被打断。",
+          "en": "It bonds to H on one side (O-H) and to N on the other (N-O), forming the -OH group of nitric acid. This oxygen is what lets HNO3 ionise to H+ and act as an acid. Its bond to nitrogen can be broken when nitric acid acts as an oxidant."
+        }
+      },
+      "2": {
+        "role": {
+          "zh": "硝酸根中与氮单键相连的氧原子。",
+          "en": "An oxygen atom singly bonded to nitrogen in the nitrate structure."
+        },
+        "detail": {
+          "zh": "它与 N 形成 N-O 单键，与另外两个氧共同构成硝酸根，使氮保持 +5 价。它来自被氧化的 NO2 或水。在硝酸表现酸性时，这类氧保留在硝酸根内。",
+          "en": "It forms an N-O single bond and, with the other two oxygens, builds the nitrate structure that keeps nitrogen at +5. It comes from the oxidised NO2 or from water. When nitric acid shows its acidic behaviour this kind of oxygen stays in the nitrate group."
+        }
+      },
+      "3": {
+        "role": {
+          "zh": "硝酸根中以双键与氮相连的氧原子。",
+          "en": "The oxygen atom double-bonded to nitrogen in the nitrate structure."
+        },
+        "detail": {
+          "zh": "它与 N 形成 N=O 双键（简化表示），保证氮处于最高价 +5，并参与硝酸的强氧化性。红棕色的 NO2 被水吸收时生成的正是这种带 N=O 的硝酸，所以体系的颜色逐渐褪去。",
+          "en": "It forms an N=O double bond with nitrogen (simplified), securing the maximum +5 state and contributing to the strong oxidising power of nitric acid. When reddish-brown NO2 is absorbed in water this N=O-bearing nitric acid is what forms, so the colour of the system gradually fades."
+        }
+      }
+    },
+    "stepAtomIds": [
+      [
+        4
+      ],
+      [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      []
+    ]
   },
   {
     "id": "nh3-fountain",
@@ -401,7 +715,81 @@
         }
       ]
     },
-    "reviewed": true
+    "reviewed": true,
+    "atomInsights": {
+      "1": {
+        "role": {
+          "zh": "氨分子的中心氮原子，带有一对孤对电子。",
+          "en": "The central nitrogen atom of ammonia, carrying a lone pair of electrons."
+        },
+        "detail": {
+          "zh": "氮原子与三个氢形成三根 N-H 单键，分子呈三角锥形，氮上还剩一对孤对电子，使氨有碱性。正是这个孤对电子能与水中的 H+ 结合（或与水分子形成氢键），所以氨极易溶于水、氨水显碱性、酚酞变红。氮的孤对电子是整个喷泉实验现象的微观根源。",
+          "en": "Nitrogen forms three N-H bonds to give a trigonal-pyramidal molecule with a lone pair on nitrogen, which makes ammonia basic. It is this lone pair that can accept a proton from water (or form hydrogen bonds with water), so ammonia is extremely soluble, ammonia solution is alkaline, and phenolphthalein turns red. The lone pair on nitrogen is the microscopic origin of the whole fountain experiment."
+        }
+      },
+      "2": {
+        "role": {
+          "zh": "氨分子中的一个氢原子。",
+          "en": "A hydrogen atom of the ammonia molecule."
+        },
+        "detail": {
+          "zh": "它与氮形成极性 N-H 键，使氨分子为极性分子，从而极易溶于水（1 体积水约溶 700 体积氨）。这些氢原子还让氨能与水形成氢键，进一步促进溶解。喷泉实验中氨溶入水后瓶内气压骤降，外界大气压把水压入烧瓶形成喷泉。",
+          "en": "It forms a polar N-H bond with nitrogen, making NH3 a polar molecule that is extremely soluble in water (roughly 1:700 by volume). These hydrogens also let ammonia form hydrogen bonds with water, further aiding dissolution. In the fountain experiment, once ammonia dissolves the pressure inside the flask drops sharply and atmospheric pressure pushes water in to form the fountain."
+        }
+      },
+      "3": {
+        "role": {
+          "zh": "氨分子中的第二个氢原子。",
+          "en": "A second hydrogen atom of the ammonia molecule."
+        },
+        "detail": {
+          "zh": "与 2 号氢同源，都以 N-H 键与氮相连，共同构成三角锥形的氨。它使氨的三个 N-H 键极性相加，分子整体极性增强，是氨极易溶于水的原因之一。",
+          "en": "It is equivalent to H-2, bonded to nitrogen by an N-H bond and completing the trigonal-pyramidal shape of ammonia. Together they enhance the molecular polarity, which is one reason ammonia is so soluble in water."
+        }
+      },
+      "4": {
+        "role": {
+          "zh": "氨分子中的第三个氢原子。",
+          "en": "The third hydrogen atom of the ammonia molecule."
+        },
+        "detail": {
+          "zh": "它完成氨分子的三角锥结构，使氮周围有三根 N-H 键和一对孤对电子，分子呈极性。它能与水形成氢键，并在氨水体现碱性时作为 N-H 键的组成部分存在。",
+          "en": "It completes the trigonal-pyramidal structure, giving nitrogen three N-H bonds and one lone pair, so the molecule is polar. It can form hydrogen bonds with water and, when ammonia solution is alkaline, remains as part of the N-H framework."
+        }
+      }
+    },
+    "stepAtomIds": [
+      [
+        1,
+        2,
+        3,
+        4
+      ],
+      [
+        1,
+        2,
+        3,
+        4
+      ],
+      [
+        1,
+        2,
+        3,
+        4
+      ],
+      [
+        1,
+        2,
+        3,
+        4
+      ],
+      [
+        1,
+        2,
+        3,
+        4
+      ]
+    ]
   },
   {
     "id": "nh3-hcl-smoke",
@@ -488,7 +876,107 @@
         }
       ]
     },
-    "reviewed": true
+    "reviewed": true,
+    "atomInsights": {
+      "2": {
+        "role": {
+          "zh": "铵根离子 NH4+ 中的中心氮原子。",
+          "en": "The central nitrogen atom of the ammonium ion NH4+."
+        },
+        "detail": {
+          "zh": "氮在氨分子 NH3 中有一对孤对电子；当氨遇氯化氢时，HCl 把质子 H+ 转移给氨，氮用这对孤对电子形成一根新的 N-H 配位键，成为 NH4+。氮的化合价保持 -3 不变，却由“提供孤对电子”结合了第四个氢，形成了铵盐。氮的碱性是生成白烟（NH4Cl 微晶）的根本。",
+          "en": "In NH3 nitrogen has a lone pair; when ammonia meets hydrogen chloride, HCl transfers a proton and nitrogen uses its lone pair to form a new N-H dative bond, becoming NH4+. Nitrogen keeps oxidation state -3, but by donating its lone pair it bonds a fourth hydrogen and the ammonium salt forms. The basicity of nitrogen is the root cause of the white smoke (tiny NH4Cl crystals)."
+        }
+      },
+      "1": {
+        "role": {
+          "zh": "氯离子 Cl-，与 NH4+ 组成氯化铵晶体。",
+          "en": "The chloride ion Cl-, which pairs with NH4+ to form ammonium chloride crystals."
+        },
+        "detail": {
+          "zh": "氯化氢从浓盐酸中挥发并扩散到空气里，其氯原子以 Cl- 形式与 NH4+ 离子结合，生成 NH4Cl。这些微小晶粒悬浮在空气中形成白烟。氯离子与铵根之间的离子键是离子化合物氯化铵的基础。",
+          "en": "HCl volatilises from concentrated hydrochloric acid and diffuses into the air; its chlorine, as Cl-, combines with NH4+ to give NH4Cl. These tiny crystal particles suspended in air make the white smoke. The ionic bond between chloride and ammonium is the basis of the ionic compound ammonium chloride."
+        }
+      },
+      "3": {
+        "role": {
+          "zh": "铵根中的氢原子（来自氨分子）。",
+          "en": "A hydrogen atom of the ammonium ion, originating from ammonia."
+        },
+        "detail": {
+          "zh": "它来自 NH3，与氮以共价键相连，是氨碱性结构的一部分。在形成 NH4+ 后，它与另外三个氢一起让铵根整体带 +1 价。",
+          "en": "It comes from NH3, is covalently bonded to nitrogen, and is part of the basic structure of ammonia. Once NH4+ forms, it contributes along with the other three hydrogens to the +1 charge of the ammonium ion."
+        }
+      },
+      "4": {
+        "role": {
+          "zh": "铵根中的第二个氢原子（来自氨分子）。",
+          "en": "A second hydrogen of the ammonium ion, originating from ammonia."
+        },
+        "detail": {
+          "zh": "与 3 号氢同源，都是与氮共价相连的氨分子中的氢。它们与氮的孤对电子一起决定氨的碱性，从而决定它能接受质子成盐。",
+          "en": "It is equivalent to H-3, being one of the hydrogens covalently bonded to nitrogen in ammonia. Together with the lone pair they determine the basicity of ammonia, and so its ability to accept a proton and form a salt."
+        }
+      },
+      "5": {
+        "role": {
+          "zh": "铵根中的第三个氢原子（来自氨分子）。",
+          "en": "The third hydrogen of the ammonium ion, originating from ammonia."
+        },
+        "detail": {
+          "zh": "它完成氨分子的三角锥骨架，是氨分子原有三个氢之一。与氮形成 N-H 键，在形成铵盐时保留下来，使铵根与氯离子成离子化合物。",
+          "en": "It completes the trigonal-pyramidal skeleton of ammonia and is one of the original three hydrogens. It forms an N-H bond and is retained when the ammonium salt forms, pairing the ammonium ion with chloride."
+        }
+      },
+      "6": {
+        "role": {
+          "zh": "铵根中的第四个氢（来自氯化氢的质子 H+）。",
+          "en": "The fourth hydrogen of the ammonium ion, coming from the HCl proton (H+)."
+        },
+        "detail": {
+          "zh": "它最初以氢离子的形式存在于氯化氢里，氨把孤对电子配给它，形成一根 N-H 配位键。正是这个质子被氮接受，使 NH3 变成 NH4+、HCl 变成 Cl-，从而生成铵盐。",
+          "en": "It originally exists as a proton in hydrogen chloride; ammonia donates its lone pair to it, forming an N-H dative bond. It is this proton that ammonia accepts, turning NH3 into NH4+ and HCl into Cl-, so the ammonium salt forms."
+        }
+      }
+    },
+    "stepAtomIds": [
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
+    ]
   },
   {
     "id": "nh3-cat-oxidation",
@@ -533,7 +1021,46 @@
         }
       ]
     },
-    "reviewed": true
+    "reviewed": true,
+    "atomInsights": {
+      "2": {
+        "role": {
+          "zh": "氮原子，被 O2 从 -3 价氧化到 +2 价。",
+          "en": "The nitrogen atom, oxidised by O2 from -3 to +2."
+        },
+        "detail": {
+          "zh": "氨分子中的氮为 -3 价（最低价）。在铂催化剂表面与过量氧气反应，氮失去 5 个电子升到 +2 价，生成一氧化氮 NO。这个反应放出大量热，所以铂丝继续保持红热。它是工业制硝酸的核心步骤（氨氧化）。",
+          "en": "The nitrogen in NH3 is at -3, its lowest oxidation state. Over a platinum catalyst and with enough oxygen, nitrogen loses five electrons to rise to +2, forming NO. The reaction is strongly exothermic, so the platinum coil stays red hot. This is the core step of industrial nitric-acid production (ammonia oxidation)."
+        }
+      },
+      "1": {
+        "role": {
+          "zh": "氧原子，作为氧化剂与氮形成 NO。",
+          "en": "The oxygen atom that acts as an oxidant and bonds to nitrogen to give NO."
+        },
+        "detail": {
+          "zh": "它来自空气或氧气，与氮共用电子对形成 N=O 双键，得到电子而使氮被氧化。生成的 NO 无色，但遇过量 O2 很快变成红棕色 NO2，NO2 溶于水便生成硝酸。",
+          "en": "It comes from air or oxygen and shares an electron pair with nitrogen to form an N=O double bond, gaining electrons and so oxidising the nitrogen. The NO formed is colourless, but with excess O2 it quickly becomes reddish-brown NO2, which dissolves in water to give nitric acid."
+        }
+      }
+    },
+    "stepAtomIds": [
+      [
+        2
+      ],
+      [],
+      [
+        1,
+        2
+      ],
+      [
+        2
+      ],
+      [
+        1,
+        2
+      ]
+    ]
   },
   {
     "id": "nh4cl-caoh2-lab",
@@ -603,7 +1130,81 @@
         }
       ]
     },
-    "reviewed": true
+    "reviewed": true,
+    "atomInsights": {
+      "1": {
+        "role": {
+          "zh": "氨分子中的氮原子，其孤对电子赋予氨碱性。",
+          "en": "The nitrogen atom of ammonia, whose lone pair gives ammonia its basicity."
+        },
+        "detail": {
+          "zh": "在铵盐与碱共热时，OH- 夺走 NH4+ 中的氢，氮以 NH3 形式逸出，氮的价态保持 -3 不变。氮的孤对电子让氨显碱性，能使湿润的红色石蕊试纸变蓝，这是检验氨气、也是检验铵根离子的依据。",
+          "en": "When an ammonium salt is heated with a base, OH- takes a proton from NH4+ and nitrogen leaves as NH3, with nitrogen keeping the -3 state. The lone pair on nitrogen makes ammonia basic, turning moist red litmus paper blue, which is the basis for detecting ammonia gas and, more generally, for testing ammonium ions."
+        }
+      },
+      "2": {
+        "role": {
+          "zh": "氨分子中的一个氢原子。",
+          "en": "A hydrogen atom of the ammonia molecule."
+        },
+        "detail": {
+          "zh": "它与氮形成极性键，使氨分子呈三角锥形且为极性分子，密度小于空气。因此实验室用向下排空气法收集氨气，而不能用排水法（氨极易溶于水）。收集到的氨气使管口红色石蕊试纸变蓝。",
+          "en": "It forms a polar bond with nitrogen, giving the pyramidal, polar NH3 molecule whose density is less than that of air. For this reason ammonia is collected by downward displacement of air, not over water (it is extremely soluble). The collected gas turns moist red litmus blue at the mouth of the tube."
+        }
+      },
+      "3": {
+        "role": {
+          "zh": "氨分子中的第二个氢原子。",
+          "en": "A second hydrogen atom of the ammonia molecule."
+        },
+        "detail": {
+          "zh": "与 2 号氢同源，都以 N-H 键与氮相连。它让氨分子保持极性、易于溶解，也构成氨的三角锥结构。",
+          "en": "It is equivalent to H-2, bonded to nitrogen by an N-H bond. It keeps the ammonia molecule polar and readily soluble, and completes the trigonal-pyramidal shape."
+        }
+      },
+      "4": {
+        "role": {
+          "zh": "氨分子中的第三个氢原子。",
+          "en": "The third hydrogen atom of the ammonia molecule."
+        },
+        "detail": {
+          "zh": "它补齐氨的三角锥结构，使氮上保留一对孤对电子，正是这对孤对电子使氨显碱性、遇红色石蕊变蓝。",
+          "en": "It completes the trigonal-pyramidal structure, leaving a lone pair on nitrogen, and it is this lone pair that makes ammonia basic and turns red litmus blue."
+        }
+      }
+    },
+    "stepAtomIds": [
+      [
+        1,
+        2,
+        3,
+        4
+      ],
+      [
+        1,
+        2,
+        3,
+        4
+      ],
+      [
+        1,
+        2,
+        3,
+        4
+      ],
+      [
+        1,
+        2,
+        3,
+        4
+      ],
+      [
+        1,
+        2,
+        3,
+        4
+      ]
+    ]
   },
   {
     "id": "cu-dil-hno3",
@@ -723,7 +1324,126 @@
         }
       ]
     },
-    "reviewed": true
+    "reviewed": true,
+    "atomInsights": {
+      "1": {
+        "role": {
+          "zh": "铜原子，被稀硝酸氧化成 Cu2+。",
+          "en": "The copper atom, oxidised by dilute nitric acid to Cu2+."
+        },
+        "detail": {
+          "zh": "铜失去 2 个电子，从 0 价升到 +2 价，使溶液显蓝色。它是还原剂。稀硝酸的氧化性来自硝酸根中 +5 价的氮，铜被氧化、硝酸被还原为 NO（无色气泡）。反应不需加热，但比浓硝酸慢，这体现了硝酸浓度对氧化性的影响。",
+          "en": "Copper loses two electrons, rising from 0 to +2 and colouring the solution blue. It is the reducing agent. The oxidising power of dilute nitric acid comes from the +5 nitrogen in the nitrate group; copper is oxidised while the acid is reduced to NO (colourless bubbles). The reaction needs no heating but is slower than with concentrated acid, illustrating how concentration affects oxidising power."
+        }
+      },
+      "8": {
+        "role": {
+          "zh": "硝酸根中的一个氮原子（+5 价），部分被还原为 NO。",
+          "en": "A +5 nitrogen in one nitrate group, partly reduced to NO."
+        },
+        "detail": {
+          "zh": "硝酸根中的氮为 +5 价。在稀硝酸中，一部分 +5 氮被铜还原为 +2 生成 NO，另一部分保持 +5 以硝酸根形式进入 Cu(NO3)2，所以硝酸既显氧化性又显酸性。生成的 NO 无色，在瓶口遇空气被氧化为红棕色 NO2，是辨认同类产物的依据。",
+          "en": "The nitrogen in the nitrate group is +5. In dilute nitric acid part of this +5 nitrogen is reduced by copper to +2, giving NO, while the rest stays at +5 and enters Cu(NO3)2 as nitrate, so the acid is both an oxidant and an acid. The NO is colourless but is oxidised to reddish-brown NO2 by the air at the mouth of the bottle, which identifies it."
+        }
+      },
+      "9": {
+        "role": {
+          "zh": "另一个硝酸根中的氮原子（+5 价）。",
+          "en": "The +5 nitrogen of the second nitrate group."
+        },
+        "detail": {
+          "zh": "与 8 号氮类似，这个氮也部分被铜还原、部分保留 +5。稀硝酸的还原产物以 NO 为主，这正是它与浓硝酸（还原产物为 NO2）的区别。它的 +5 价决定了硝酸的强氧化性。",
+          "en": "Like N-8, this nitrogen is partly reduced by copper and partly kept at +5. The main reduction product of dilute nitric acid is NO, which distinguishes it from concentrated nitric acid (whose main product is NO2). Its +5 state accounts for the strong oxidising power of the acid."
+        }
+      },
+      "2": {
+        "role": {
+          "zh": "硝酸根中与氮单键相连的氧原子。",
+          "en": "An oxygen singly bonded to nitrogen in the nitrate group."
+        },
+        "detail": {
+          "zh": "它与 8 号氮形成 N-O 单键，构成硝酸根，使氮保持 +5 价。它来自硝酸，在生成 Cu(NO3)2 时被保留下来。这类氧让硝酸根整体带一个负电荷。",
+          "en": "It forms an N-O single bond with N-8, building the nitrate group that keeps nitrogen at +5. It comes from the nitric acid and is retained when Cu(NO3)2 forms. This type of oxygen gives the nitrate group its single negative charge."
+        }
+      },
+      "3": {
+        "role": {
+          "zh": "第一个硝酸根中另一个单键氧原子。",
+          "en": "Another singly bonded oxygen of the first nitrate group."
+        },
+        "detail": {
+          "zh": "与 2 号氧同属 8 号氮的硝酸根，和氮以 N-O 单键相连。它使硝酸根稳定、带负电荷，随反应进入硝酸铜。",
+          "en": "It belongs with O-2 to the nitrate group of N-8, joined to nitrogen by an N-O single bond. It stabilises the nitrate group, carries negative charge, and passes into copper(II) nitrate."
+        }
+      },
+      "4": {
+        "role": {
+          "zh": "第二个硝酸根中与氮单键相连的氧原子。",
+          "en": "An oxygen singly bonded to nitrogen in the second nitrate group."
+        },
+        "detail": {
+          "zh": "它与 9 号氮形成 N-O 单键，构成第二个硝酸根，使该氮保持 +5。它与 5 号氧一同让这个硝酸根带负电荷，与 Cu2+ 结合成铜盐。",
+          "en": "It forms an N-O single bond with N-9, building the second nitrate group and keeping that nitrogen at +5. With O-5 it gives this nitrate group its negative charge, pairing with Cu2+ to form the copper salt."
+        }
+      },
+      "5": {
+        "role": {
+          "zh": "第二个硝酸根中另一个单键氧原子。",
+          "en": "Another singly bonded oxygen of the second nitrate group."
+        },
+        "detail": {
+          "zh": "与 4 号氧同属 9 号氮的硝酸根。这类单键氧让硝酸根整体带 2 价负电荷（每个硝酸根带 1 价负电），从而与 Cu2+ 形成电中性硝酸铜。",
+          "en": "It belongs with O-4 to the nitrate group of N-9. These singly bonded oxygens give each nitrate group a single negative charge, so two nitrate groups balance the 2+ charge of Cu2+ to form neutral copper(II) nitrate."
+        }
+      },
+      "6": {
+        "role": {
+          "zh": "第一个硝酸根中以双键与氮相连的氧原子。",
+          "en": "The oxygen double-bonded to nitrogen in the first nitrate group."
+        },
+        "detail": {
+          "zh": "它与 8 号氮形成 N=O 双键（简化表示），对应氮的最高价 +5，是硝酸根的组成部分，也是其强氧化性的一部分。在铜被氧化时，这个硝酸根参与反应。",
+          "en": "It forms an N=O double bond with N-8 (simplified), matching nitrogen's maximum +5 state, and is part of the nitrate structure and of its strong oxidising power. This nitrate group takes part in the reaction as copper is oxidised."
+        }
+      },
+      "7": {
+        "role": {
+          "zh": "第二个硝酸根中以双键与氮相连的氧原子。",
+          "en": "The oxygen double-bonded to nitrogen in the second nitrate group."
+        },
+        "detail": {
+          "zh": "与 6 号氧结构等价，以 N=O 双键与 9 号氮相连，为氮的 +5 价提供结构支持，并让硝酸根稳定带负电。它随硝酸根进入硝酸铜。",
+          "en": "It is structurally equivalent to O-6, joined to N-9 by an N=O double bond. It supports the +5 state of nitrogen and stabilises the negatively charged nitrate group, passing into copper(II) nitrate."
+        }
+      }
+    },
+    "stepAtomIds": [
+      [
+        1,
+        8,
+        9
+      ],
+      [
+        8,
+        9
+      ],
+      [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      [
+        8,
+        9
+      ],
+      []
+    ]
   },
   {
     "id": "cu-conc-hno3",
@@ -843,6 +1563,118 @@
         }
       ]
     },
-    "reviewed": true
+    "reviewed": true,
+    "atomInsights": {
+      "1": {
+        "role": {
+          "zh": "铜原子，被浓硝酸迅速氧化成 Cu2+。",
+          "en": "The copper atom, rapidly oxidised by concentrated nitric acid to Cu2+."
+        },
+        "detail": {
+          "zh": "铜失去 2 个电子，从 0 价升到 +2 价，使溶液显蓝色（因生成的 NO2 溶解，常呈蓝绿色）。与稀硝酸相比，浓硝酸氧化性更强，反应在常温立即剧烈进行。铜是还原剂。",
+          "en": "Copper loses two electrons, rising from 0 to +2 and turning the solution blue (often blue-green because of dissolved NO2). Compared with the dilute acid, concentrated nitric acid is a stronger oxidant and the reaction is violent at room temperature. Copper is the reducing agent."
+        }
+      },
+      "8": {
+        "role": {
+          "zh": "硝酸根中的一个氮原子（+5 价），浓硝酸中被还原为 NO2。",
+          "en": "A +5 nitrogen in a nitrate group, reduced to NO2 by concentrated nitric acid."
+        },
+        "detail": {
+          "zh": "浓硝酸中 +5 价氮被铜还原为 +4 价，生成红棕色、有刺激性气味的 NO2 气体。另一部分 +5 氮保留在 Cu(NO3)2 中，表现酸性。浓硝酸的还原产物以 NO2 为主，与稀硝酸（产 NO）不同。",
+          "en": "In concentrated HNO3 the +5 nitrogen is reduced by copper to +4, giving the reddish-brown, pungent NO2 gas. The rest of the +5 nitrogen stays in Cu(NO3)2, showing acidity. The main reduction product of concentrated acid is NO2, unlike the dilute acid which gives NO."
+        }
+      },
+      "9": {
+        "role": {
+          "zh": "另一个硝酸根中的氮原子（+5 价）。",
+          "en": "The +5 nitrogen of the second nitrate group."
+        },
+        "detail": {
+          "zh": "与 8 号氮类似，它也部分被铜还原为 NO2、部分保留 +5 进入硝酸根。两者的共同点在于：硝酸浓度越高，还原产物越倾向于 NO2。",
+          "en": "Like N-8 it is partly reduced by copper to NO2, and partly kept at +5 in the nitrate group. The common point is that the higher the acid concentration, the more the reduction product tends toward NO2."
+        }
+      },
+      "2": {
+        "role": {
+          "zh": "硝酸根中与氮单键相连的氧原子。",
+          "en": "An oxygen singly bonded to nitrogen in the nitrate group."
+        },
+        "detail": {
+          "zh": "它与 8 号氮形成 N-O 单键，构成硝酸根，使氮保持 +5。它来自浓硝酸，在生成 Cu(NO3)2 时保留下来，这类氧让硝酸根带一个负电荷。",
+          "en": "It forms an N-O single bond with N-8, building the nitrate group that keeps nitrogen at +5. It comes from the concentrated acid and is retained when Cu(NO3)2 forms; this type of oxygen gives the nitrate group its single negative charge."
+        }
+      },
+      "3": {
+        "role": {
+          "zh": "第一个硝酸根中另一个单键氧原子。",
+          "en": "Another singly bonded oxygen of the first nitrate group."
+        },
+        "detail": {
+          "zh": "与 2 号氧同属 8 号氮的硝酸根，和氮以 N-O 单键相连。它随反应进入硝酸铜，是 Cu(NO3)2 的组成部分。",
+          "en": "It belongs with O-2 to the nitrate group of N-8, joined by an N-O single bond. It passes into copper(II) nitrate with the reaction, forming part of Cu(NO3)2."
+        }
+      },
+      "6": {
+        "role": {
+          "zh": "第一个硝酸根中以双键与氮相连的氧原子。",
+          "en": "The oxygen double-bonded to nitrogen in the first nitrate group."
+        },
+        "detail": {
+          "zh": "它与 8 号氮形成 N=O 双键（简化表示），对应氮的最高价 +5。它是硝酸根稳定结构和强氧化性的来源，随硝酸根进入硝酸铜。",
+          "en": "It forms an N=O double bond with N-8 (simplified), matching nitrogen's maximum +5 state. It underlies the stability and the strong oxidising power of the nitrate group, passing into copper(II) nitrate."
+        }
+      },
+      "4": {
+        "role": {
+          "zh": "第二个硝酸根中与氮单键相连的氧原子。",
+          "en": "An oxygen singly bonded to nitrogen in the second nitrate group."
+        },
+        "detail": {
+          "zh": "它与 9 号氮形成 N-O 单键，构成第二个硝酸根。这类氧让硝酸根带一个负电荷，与 Cu2+ 成盐。",
+          "en": "It forms an N-O single bond with N-9, building the second nitrate group. This type of oxygen carries one negative charge per nitrate group and pairs with Cu2+ to form the salt."
+        }
+      },
+      "5": {
+        "role": {
+          "zh": "第二个硝酸根中另一个单键氧原子。",
+          "en": "Another singly bonded oxygen of the second nitrate group."
+        },
+        "detail": {
+          "zh": "与 4 号氧同属 9 号氮的硝酸根。两个单键氧与一个双键氧共同构成硝酸根，使其带 1 价负电荷，整体与 Cu2+ 形成电中性硝酸铜。",
+          "en": "It belongs with O-4 to the nitrate group of N-9. Two singly bonded oxygens and one double-bonded oxygen make up the nitrate group, giving it a single negative charge so that two groups balance the 2+ charge of Cu2+ in neutral copper(II) nitrate."
+        }
+      },
+      "7": {
+        "role": {
+          "zh": "第二个硝酸根中以双键与氮相连的氧原子。",
+          "en": "The oxygen double-bonded to nitrogen in the second nitrate group."
+        },
+        "detail": {
+          "zh": "与 6 号氧结构等价，以 N=O 双键与 9 号氮相连，为 +5 价氮提供结构支持。它随硝酸根进入硝酸铜，是产物的一部分。",
+          "en": "It is structurally equivalent to O-6, joined to N-9 by an N=O double bond to support the +5 nitrogen. It passes into copper(II) nitrate and becomes part of the product."
+        }
+      }
+    },
+    "stepAtomIds": [
+      [
+        1
+      ],
+      [
+        8,
+        9
+      ],
+      [
+        1
+      ],
+      [
+        8,
+        9
+      ],
+      [
+        8,
+        9
+      ]
+    ]
   }
 ]

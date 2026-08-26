@@ -54,7 +54,56 @@
         }
       ]
     },
-    "reviewed": true
+    "reviewed": true,
+    "atomInsights": {
+      "1": {
+        "role": {
+          "zh": "被氧化失去电子的钠原子",
+          "en": "The sodium atom that loses an electron and is oxidized"
+        },
+        "detail": {
+          "zh": "钠原子的最外层只有 1 个电子，反应时它把这枚电子交出去，变成带 1 个单位正电荷的 Na⁺。这枚电子被水分子中的氢原子得到，使氢被还原成氢气逸出。失去电子后的 Na⁺ 与氢氧根 OH⁻ 结合，进入生成的 NaOH 中，对应实验中钠块不断变小直至消失。",
+          "en": "Sodium has only one electron in its outermost shell, and it gives this electron away during the reaction, turning into a Na⁺ ion with a single positive charge. That electron is taken by a hydrogen atom of water, which is reduced and escapes as hydrogen gas. After losing its electron the Na⁺ pairs with the hydroxide ion OH⁻ and ends up in the NaOH produced, which is why the piece of sodium keeps shrinking and finally disappears."
+        }
+      },
+      "2": {
+        "role": {
+          "zh": "水分子中保留在氢氧根里的氧原子",
+          "en": "The oxygen atom of water that stays in the hydroxide ion"
+        },
+        "detail": {
+          "zh": "在水分子 H₂O 中，氧与两个氢各形成一根共价键。反应时两个氢中的一个被还原成氢气离开，另一个仍与氧相连，形成氢氧根 OH⁻。这个氧在整个过程中氧化数保持 −2，没有发生电子得失，却是生成碱 NaOH 的核心原子。",
+          "en": "In a water molecule oxygen is covalently bonded to two hydrogen atoms. During the reaction one hydrogen is reduced and leaves as hydrogen gas, while the other stays attached to the oxygen to form the hydroxide ion OH⁻. Throughout the process this oxygen keeps its −2 oxidation state and takes no part in electron transfer, yet it is the central atom that builds the base NaOH."
+        }
+      },
+      "3": {
+        "role": {
+          "zh": "得到电子被还原、生成氢气的氢原子",
+          "en": "The hydrogen atom that gains an electron and is reduced to form hydrogen gas"
+        },
+        "detail": {
+          "zh": "水分子中的这个氢相当于 +1 价，反应时从钠原子处得到一个电子，被还原为氢原子。两个这样的氢原子两两结合成 H₂ 分子，以气泡形式逸出，正是实验中嘶嘶作响、推动小球来回游动的气体。它离开后，水分子剩下的部分就是留在溶液里的 OH⁻。",
+          "en": "This hydrogen of water is effectively +1; during the reaction it gains one electron from the sodium atom and is reduced to atomic hydrogen. Two such hydrogen atoms pair up into an H₂ molecule that escapes as bubbles, which is precisely the hissing gas that pushes the little ball around. Once it leaves, the rest of the molecule is the OH⁻ that stays dissolved."
+        }
+      }
+    },
+    "stepAtomIds": [
+      [],
+      [
+        1
+      ],
+      [
+        3
+      ],
+      [
+        1,
+        2,
+        3
+      ],
+      [
+        3
+      ]
+    ]
   },
   {
     "id": "na-o2-heat",
@@ -121,7 +170,71 @@
         }
       ]
     },
-    "reviewed": true
+    "reviewed": true,
+    "atomInsights": {
+      "1": {
+        "role": {
+          "zh": "与过氧根一端相连、被氧化成 Na⁺ 的钠原子",
+          "en": "A sodium atom bonded to one end of the peroxide group, oxidized to Na⁺"
+        },
+        "detail": {
+          "zh": "钠在氧气中燃烧时，每个钠原子失去最外层那枚电子，变成 Na⁺。两个 Na⁺ 与一个过氧根 O₂²⁻ 结合成离子化合物 Na₂O₂。与常温缓慢氧化生成的 Na₂O 相比，这里钠仍是 +1 价，但配对的阴离子换成了过氧根。钠在火焰中气化后呈现黄色焰色，正是实验里看到的黄色火焰。",
+          "en": "When sodium burns in oxygen each sodium atom loses its single outer electron and becomes Na⁺. Two Na⁺ ions combine with one peroxide ion O₂²⁻ to form the ionic compound Na₂O₂. Compared with Na₂O from slow oxidation at room temperature, sodium here is still +1, but the anion it pairs with is now the peroxide ion. Vaporized sodium in the flame gives the yellow color seen in the experiment."
+        }
+      },
+      "2": {
+        "role": {
+          "zh": "与过氧根另一端相连、被氧化成 Na⁺ 的钠原子",
+          "en": "The other sodium atom bonded to the far end of the peroxide group, oxidized to Na⁺"
+        },
+        "detail": {
+          "zh": "它与前面那个钠原子完全等价：同样失掉最外层电子变成 Na⁺，与过氧根的另一端以离子键结合。两个钠共同把过氧根 O₂²⁻ 固定在晶体中，使 Na₂O₂ 呈现淡黄色固体。学习时把两个钠看成整体，它们对过氧根电荷的配平是书写这个离子化合物的关键。",
+          "en": "This atom is exactly equivalent to the other one: it also loses its outer electron to become Na⁺ and binds ionically to the other end of the peroxide ion. The two sodium ions together hold the peroxide O₂²⁻ in place in the crystal, giving the pale yellow solid. When learning, treat the two sodiums as a pair; balancing their charge against the peroxide ion is the key to writing this ionic compound."
+        }
+      },
+      "3": {
+        "role": {
+          "zh": "过氧根中被还原为 −1 价的氧原子",
+          "en": "An oxygen atom reduced to −1 in the peroxide ion"
+        },
+        "detail": {
+          "zh": "在过氧根 O₂²⁻ 中，这个氧与另一个氧以单键相连，氧化数为 −1。反应时氧气分子 O=O 的双键被打开，氧从 0 价降到 −1 价，是被还原的一方。氧原子共用一对价电子形成过氧键，使 Na₂O₂ 中氧的价态不同于普通 −2 价氧化物，这是反应的关键记忆点。",
+          "en": "In the peroxide ion O₂²⁻ this oxygen is single bonded to the other oxygen and has an oxidation number of −1. When the O=O double bond of oxygen gas is broken, oxygen drops from 0 to −1 and is the species being reduced. The two oxygen atoms share a pair of valence electrons to make the O–O peroxide bond, so the oxidation state of oxygen in Na₂O₂ differs from the usual −2 of ordinary oxides — the key point to memorize."
+        }
+      },
+      "4": {
+        "role": {
+          "zh": "过氧根另一端被还原为 −1 价的氧原子",
+          "en": "The oxygen atom reduced to −1 at the other end of the peroxide ion"
+        },
+        "detail": {
+          "zh": "它与另一个氧完全相同，共同构成 O₂²⁻ 的核心。两个氧之间是一根单键，每个氧都承接着来自两个钠的电子，整体带 2 个单位负电荷。正是因为氧原子被分成了 －1 价的一对，Na₂O₂ 才区别于 NaCl 等普通氧化物，也决定了它遇水、遇 CO₂ 时的特殊化学性质。",
+          "en": "It is identical to the other oxygen and together they form the core of O₂²⁻. The two oxygens are joined by a single bond, and each holds onto the electrons coming from the two sodiums, giving the group a −2 overall charge. Because oxygen is split into a −1 pair, Na₂O₂ differs from ordinary oxides like Na₂O and also explains its distinctive chemistry with water and CO₂."
+        }
+      }
+    },
+    "stepAtomIds": [
+      [
+        1,
+        2,
+        3,
+        4
+      ],
+      [
+        1,
+        2,
+        3,
+        4
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        3,
+        4
+      ]
+    ]
   },
   {
     "id": "na2o2-h2o",
@@ -166,7 +279,51 @@
         }
       ]
     },
-    "reviewed": true
+    "reviewed": true,
+    "atomInsights": {
+      "1": {
+        "role": {
+          "zh": "发生歧化、以 O₂ 形式放出的氧原子",
+          "en": "An oxygen atom that disproportionates and is released as O₂"
+        },
+        "detail": {
+          "zh": "在 Na₂O₂ 中氧为 −1 价，遇水发生歧化反应，其中一部分氧被氧化升到 0 价。这个氧与另一个氧以双键结合成 O₂ 分子，以气泡形式放出。实验中剧烈冒出的气泡、使带火星木条复燃的，正是这些氧气分子。",
+          "en": "Oxygen in Na₂O₂ is at −1; with water it undergoes disproportionation, and part of that oxygen is oxidized up to 0. This oxygen joins the other one by a double bond to form an O₂ molecule that escapes as bubbles. The vigorous effervescence, and the glowing splint that bursts into flame again, are due to these oxygen molecules."
+        }
+      },
+      "2": {
+        "role": {
+          "zh": "与另一个氧结合成 O₂ 的氧原子",
+          "en": "The oxygen atom that bonds with the other one to form O₂"
+        },
+        "detail": {
+          "zh": "它与第一个氧一起，从过氧化物的 −1 价被氧化到 0 价，构成双键 O=O。与此同时，另一部分 −1 价的氧被还原到 −2，进入 NaOH 的氢氧根。这个氧承担的是歧化反应中「被氧化放氧」的角色，是供氧剂原理的核心。",
+          "en": "Together with the first oxygen it is oxidized from −1 in the peroxide to 0, forming the double-bonded O=O. At the same time the other portion of −1 oxygen is reduced to −2 and enters the hydroxide of NaOH. This oxygen plays the role of 'oxidized and released as oxygen' in the disproportionation, which is the heart of the oxygen-supply principle."
+        }
+      }
+    },
+    "stepAtomIds": [
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        2
+      ]
+    ]
   },
   {
     "id": "na2o2-co2",
@@ -222,7 +379,57 @@
         }
       ]
     },
-    "reviewed": true
+    "reviewed": true,
+    "atomInsights": {
+      "1": {
+        "role": {
+          "zh": "二氧化碳分子中与碳成双键的一个氧原子",
+          "en": "An oxygen atom double bonded to carbon in carbon dioxide"
+        },
+        "detail": {
+          "zh": "在 CO₂ 分子中这个氧与碳以双键相连。反应时过氧化钠将其吸收，这个氧最终随碳转入碳酸钠 Na₂CO₃ 中，氧化数保持 −2。它体现了反应「吸收 CO₂、再生 O₂」中 CO₂ 的碳氧骨架被固定下来的那一半。",
+          "en": "In carbon dioxide this oxygen is double bonded to carbon. As Na₂O₂ absorbs the gas, this oxygen is carried along with the carbon into sodium carbonate Na₂CO₃ and keeps its −2 oxidation state. It represents the half of the CO₂ skeleton that gets fixed in the so-called 'absorbs CO₂, regenerates O₂' reaction."
+        }
+      },
+      "2": {
+        "role": {
+          "zh": "二氧化碳分子中与碳成双键的另一个氧原子",
+          "en": "The other oxygen atom double bonded to carbon in carbon dioxide"
+        },
+        "detail": {
+          "zh": "它与第一个氧等价，和碳形成 CO₂ 的另一个双键。反应后它也进入碳酸根，成为 Na₂CO₃ 的一部分。两个氧原子加上中心的碳，整体构成被人体呼出后被过氧化钠捕捉固定的 CO₂ 骨架。",
+          "en": "It is equivalent to the first oxygen and forms the other double bond of CO₂ with carbon. After the reaction it also enters the carbonate ion as part of Na₂CO₃. The two oxygens plus the central carbon together make up the CO₂ backbonethat is exhaled and then trapped and fixed by Na₂O₂."
+        }
+      },
+      "3": {
+        "role": {
+          "zh": "二氧化碳的中心碳原子",
+          "en": "The central carbon atom of carbon dioxide"
+        },
+        "detail": {
+          "zh": "碳是 CO₂ 的中心原子，与两个氧各形成一根双键。反应中它随 CO₂ 被吸收，最终以碳酸根 CO₃²⁻ 的形式存在于 Na₂CO₃ 中，氧化数保持 +4。它是本反应气体交换的核心：人呼出的 CO₂ 被固定下来，而氧气被再次释放。",
+          "en": "Carbon is the central atom of CO₂, double bonded to each of its two oxygens. During the reaction it is absorbed with the CO₂ and ends up as the carbonate ion CO₃²⁻ in Na₂CO₃, keeping its +4 oxidation number. It is the center of the gas exchange here: the CO₂ a person exhales is fixed, while oxygen is released once more."
+        }
+      }
+    },
+    "stepAtomIds": [
+      [
+        1,
+        2,
+        3
+      ],
+      [
+        1,
+        2,
+        3
+      ],
+      [
+        1,
+        2,
+        3
+      ],
+      []
+    ]
   },
   {
     "id": "nahco3-hcl",
@@ -279,7 +486,57 @@
         }
       ]
     },
-    "reviewed": true
+    "reviewed": true,
+    "atomInsights": {
+      "1": {
+        "role": {
+          "zh": "释放的二氧化碳中与碳成双键的一个氧原子",
+          "en": "An oxygen atom double bonded to carbon in the CO₂ released"
+        },
+        "detail": {
+          "zh": "这个氧来自碳酸氢根 HCO₃⁻ 中的碳酸根部分，在产物二氧化碳中与碳成双键，氧化数仍为 −2。H⁺ 结合碳酸氢根后形成不稳定的碳酸，随即分解成水和 CO₂。大量气泡正是这些二氧化碳分子逸出造成的。",
+          "en": "This oxygen comes from the carbonate part of the bicarbonate ion HCO₃⁻, ends up double bonded to carbon in the product CO₂, and keeps its −2 oxidation number. Once H⁺ combines with the bicarbonate, an unstable carbonic acid forms and quickly breaks down into water and CO₂. The rush of bubbles is caused by these escaping carbon dioxide molecules."
+        }
+      },
+      "2": {
+        "role": {
+          "zh": "释放的二氧化碳中与碳成双键的另一个氧原子",
+          "en": "The other oxygen atom double bonded to carbon in the CO₂ released"
+        },
+        "detail": {
+          "zh": "它与第一个氧对称，是碳酸氢根被酸分解后以 CO₂ 形式离开的两个氧之一。氧只换了一个「宿主」，从碳酸氢根进入二氧化碳，价态全程不变。它和碳、另一个氧共同构成打出的那团无色无味的气体。",
+          "en": "It is the mirror of the first oxygen, one of the two oxygens that leave as CO₂ when the bicarbonate is broken down by acid. The oxygen simply changes its host, moving from the bicarbonate into carbon dioxide while its oxidation state never changes. Together with carbon and the other oxygen it makes up that colorless, odorless burst of gas."
+        }
+      },
+      "3": {
+        "role": {
+          "zh": "二氧化碳中的中心碳原子",
+          "en": "The central carbon atom of the carbon dioxide"
+        },
+        "detail": {
+          "zh": "碳在碳酸氢根 HCO₃⁻ 中已经是 +4 价，与盐酸反应后以 CO₂ 形式离开，氧化数没有改变，只是脱离了原来的碳酸氢根骨架。CO₂ 能让澄清石灰水变浑浊，正是这个碳原子在宏观上给出的证据。碳还在，只是换了一种存在形式。",
+          "en": "Carbon is already at +4 in the bicarbonate ion HCO₃⁻ and leaves as CO₂ after reacting with HCl. Its oxidation number does not change; it simply breaks away from the bicarbonate skeleton. The fact that the gas clouds clear limewater is the macroscopic evidence of this carbon atom. The carbon is still there, just in a different form."
+        }
+      }
+    },
+    "stepAtomIds": [
+      [
+        1,
+        2,
+        3
+      ],
+      [
+        1,
+        2,
+        3
+      ],
+      [],
+      [
+        1,
+        2,
+        3
+      ]
+    ]
   },
   {
     "id": "nahco3-heat",
@@ -337,7 +594,58 @@
         }
       ]
     },
-    "reviewed": true
+    "reviewed": true,
+    "atomInsights": {
+      "1": {
+        "role": {
+          "zh": "碳酸氢钠受热分解放出二氧化碳中的一个氧原子",
+          "en": "An oxygen atom in the carbon dioxide released when NaHCO₃ decomposes on heating"
+        },
+        "detail": {
+          "zh": "加热时两个 HCO₃⁻ 重新组合，碳酸氢根中的碳和氧重新配位，放出 CO₂。这个氧以双键与碳相连，氧化数保持 −2。它与同时生成的水蒸气中的氧都来自原来的固体，是气体产物的组成之一。",
+          "en": "On heating one HCO₃⁻ rearranges with another, and the carbon and oxygen of the bicarbonate re-coordinate to give off CO₂. This oxygen is double bonded to carbon and keeps its −2 oxidation state. Together with the oxygen in the water vapor also formed, it comes from the original solid and makes up part of the gaseous product."
+        }
+      },
+      "2": {
+        "role": {
+          "zh": "碳酸氢钠受热分解放出二氧化碳中的另一个氧原子",
+          "en": "The other oxygen atom in the carbon dioxide released on heating"
+        },
+        "detail": {
+          "zh": "它与第一个氧等价，是分解反应中两个 HCO₃⁻ 重新组合时以 CO₂ 形式脱出的氧之一。氧在加热过程中从固体内部转移到气相，价态保持 −2 不变。它和碳构成了逸出气泡的气体分子。",
+          "en": "It is the mirror of the first oxygen and is one of the oxygens driven off as CO₂ when two HCO₃⁻ rearrange during decomposition. The oxygen moves from inside the solid into the gas phase while keeping its −2 state. Together with carbon it forms the escaping gas molecules."
+        }
+      },
+      "3": {
+        "role": {
+          "zh": "受热分解生成二氧化碳的中心碳原子",
+          "en": "The central carbon atom that forms the CO₂ on heating"
+        },
+        "detail": {
+          "zh": "碳在碳酸氢根中为 +4 价，加热时两个 HCO₃⁻ 重新组合：一个碳以 CO₂ 逸出，另一个碳残留在 Na₂CO₃ 中以碳酸根形式存在。碳的氧化数始终不变，而正是这「能否放出 CO₂」的差别，构成了鉴别 Na₂CO₃ 与 NaHCO₃ 热稳定性的经典方法。",
+          "en": "Carbon is +4 in the bicarbonate. On heating, two HCO₃⁻ rearrange: one carbon escapes as CO₂ while the other remains in Na₂CO₃ as the carbonate ion. The carbon's oxidation number never changes, and the 'can it or can it not release CO₂' difference is exactly what forms the classic thermal-stability test that distinguishes Na₂CO₃ from NaHCO₃."
+        }
+      }
+    },
+    "stepAtomIds": [
+      [
+        1,
+        2,
+        3
+      ],
+      [],
+      [
+        1,
+        2,
+        3
+      ],
+      [],
+      [
+        1,
+        2,
+        3
+      ]
+    ]
   },
   {
     "id": "cl2-na",
@@ -380,7 +688,44 @@
         }
       ]
     },
-    "reviewed": true
+    "reviewed": true,
+    "atomInsights": {
+      "1": {
+        "role": {
+          "zh": "得到电子被还原的氯原子",
+          "en": "The chlorine atom that gains an electron and is reduced"
+        },
+        "detail": {
+          "zh": "氯气分子 Cl₂ 中的氯原子在反应中得到钠失去的电子，被还原为 Cl⁻，从而满足 8 电子稳定结构。它与 Na⁺ 结合形成离子化合物 NaCl，在瓶壁上凝结成大量白色烟雾状小晶体。这个氯原子正是从黄绿色毒气变成白色食盐的桥梁。",
+          "en": "The chlorine atom of the Cl₂ molecule gains the electron lost by sodium and is reduced to Cl⁻, completing its stable octet. It combines with Na⁺ to form the ionic compound NaCl, which condenses on the bottle walls as a large amount of white smoke-like crystals. This chlorine is the bridge that turns yellow-green poison gas into white table salt."
+        }
+      },
+      "2": {
+        "role": {
+          "zh": "被氧化失去电子的钠原子",
+          "en": "The sodium atom that loses an electron and is oxidized"
+        },
+        "detail": {
+          "zh": "钠原子把最外层那枚电子交给氯，变成 Na⁺。由于钠的还原性很强，它能被氯气氧化并在其中剧烈燃烧，发出黄色火焰。失电子后的 Na⁺ 与 Cl⁻ 结合成氯化钠。整个过程不涉及氧气，说明燃烧并不一定需要氧气参与。",
+          "en": "The sodium atom hands its outer electron to chlorine and becomes Na⁺. Because sodium is strongly reducing, it can be oxidized by chlorine and burns vigorously in it with a yellow flame. The resulting Na⁺ pairs with Cl⁻ to give sodium chloride. No oxygen is involved, showing that combustion does not necessarily require oxygen."
+        }
+      }
+    },
+    "stepAtomIds": [
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        2
+      ],
+      []
+    ]
   },
   {
     "id": "cl2-fe",
@@ -447,7 +792,69 @@
         }
       ]
     },
-    "reviewed": true
+    "reviewed": true,
+    "atomInsights": {
+      "1": {
+        "role": {
+          "zh": "被氯气氧化到最高价 +3 的铁原子",
+          "en": "The iron atom oxidized to its highest state of +3 by chlorine"
+        },
+        "detail": {
+          "zh": "铁在氯气中燃烧时失去 3 个电子，被氧化到 +3 价，生成 FeCl₃。因为氯的氧化性很强，能把铁直接氧化到最高价；这与盐酸只能得到 FeCl₂ 形成鲜明对比。反应后加水，Fe³⁺ 使溶液呈黄色，正是实验里观察到的现象。",
+          "en": "When iron burns in chlorine it loses three electrons and is oxidized to +3, forming FeCl₃. Because chlorine is such a strong oxidizer it drives iron all the way to its highest state, in sharp contrast to HCl, which can only give FeCl₂. After adding water, Fe³⁺ turns the solution yellow, which is exactly what is observed in the experiment."
+        }
+      },
+      "2": {
+        "role": {
+          "zh": "得到电子、与铁成键的氯原子",
+          "en": "A chlorine atom that gains electrons and bonds with iron"
+        },
+        "detail": {
+          "zh": "氯气中的氯得到铁失去的电子，被还原为 Cl⁻。三个氯离子各自平衡一个 Fe³⁺，形成 FeCl₃。固体以棕褐色烟的形式逸出，说明 FeCl₃ 在高温下容易升华。这个氯原子与铁之间形成的是离子键。",
+          "en": "Chlorine in Cl₂ gains the electrons lost by iron and is reduced to Cl⁻. Three chloride ions balance one Fe³⁺, giving FeCl₃. The solid escapes as brown smoke, showing that FeCl₃ sublimes readily at high temperature. This chlorine forms an ionic bond with the iron."
+        }
+      },
+      "3": {
+        "role": {
+          "zh": "与铁成键的另一个氯原子",
+          "en": "A second chlorine atom that bonds with iron"
+        },
+        "detail": {
+          "zh": "它与前面的氯等价，同为 FeCl₃ 中的一个 Cl⁻。三个氯原子从空间上围绕一个 Fe³⁺，构成氯化铁的结构单元。它和另外两个氯共同决定了 FeCl₃ 的化学式配比，是「1 个铁配 3 个氯」的直接体现。",
+          "en": "It is equivalent to the first chlorine, another Cl⁻ in FeCl₃. The three chlorine atoms surround one Fe³⁺ in space, forming the structural unit of ferric chloride. Together with the other two it fixes the stoichiometry of FeCl₃, directly showing the 1 iron to 3 chlorine ratio."
+        }
+      },
+      "4": {
+        "role": {
+          "zh": "与铁成键的第三个氯原子",
+          "en": "A third chlorine atom that bonds with iron"
+        },
+        "detail": {
+          "zh": "它同样是 FeCl₃ 中的 Cl⁻。三个氯原子都从铁那里得到电子，自身由 0 价降到 −1 价。正因为氯能把铁氧化到最高价，铁在氯气里才呈现出与它在盐酸中不同的+3 价，这是变价金属与氯气反应的一般规律。",
+          "en": "It is also a Cl⁻ in FeCl₃. All three chlorines gain electrons from iron, dropping themselves from 0 to −1. Because chlorine can oxidize iron to its highest state, iron reaches +3 in chlorine rather than +2 as in hydrochloric acid, which is the general rule for variable-valence metals reacting with chlorine."
+        }
+      }
+    },
+    "stepAtomIds": [
+      [
+        1,
+        2,
+        3,
+        4
+      ],
+      [
+        1,
+        2,
+        3,
+        4
+      ],
+      [
+        1
+      ],
+      [
+        1
+      ]
+    ]
   },
   {
     "id": "cl2-cu",
@@ -502,7 +909,57 @@
         }
       ]
     },
-    "reviewed": true
+    "reviewed": true,
+    "atomInsights": {
+      "1": {
+        "role": {
+          "zh": "被氯气氧化到 +2 的铜原子",
+          "en": "The copper atom oxidized to +2 by chlorine"
+        },
+        "detail": {
+          "zh": "铜在氯气中燃烧失去 2 个电子，被氧化为 +2 价，生成 CuCl₂。铜的活泼性不如钠、铁，但仍能被氯的强氧化性点燃。Cu²⁺ 的配位形式决定溶液颜色：浓溶液因氯离子的作用呈绿色，稀释后水合铜离子呈蓝色，这就是颜色随浓度变化的根源。",
+          "en": "Copper loses two electrons when it burns in chlorine and is oxidized to +2, forming CuCl₂. Copper is less active than sodium or iron, yet chlorine's strong oxidizing power is enough to ignite it. The color of the solution depends on how Cu²⁺ is coordinated: concentrated solutions turn green because of chloride ligands, while diluted aqueous Cu²⁺ is blue, which is why the color changes with concentration."
+        }
+      },
+      "2": {
+        "role": {
+          "zh": "得到电子、与铜成键的氯原子",
+          "en": "A chlorine atom that gains electrons and bonds with copper"
+        },
+        "detail": {
+          "zh": "氯气中的氯得到铜失去的电子，被还原为 Cl⁻。两个氯离子与一个 Cu²⁺ 结合成 CuCl₂。棕黄色的烟正是这些固体小颗粒，在瓶壁上凝结下来。它参与构成 CuCl₂ 的晶体结构。",
+          "en": "Chlorine in Cl₂ gains the electrons lost by copper and is reduced to Cl⁻. Two chloride ions combine with one Cu²⁺ to give CuCl₂. The brownish-yellow smoke is these solid particles condensing on the bottle walls. It helps build the crystal structure of CuCl₂."
+        }
+      },
+      "3": {
+        "role": {
+          "zh": "与铜成键的另一个氯原子",
+          "en": "The other chlorine atom that bonds with copper"
+        },
+        "detail": {
+          "zh": "它与前面的氯等价，同为 CuCl₂ 中的 Cl⁻。两个氯原子从 0 价降到 −1 价，在空间中与一个 Cu²⁺ 配位。正是这些氯离子在浓溶液中与 Cu²⁺ 形成配合物，才使浓 CuCl₂ 溶液呈现绿色而非蓝色。",
+          "en": "It is equivalent to the first chlorine, another Cl⁻ in CuCl₂. Both chlorines drop from 0 to −1 and coordinate with a single Cu²⁺ in space. It is these chloride ions that form complexes with Cu²⁺ in concentrated solution, which is what makes concentrated CuCl₂ green rather than blue."
+        }
+      }
+    },
+    "stepAtomIds": [
+      [
+        1,
+        2,
+        3
+      ],
+      [
+        1,
+        2,
+        3
+      ],
+      [
+        1
+      ],
+      [
+        1
+      ]
+    ]
   },
   {
     "id": "cl2-h2",
@@ -546,7 +1003,48 @@
         }
       ]
     },
-    "reviewed": true
+    "reviewed": true,
+    "atomInsights": {
+      "1": {
+        "role": {
+          "zh": "与氢成键、形成氯化氢的氯原子",
+          "en": "The chlorine atom that bonds with hydrogen to form hydrogen chloride"
+        },
+        "detail": {
+          "zh": "氯气中的氯与氢以共价键结合成 HCl 分子。反应剧烈放热，氢气在其中安静燃烧，发出苍白色火焰。生成的 HCl 遇到空气中的水蒸气形成盐酸小液滴，这就是瓶口白色酸雾的来源。",
+          "en": "Chlorine in Cl₂ bonds covalently with hydrogen to form an HCl molecule. The reaction is strongly exothermic, and hydrogen burns quietly in it with a pale flame. The HCl produced meets water vapor in the air to form droplets of hydrochloric acid, which is the source of the white mist at the mouth of the bottle."
+        }
+      },
+      "2": {
+        "role": {
+          "zh": "与氯成键的氢原子",
+          "en": "The hydrogen atom that bonds with chlorine"
+        },
+        "detail": {
+          "zh": "氢气分子中的氢与氯结合形成 HCl，保持 +1 价，在燃烧中安静地发出苍白色火焰。若将 H₂ 与 Cl₂ 混合后强光照射会剧烈爆炸，说明这个反应极快、放出大量热。氢在这里体现的是可燃、易被氯氧化的性质。",
+          "en": "Hydrogen from H₂ combines with chlorine to form HCl, staying at +1, and burns quietly with a pale flame. However, if H₂ and Cl₂ are mixed and exposed to strong light, the mixture explodes violently, showing how fast and exothermic the reaction is. Here hydrogen displays its combustibility and its readiness to be oxidized by chlorine."
+        }
+      }
+    },
+    "stepAtomIds": [
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        2
+      ],
+      []
+    ]
   },
   {
     "id": "cl2-h2o",
@@ -603,7 +1101,62 @@
         }
       ]
     },
-    "reviewed": true
+    "reviewed": true,
+    "atomInsights": {
+      "1": {
+        "role": {
+          "zh": "与水反应生成次氯酸的氯原子",
+          "en": "The chlorine atom that reacts with water to form hypochlorous acid"
+        },
+        "detail": {
+          "zh": "氯气溶于水后，部分氯分子与水反应生成次氯酸 HClO，这个氯在其中呈 +1 价，是氯分子歧化的结果（另一个氯降到 −1 进入盐酸）。HClO 具有很强的氧化性，能使有色布条褪色；而干燥的氯气不能，说明起漂白作用的是 HClO 而非 Cl₂ 本身。",
+          "en": "When chlorine dissolves in water, part of the Cl₂ reacts with water to form hypochlorous acid HClO, and this chlorine is at +1, the result of a disproportionation (the other chlorine falls to −1 and enters hydrochloric acid). HClO is strongly oxidizing and can bleach colored cloth; dry chlorine cannot, so the bleaching is done by HClO rather than Cl₂ itself."
+        }
+      },
+      "2": {
+        "role": {
+          "zh": "次氯酸中连接氯和氢的氧原子",
+          "en": "The oxygen atom in hypochlorous acid that bridges chlorine and hydrogen"
+        },
+        "detail": {
+          "zh": "在 HClO 中氧与氯、氢各形成一根单键，是分子结构的承上启下者。反应为氯的歧化：Cl₂ 中一个氯升到 +1 进入 HClO，一个降到 −1 进入 HCl。氧原子作为桥梁把 +1 价的氯和来自水的氢串成一个整体，正是次氯酸的骨架。",
+          "en": "In HClO oxygen is singly bonded to both chlorine and hydrogen, serving as the bridge of the molecular structure. The reaction is a disproportionation of Cl₂: one chlorine rises to +1 and enters HClO while the other falls to −1 and enters HCl. As the bridge connecting the +1 chlorine to the hydrogen from water, this oxygen forms the backbone of hypochlorous acid."
+        }
+      },
+      "3": {
+        "role": {
+          "zh": "与氧相连、来自水中的氢原子",
+          "en": "The hydrogen atom that bonds with oxygen and comes from water"
+        },
+        "detail": {
+          "zh": "这个氢来自水分子，与氧结合构成 HClO 的羟基部分，使次氯酸具有酸性、能与碱反应生成次氯酸盐。整个反应是可逆的（用 ⇌ 表示），说明氯水既含没反应完的 Cl₂，又存在平衡。氢的加入使含氯产物从单质变成酸。",
+          "en": "This hydrogen comes from water and bonds with oxygen to form the hydroxyl part of HClO, giving hypochlorous acid its acidity and letting it react with bases to make hypochlorite salts. The overall reaction is reversible, shown with ⇌, meaning chlorine water contains both unreacted Cl₂ and species at equilibrium. The addition of hydrogen turns the chlorine product from an element into an acid."
+        }
+      }
+    },
+    "stepAtomIds": [
+      [
+        1,
+        2,
+        3
+      ],
+      [
+        1,
+        2,
+        3
+      ],
+      [],
+      [
+        1,
+        2,
+        3
+      ],
+      [
+        1,
+        2,
+        3
+      ]
+    ]
   },
   {
     "id": "cl2-nabr-displace",
@@ -648,7 +1201,45 @@
         }
       ]
     },
-    "reviewed": true
+    "reviewed": true,
+    "atomInsights": {
+      "1": {
+        "role": {
+          "zh": "被氯气置换出来、以单质形式析出的溴原子",
+          "en": "The bromine atom displaced by chlorine and released as the element"
+        },
+        "detail": {
+          "zh": "溴化钠中的溴离子 Br⁻ 被氯氧化，失去一个电子变成溴原子，氧化数从 −1 升到 0。两个这样的溴原子结合成 Br₂ 分子，使溶液呈现橙黄色（溴水颜色）。氯之所以能置换溴，是因为氯的氧化性强于溴。",
+          "en": "The bromide ion Br⁻ in sodium bromide is oxidized by chlorine, losing one electron to become a bromine atom, so its oxidation number rises from −1 to 0. Two such bromine atoms combine into a Br₂ molecule, giving the solution an orange color, the color of bromine water. Chlorine can displace bromine only because it is the stronger oxidant."
+        }
+      },
+      "2": {
+        "role": {
+          "zh": "与另一个溴原子结合成 Br₂ 的溴原子",
+          "en": "The bromine atom that bonds with the other one to form Br₂"
+        },
+        "detail": {
+          "zh": "它与第一个溴原子等价，同样从 Br⁻ 被氧化到溴单质。两个溴原子共用一对电子形成 Br–Br 单键，构成溴单质分子。橙黄色正是溴单质在水中的特征颜色，也是现象「溶液变橙」的化学来源。",
+          "en": "It is equivalent to the first bromine, also oxidized from Br⁻ to bromine as an element. The two bromine atoms share a pair of electrons to form a Br–Br single bond, making a bromine molecule. The orange is the characteristic color of bromine in water and is the chemical origin of the observed 'solution turns orange'."
+        }
+      }
+    },
+    "stepAtomIds": [
+      [],
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        2
+      ],
+      []
+    ]
   },
   {
     "id": "cl2-naoh",
@@ -706,7 +1297,61 @@
         }
       ]
     },
-    "reviewed": true
+    "reviewed": true,
+    "atomInsights": {
+      "1": {
+        "role": {
+          "zh": "与氢氧化钠反应、生成次氯酸钠的氯原子",
+          "en": "The chlorine atom that reacts with NaOH and forms sodium hypochlorite"
+        },
+        "detail": {
+          "zh": "氯气与 NaOH 反应发生歧化，一个氯升到 +1 进入次氯酸根 ClO⁻，一个降到 −1 进入 Cl⁻。这里这个氯以 +1 价进入 NaClO，使 84 消毒液具有漂白和杀菌能力。实验用它吸收有毒尾气，正是利用了氯气与碱的反应。",
+          "en": "Chlorine disproportionates with NaOH: one chlorine rises to +1 and enters the hypochlorite ion ClO⁻, while the other falls to −1 and enters Cl⁻. This chlorine enters NaClO at +1, giving 84 disinfectant its bleaching and disinfecting power. Absorbing the poisonous tail gas with alkali exploits exactly this reaction."
+        }
+      },
+      "2": {
+        "role": {
+          "zh": "与次氯酸根配对的钠离子",
+          "en": "The sodium ion that pairs with the hypochlorite ion"
+        },
+        "detail": {
+          "zh": "钠在反应中始终是 +1 价，以 Na⁺ 形式与 ClO⁻ 结合成 NaClO。它来自 NaOH，全程不参与电子得失，只是起到成盐作用的旁观阳离子。NaClO 的溶液（而不是固体）正是 84 消毒液的有效成分。",
+          "en": "Sodium stays at +1 throughout and pairs with ClO⁻ as Na⁺ to give NaClO. It comes from NaOH and takes no part in electron transfer, acting only as a spectator cation that completes the salt. The NaClO solution rather than the solid is the active ingredient of 84 disinfectant."
+        }
+      },
+      "3": {
+        "role": {
+          "zh": "次氯酸根中与氯相连的氧原子",
+          "en": "The oxygen atom bonded to chlorine in the hypochlorite ion"
+        },
+        "detail": {
+          "zh": "这个氧在次氯酸根 ClO⁻ 中与氯以单键相连，使氯呈现 +1 价。它来自 NaOH 的氢氧根。ClO⁻ 在碱性条件下较稳定，但在酸性条件下会转化为 HClO，从而发挥更强的氧化（漂白）作用。",
+          "en": "This oxygen is single bonded to chlorine in the hypochlorite ion ClO⁻, which is why the chlorine sits at +1. It comes from the hydroxide of NaOH. ClO⁻ is fairly stable under basic conditions, but in acid it converts to HClO, the more strongly oxidizing and bleaching species."
+        }
+      }
+    },
+    "stepAtomIds": [
+      [],
+      [
+        1,
+        2,
+        3
+      ],
+      [
+        1,
+        2,
+        3
+      ],
+      [
+        1,
+        2,
+        3
+      ],
+      [
+        1,
+        3
+      ]
+    ]
   },
   {
     "id": "cl2-caoh2",
@@ -778,6 +1423,88 @@
         }
       ]
     },
-    "reviewed": true
+    "reviewed": true,
+    "atomInsights": {
+      "1": {
+        "role": {
+          "zh": "次氯酸钙中的钙离子",
+          "en": "The calcium ion in calcium hypochlorite"
+        },
+        "detail": {
+          "zh": "钙在 Ca(ClO)₂ 中保持 +2 价，作为阳离子与两个次氯酸根 ClO⁻ 结合，主要提供离子骨架，是漂白粉的主要成分之一。酸性条件下 ClO⁻ 转化为 HClO 后，钙则以 CaCl₂ 等形式存在。它全程不参与电子得失。",
+          "en": "Calcium stays at +2 in Ca(ClO)₂, acting as the cation that pairs with two hypochlorite ions ClO⁻. It mainly supplies the ionic framework and is one of the main components of bleaching powder. Under acidic conditions, once ClO⁻ converts to HClO, the calcium ends up as species such as CaCl₂. It never takes part in electron transfer."
+        }
+      },
+      "2": {
+        "role": {
+          "zh": "次氯酸根中呈 +1 价的氯原子",
+          "en": "A chlorine atom at +1 in the hypochlorite ion"
+        },
+        "detail": {
+          "zh": "在漂白粉的有效成分 Ca(ClO)₂ 中，这个氯以 ClO⁻ 的 +1 价存在，来自氯气与石灰乳反应时的歧化（另一个氯降到 −1）。+1 价使次氯酸根在酸性下容易转成 HClO，这正是漂白粉漂白作用的化学根源。",
+          "en": "In the effective component Ca(ClO)₂ this chlorine exists at +1 within the ClO⁻ ion, arising from the disproportionation of Cl₂ with lime milk (with the other chlorine dropping to −1). The +1 state makes the hypochlorite ion readily convert to HClO under acid, which is the chemical root of bleaching powder's action."
+        }
+      },
+      "3": {
+        "role": {
+          "zh": "另一个呈 +1 价的氯原子",
+          "en": "The other chlorine atom, also at +1"
+        },
+        "detail": {
+          "zh": "它与前面的氯等价，是第二根次氯酸根中的 Cl⁺。两个 ClO⁻ 与一个 Ca²⁺ 平电荷，构成 Ca(ClO)₂。这个氯同样在酸性下能转化为 HClO，是漂白粉「遇酸才起漂白作用」的另一个来源。",
+          "en": "It is equivalent to the first chlorine, the Cl⁺ of the second hypochlorite ion. Two ClO⁻ balance one Ca²⁺ to make Ca(ClO)₂. This chlorine also converts to HClO in acid, providing the second source of the 'bleaching only happens under acid' property of bleaching powder."
+        }
+      },
+      "4": {
+        "role": {
+          "zh": "次氯酸根中与氯相连的氧原子",
+          "en": "The oxygen atom bonded to chlorine in the hypochlorite ion"
+        },
+        "detail": {
+          "zh": "这个氧与 +1 价的氯成单键，形成次氯酸根 ClO⁻。正是这个氧把氯稳定在 +1 价，成为漂白粉有效成分的关键。密封避光时 ClO⁻ 保持稳定，而敞开放在空气中，遇 CO₂ 和水汽会逐渐分解而失效。",
+          "en": "This oxygen bonds with the +1 chlorine to form the hypochlorite ion ClO⁻. It is this oxygen that holds chlorine at +1, and it is the key part of the active ingredient. Kept sealed and away from light the ClO⁻ stays stable, but left open in air it gradually decomposes on contact with CO₂ and moisture, and loses its effect."
+        }
+      },
+      "5": {
+        "role": {
+          "zh": "另一根次氯酸根中的氧原子",
+          "en": "The oxygen atom in the second hypochlorite ion"
+        },
+        "detail": {
+          "zh": "它与第 4 个氧等价，同样与 +1 价的氯成单键。两个这样的 ClO⁻ 与一个 Ca²⁺ 一起构成 Ca(ClO)₂。氧的存在保证了 +1 价氯的稳定，是漂白粉长期有效的前提；一旦受潮分解，漂白能力也随之消失。",
+          "en": "It is equivalent to the fourth oxygen and is likewise single bonded to a +1 chlorine. Two such ClO⁻ together with one Ca²⁺ make up Ca(ClO)₂. The oxygen keeps the +1 chlorine stable, which is the premise for bleaching powder's effectiveness over time; once it gets damp and decomposes, the bleaching capability disappears with it."
+        }
+      }
+    },
+    "stepAtomIds": [
+      [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      [
+        2,
+        3,
+        4,
+        5
+      ],
+      []
+    ]
   }
 ]

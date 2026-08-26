@@ -79,7 +79,78 @@
       ]
     },
     "smiles": "CCl",
-    "reviewed": true
+    "reviewed": true,
+    "atomInsights": {
+      "1": {
+        "role": {
+          "zh": "一氯甲烷中的氯原子（取代反应引入的卤素原子）",
+          "en": "Chlorine atom in chloromethane (the halogen introduced by substitution)"
+        },
+        "detail": {
+          "zh": "光照下 Cl₂ 的 Cl—Cl 键断裂，一个氯原子取代了甲烷碳上的一个氢，与碳形成 C—Cl 单键。这个氯是取代反应新引入的卤素，使原本的甲烷变成了一氯甲烷。它是取代反应中“氢被氯顶替”的那个氯。",
+          "en": "Under light the Cl—Cl bond in Cl₂ breaks and one chlorine atom replaces a hydrogen on the methane carbon, forming a C—Cl single bond. This chlorine is the halogen newly introduced by substitution, turning methane into chloromethane. It is the chlorine that replaces hydrogen in the substitution."
+        }
+      },
+      "2": {
+        "role": {
+          "zh": "一氯甲烷的中心碳原子（即原来甲烷的碳）",
+          "en": "Central carbon atom of chloromethane (the same carbon from methane)"
+        },
+        "detail": {
+          "zh": "碳是分子的核心，始终保持 sp³ 杂化。取代过程中碳的一个 C—H 键断裂，改由一个氯原子成键，其余三个 C—H 键保留。这个碳正是被氯逐步取代、由 CH₄ 逐步变为 CH₃Cl 等氯代烃的那个碳。",
+          "en": "The carbon is the molecular core and stays sp³ throughout. In the substitution one of its C—H bonds breaks and a chlorine atom bonds in its place while the other three C—H bonds remain. This is the carbon that is progressively substituted by chlorine as CH₄ becomes CH₃Cl and the other chloromethanes."
+        }
+      },
+      "3": {
+        "role": {
+          "zh": "甲基上的氢原子（未被取代而保留的氢）",
+          "en": "Hydrogen atom on the methyl group (a hydrogen that is not substituted)"
+        },
+        "detail": {
+          "zh": "这个氢始终保持与中心碳的单键，在本次取代中没有被氯原子顶替。取代掉的是甲烷上另一个氢（它脱离碳后进入 HCl），而这三个氢作为甲基的氢被完整保留下来。",
+          "en": "This hydrogen keeps its single bond to the central carbon and is not replaced by chlorine in this substitution. What gets replaced is another hydrogen of methane, which leaves the carbon and ends up in HCl, while these three methyl hydrogens are retained."
+        }
+      },
+      "4": {
+        "role": {
+          "zh": "甲基上的氢原子（未被取代而保留的氢）",
+          "en": "Hydrogen atom on the methyl group (a hydrogen that is not substituted)"
+        },
+        "detail": {
+          "zh": "作为甲基的三个氢之一，它保持与中心碳的单键，不参与断键。三个氢互为等价，共同构成与碳相连的甲基。",
+          "en": "One of the three methyl hydrogens, it stays single-bonded to the central carbon and takes no part in bond breaking. The three hydrogens are equivalent and together form the methyl group."
+        }
+      },
+      "5": {
+        "role": {
+          "zh": "甲基上的氢原子（未被取代而保留的氢）",
+          "en": "Hydrogen atom on the methyl group (a hydrogen that is not substituted)"
+        },
+        "detail": {
+          "zh": "这个氢与中心碳成单键保留下来。整体反应的本质是逐级取代：本次生成 CH₃Cl 只顶掉了一个氢，若继续反应还会逐个顶掉这些氢生成 CH₂Cl₂、CHCl₃ 等。",
+          "en": "This hydrogen remains bonded to the central carbon. The reaction is a stepwise substitution: this step forms CH₃Cl by replacing just one hydrogen, and further substitution of these remaining hydrogens would give CH₂Cl₂, CHCl₃ and so on."
+        }
+      }
+    },
+    "stepAtomIds": [
+      [],
+      [],
+      [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      []
+    ]
   },
   {
     "id": "c2h4-br2",
@@ -196,7 +267,101 @@
       ]
     },
     "smiles": "BrCCBr",
-    "reviewed": true
+    "reviewed": true,
+    "atomInsights": {
+      "1": {
+        "role": {
+          "zh": "连接在 3 号碳上的溴原子（1,2-二溴乙烷的溴）",
+          "en": "Bromine atom bonded to carbon 3 (a bromine of 1,2-dibromoethane)"
+        },
+        "detail": {
+          "zh": "乙烯双键断裂后，Br₂ 的 Br—Br 键也随之断开，一个溴原子加成到原双键的一个碳上，形成新的 C—Br 单键。它使该碳由不饱和变为饱和。",
+          "en": "When the C=C double bond opens, the Br—Br bond of Br₂ also breaks and one bromine atom adds to one carbon of the former double bond, forming a new C—Br single bond. It turns that carbon from unsaturated to saturated."
+        }
+      },
+      "2": {
+        "role": {
+          "zh": "连接在 4 号碳上的溴原子（1,2-二溴乙烷的溴）",
+          "en": "Bromine atom bonded to carbon 4 (a bromine of 1,2-dibromoethane)"
+        },
+        "detail": {
+          "zh": "与 3 号碳上的溴对应，另一个溴原子加到了原双键的另一端碳上，形成新的 C—Br 单键。两个溴分别占据双键的两个碳，这是加成反应“1,2-加成”的典型特征。",
+          "en": "As the counterpart to the bromine on carbon 3, the other bromine adds to the other carbon of the former double bond, forming a new C—Br single bond. The two bromines occupy the two carbons of the original double bond, the hallmark of 1,2-addition."
+        }
+      },
+      "3": {
+        "role": {
+          "zh": "与溴相连的亚甲基碳（原双键的一端）",
+          "en": "Carbon of the —CH₂Br group (one end of the original double bond)"
+        },
+        "detail": {
+          "zh": "这个碳原本是乙烯 C=C 双键的一端，呈 sp² 杂化。加成时它断开一个 π 键，与溴形成单键，碳变为 sp³；它与另一个碳、两个氢之间的键保持不变。",
+          "en": "This carbon was one end of ethylene's C=C double bond and was sp² hybridized. In the addition it breaks one π bond to bond with bromine and becomes sp³, while its bonds to the other carbon and its two hydrogens are unchanged."
+        }
+      },
+      "4": {
+        "role": {
+          "zh": "与溴相连的亚甲基碳（原双键的另一端）",
+          "en": "The other —CH₂Br carbon (the other end of the original double bond)"
+        },
+        "detail": {
+          "zh": "与 3 号碳对称，它也是原双键的端点，同样断掉一个 π 键并与溴成单键。它与另一个碳、两个氢的连接保留，碳由 sp² 变为 sp³。",
+          "en": "Symmetric to carbon 3, this is also an end of the original double bond; it likewise breaks one π bond and bonds to bromine. Its bonds to the other carbon and its two hydrogens remain, and the carbon changes from sp² to sp³."
+        }
+      },
+      "5": {
+        "role": {
+          "zh": "3 号碳（—CH₂—）上的氢原子",
+          "en": "Hydrogen atom on carbon 3 (—CH₂—)"
+        },
+        "detail": {
+          "zh": "这个氢保持与 3 号碳相连，在加成中不参与断键。当该碳由 sp² 变为 sp³ 时，它随碳的几何形状一起微调方向。",
+          "en": "This hydrogen stays attached to carbon 3 and takes no part in the bond breaking. When the carbon changes from sp² to sp³, the hydrogen shifts slightly with the carbon's new geometry."
+        }
+      },
+      "6": {
+        "role": {
+          "zh": "3 号碳（—CH₂—）上的氢原子",
+          "en": "Hydrogen atom on carbon 3 (—CH₂—)"
+        },
+        "detail": {
+          "zh": "与 5 号氢同为亚甲基上的氢，它与 3 号碳的单键在加成前后保持不变，属于未参与反应的成键。",
+          "en": "Together with the other hydrogen it is one of the methylene hydrogens; its single bond to carbon 3 is unchanged before and after the addition."
+        }
+      },
+      "7": {
+        "role": {
+          "zh": "4 号碳（—CH₂—）上的氢原子",
+          "en": "Hydrogen atom on carbon 4 (—CH₂—)"
+        },
+        "detail": {
+          "zh": "这个氢保持与 4 号碳相连，不参与断键。它随碳由 sp² 变为 sp³ 而调整空间取向。",
+          "en": "This hydrogen stays attached to carbon 4 and does not take part in bond breaking. It adjusts its spatial orientation as the carbon changes from sp² to sp³."
+        }
+      },
+      "8": {
+        "role": {
+          "zh": "4 号碳（—CH₂—）上的氢原子",
+          "en": "Hydrogen atom on carbon 4 (—CH₂—)"
+        },
+        "detail": {
+          "zh": "与 7 号氢同为 4 号碳上的亚甲基氢，其单键在反应前后保持不变。",
+          "en": "Another methylene hydrogen on carbon 4; its single bond stays unchanged through the reaction."
+        }
+      }
+    },
+    "stepAtomIds": [
+      [],
+      [],
+      [
+        1,
+        2,
+        3,
+        4
+      ],
+      [],
+      []
+    ]
   },
   {
     "id": "c2h4-hydration",
@@ -325,7 +490,124 @@
       ]
     },
     "smiles": "CCO",
-    "reviewed": true
+    "reviewed": true,
+    "atomInsights": {
+      "1": {
+        "role": {
+          "zh": "乙醇羟基（—OH）中的氧原子",
+          "en": "Oxygen of ethanol's hydroxyl group (—OH)"
+        },
+        "detail": {
+          "zh": "这个氧来自水分子。乙烯加成时 H₂O 裂解为 H 和 —OH，—OH 加到其中一个碳上，形成乙醇的羟基。它一端与碳成单键，另一端与氢相连。",
+          "en": "This oxygen comes from water. In the addition H₂O splits into H and —OH, and the —OH adds to one of the carbons to form ethanol's hydroxyl. It is bonded to a carbon on one side and to a hydrogen on the other."
+        }
+      },
+      "2": {
+        "role": {
+          "zh": "与羟基相连的碳（—CH₂OH，来自原双键一端）",
+          "en": "Carbon bonded to the hydroxyl (—CH₂OH, from one end of the original double bond)"
+        },
+        "detail": {
+          "zh": "它原是乙烯双键的一个碳，呈 sp² 杂化。加成时断开一个 π 键与氧形成 C—O 单键，碳变为 sp³，并保留了与另一个碳和两个氢的键。",
+          "en": "It was one end of ethylene's double bond and was sp² hybridized. During addition it breaks one π bond to form a C—O single bond with oxygen, becomes sp³, and keeps its bonds to the other carbon and its two hydrogens."
+        }
+      },
+      "3": {
+        "role": {
+          "zh": "甲基（—CH₃）上的碳（来自原双键另一端）",
+          "en": "Methyl carbon (—CH₃, from the other end of the original double bond)"
+        },
+        "detail": {
+          "zh": "它原是乙烯另一端的双键碳，sp² 杂化。加成时它得到一个来自水的氢，碳变为 sp³，成为甲基 —CH₃。同一位碳因此由“不饱和”变为“饱和”。",
+          "en": "It was the other end of ethylene's double bond, sp² hybridized. In the addition it gains a hydrogen from water, turns sp³, and becomes the methyl group —CH₃. That carbon thus changes from unsaturated to saturated."
+        }
+      },
+      "4": {
+        "role": {
+          "zh": "—CH₂OH 碳（2 号碳）上的氢原子",
+          "en": "Hydrogen atom on the —CH₂OH carbon (carbon 2)"
+        },
+        "detail": {
+          "zh": "这个氢原本就连接在乙烯双键的碳上，加水加成后仍与 2 号碳相连，不参与断键。",
+          "en": "This hydrogen was already attached to one of ethylene's double-bond carbons and remains bonded to carbon 2 after the hydration; it does not take part in the bond breaking."
+        }
+      },
+      "5": {
+        "role": {
+          "zh": "—CH₂OH 碳（2 号碳）上的氢原子",
+          "en": "Hydrogen atom on the —CH₂OH carbon (carbon 2)"
+        },
+        "detail": {
+          "zh": "与 4 号氢同为该碳上的亚甲基氢，它在加成中保持不变。",
+          "en": "Like the other hydrogen, it is a methylene hydrogen on this carbon and stays unchanged through the addition."
+        }
+      },
+      "6": {
+        "role": {
+          "zh": "甲基（—CH₃）上的氢原子",
+          "en": "Hydrogen atom on the methyl group (—CH₃)"
+        },
+        "detail": {
+          "zh": "这是甲基的三个氢之一。其中有一个氢来自水分子（在加成时加到 3 号碳上），其余两个来自乙烯；它们共同构成 —CH₃。",
+          "en": "One of the three methyl hydrogens. One of them comes from water (added to carbon 3 during the addition) and the other two from ethylene; together they complete the —CH₃ group."
+        }
+      },
+      "7": {
+        "role": {
+          "zh": "甲基（—CH₃）上的氢原子",
+          "en": "Hydrogen atom on the methyl group (—CH₃)"
+        },
+        "detail": {
+          "zh": "甲基上的氢，保持与 3 号碳的单键，不参与断键。",
+          "en": "A methyl hydrogen, it stays single-bonded to carbon 3 and is not involved in bond breaking."
+        }
+      },
+      "8": {
+        "role": {
+          "zh": "甲基（—CH₃）上的氢原子",
+          "en": "Hydrogen atom on the methyl group (—CH₃)"
+        },
+        "detail": {
+          "zh": "甲基上的氢，与 3 号碳的单键在反应前后保持不变。",
+          "en": "A methyl hydrogen, its single bond to carbon 3 is unchanged through the reaction."
+        }
+      },
+      "9": {
+        "role": {
+          "zh": "羟基上的氢原子",
+          "en": "Hydrogen atom of the hydroxyl group"
+        },
+        "detail": {
+          "zh": "这个氢来自水分子，随 —OH 一起加成，仍与氧气相连，构成羟基上的 H。它不是双键碳直接加上的那个氢，而是羟基自身的氢。",
+          "en": "This hydrogen also comes from water and is carried in with the —OH, staying attached to oxygen as the hydroxyl hydrogen. It is not the hydrogen added onto the double-bond carbon, but the hydrogen of the hydroxyl group itself."
+        }
+      }
+    },
+    "stepAtomIds": [
+      [
+        1,
+        2,
+        3
+      ],
+      [
+        1,
+        2,
+        3
+      ],
+      [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      [],
+      []
+    ]
   },
   {
     "id": "c2h4-polymerization",
@@ -451,7 +733,97 @@
       ]
     },
     "smiles": "CC=O",
-    "reviewed": true
+    "reviewed": true,
+    "atomInsights": {
+      "1": {
+        "role": {
+          "zh": "醛基（—CHO）中的氧原子（C=O）",
+          "en": "Oxygen of the aldehyde group (—CHO, C=O)"
+        },
+        "detail": {
+          "zh": "这个氧来自乙醇的羟基氧。催化氧化时，乙醇脱去羟基上的氢和相邻碳上的一个氢（脱氢），这个氧与碳之间的键变成双键，羟基因此转化为醛基。",
+          "en": "This oxygen is ethanol's hydroxyl oxygen. In catalytic oxidation the hydroxyl hydrogen and one hydrogen on the adjacent carbon are removed (dehydrogenation), so the C—O bond becomes a C=O double bond and the hydroxyl is converted into an aldehyde group."
+        }
+      },
+      "2": {
+        "role": {
+          "zh": "甲基碳（—CH₃）",
+          "en": "Methyl carbon (—CH₃)"
+        },
+        "detail": {
+          "zh": "它原是乙醇的甲基碳，在氧化前后原子组成与键合基本不变，仍与醛基碳保持单键。它没有参与氧化断键。",
+          "en": "This is ethanol's methyl carbon; its composition and bonding are essentially unchanged, and it stays single-bonded to the aldehyde carbon. It takes no part in the oxidative bond breaking."
+        }
+      },
+      "3": {
+        "role": {
+          "zh": "醛基碳（—CHO 中的碳，被氧化的碳）",
+          "en": "Carbon of the aldehyde group (the carbon that is oxidized)"
+        },
+        "detail": {
+          "zh": "它原是乙醇中连接羟基的 —CH₂OH 碳（sp³）。氧化中该碳失去一个氢（脱氢），变为 sp²，并与氧形成 C=O 双键而成醛基碳。整体看，这个碳“失氢被氧化”，氧化数升高。",
+          "en": "It was ethanol's —CH₂OH carbon (sp³). In oxidation it loses a hydrogen (dehydrogenation), becomes sp², and forms a C=O double bond with oxygen to become the aldehyde carbon. Overall this carbon loses hydrogen and is oxidized, so its oxidation number rises."
+        }
+      },
+      "4": {
+        "role": {
+          "zh": "甲基（—CH₃）上的氢原子",
+          "en": "Hydrogen atom on the methyl group (—CH₃)"
+        },
+        "detail": {
+          "zh": "甲基上的氢，不参与氧化断键，保持与甲基碳的连接。",
+          "en": "A methyl hydrogen, it is not involved in the oxidative bond breaking and stays attached to the methyl carbon."
+        }
+      },
+      "5": {
+        "role": {
+          "zh": "甲基（—CH₃）上的氢原子",
+          "en": "Hydrogen atom on the methyl group (—CH₃)"
+        },
+        "detail": {
+          "zh": "甲基上的氢，在氧化前后保持不变。",
+          "en": "A methyl hydrogen, unchanged before and after the oxidation."
+        }
+      },
+      "6": {
+        "role": {
+          "zh": "甲基（—CH₃）上的氢原子",
+          "en": "Hydrogen atom on the methyl group (—CH₃)"
+        },
+        "detail": {
+          "zh": "甲基上的氢，保持与甲基碳的单键，不参与反应。",
+          "en": "A methyl hydrogen, it keeps its single bond to the methyl carbon and does not react."
+        }
+      },
+      "7": {
+        "role": {
+          "zh": "醛基上的氢原子（—CHO 的 H）",
+          "en": "Hydrogen of the aldehyde group (—CHO)"
+        },
+        "detail": {
+          "zh": "这是醛基碳上保留的那个氢。氧化时这个碳原先的两个氢之一（连同羟基氢）被脱去，与氧结合生成水；仅余这个氢，与 C=O 一起构成 —CHO。",
+          "en": "This is the hydrogen that remains on the aldehyde carbon. In the oxidation one of this carbon's two original hydrogens (together with the hydroxyl hydrogen) is removed and combines with oxygen to give water; only this hydrogen remains, forming —CHO with the C=O."
+        }
+      }
+    },
+    "stepAtomIds": [
+      [],
+      [],
+      [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      [
+        1,
+        3
+      ],
+      []
+    ]
   },
   {
     "id": "esterification",
@@ -641,7 +1013,174 @@
       ]
     },
     "smiles": "CCOC(C)=O",
-    "reviewed": true
+    "reviewed": true,
+    "atomInsights": {
+      "1": {
+        "role": {
+          "zh": "酯基中的单键氧（—O—，连接羰基碳与乙基）",
+          "en": "The single-bonded oxygen of the ester group (—O—, linking the carbonyl carbon and the ethyl group)"
+        },
+        "detail": {
+          "zh": "这个氧来自乙醇的羟基氧（醇脱氢后留下的氧）。酯化时乙醇的羟基脱去一个氢，这个氧与乙酸的羰基碳形成单键，构成酯键。它是“醇脱氢”的产物。",
+          "en": "This oxygen comes from ethanol's hydroxyl (the oxygen left after the alcohol loses a hydrogen). In esterification the ethanol hydroxyl loses a hydrogen and this oxygen forms a single bond with the acid's carbonyl carbon, creating the ester linkage. It is the product of the alcohol's dehydrogenation."
+        }
+      },
+      "2": {
+        "role": {
+          "zh": "酯基中的羰基氧（C=O）",
+          "en": "The carbonyl oxygen of the ester group (C=O)"
+        },
+        "detail": {
+          "zh": "这个氧来自乙酸羧基中与碳成双键的那个氧，酯化过程中 C=O 被完整保留，双键氧不参与脱水。乙酸脱去的是羧基的 —OH（酸脱羟基），而这个双键氧仍留在羰基上。",
+          "en": "This is the oxygen of acetic acid's carboxyl group that is double-bonded to the carbon; the C=O is fully retained through esterification and this oxygen does not take part in dehydration. What acetic acid loses is its carboxyl —OH, while this double-bonded oxygen stays on the carbonyl."
+        }
+      },
+      "3": {
+        "role": {
+          "zh": "乙基中与酯氧相连的亚甲基碳（—CH₂—）",
+          "en": "The methylene carbon of the ethyl group that links to the ester oxygen"
+        },
+        "detail": {
+          "zh": "它来自乙醇的羟甲基（—CH₂OH）碳。酯化后它通过 C—O 单键连接到酯基氧，成为乙氧基（—OCH₂CH₃）的一部分，键合不变。",
+          "en": "It comes from ethanol's —CH₂OH carbon. After esterification it is linked through a C—O single bond to the ester oxygen, becoming part of the ethoxy group (—OCH₂CH₃), with unchanged bonding."
+        }
+      },
+      "4": {
+        "role": {
+          "zh": "乙基的末端甲基碳（—CH₃）",
+          "en": "The terminal methyl carbon of the ethyl group"
+        },
+        "detail": {
+          "zh": "它来自乙醇，保持 —CH₃ 与 3 号碳相连，不直接参与酯键的断裂与生成。",
+          "en": "From ethanol, it stays as —CH₃ bonded to carbon 3 and does not directly take part in the breaking or forming of the ester bond."
+        }
+      },
+      "5": {
+        "role": {
+          "zh": "酯的羰基碳（来自乙酸的羧基碳）",
+          "en": "The carbonyl carbon of the ester (acetic acid's carboxyl carbon)"
+        },
+        "detail": {
+          "zh": "它来自乙酸的羧基碳，是酯化的中心。酯化时乙酸脱去羧基的 —OH（酸脱羟基），改而与乙醇的氧成键，形成 C(=O)—O— 酯基，C=O 保持不变，该碳由羧酸碳变为酯基碳。",
+          "en": "It comes from acetic acid's carboxyl carbon and is the center of esterification. The acid loses its carboxyl —OH, and this carbon instead bonds to ethanol's oxygen to form the ester group C(=O)—O—, while the C=O is unchanged. The carbon shifts from a carboxylic-acid carbon to an ester carbon."
+        }
+      },
+      "6": {
+        "role": {
+          "zh": "乙酰基的甲基碳（—CH₃，来自乙酸）",
+          "en": "The methyl carbon of the acetyl group (from acetic acid)"
+        },
+        "detail": {
+          "zh": "它来自乙酸的甲基，保持与羰基碳的单键，不参与断键，仅随酯化保留在乙酰基中。",
+          "en": "It comes from acetic acid's methyl group, stays single-bonded to the carbonyl carbon, and does not break any bond; it is simply retained in the acetyl group."
+        }
+      },
+      "7": {
+        "role": {
+          "zh": "乙基亚甲基（—CH₂—）上的氢原子",
+          "en": "Hydrogen atom on the ethyl methylene group (—CH₂—)"
+        },
+        "detail": {
+          "zh": "这个氢保持与 3 号碳相连，不参与酯化断键。",
+          "en": "This hydrogen stays attached to carbon 3 and does not take part in the esterification bond breaking."
+        }
+      },
+      "8": {
+        "role": {
+          "zh": "乙基亚甲基（—CH₂—）上的氢原子",
+          "en": "Hydrogen atom on the ethyl methylene group (—CH₂—)"
+        },
+        "detail": {
+          "zh": "与 7 号氢同为亚甲基上的氢，酯化前后保持不变。",
+          "en": "Like the other methylene hydrogen, it stays unchanged through esterification."
+        }
+      },
+      "9": {
+        "role": {
+          "zh": "乙基甲基（—CH₃）上的氢原子",
+          "en": "Hydrogen atom on the ethyl methyl group (—CH₃)"
+        },
+        "detail": {
+          "zh": "甲基上的氢，保持与 4 号碳的单键，不参与反应。",
+          "en": "A methyl hydrogen, it keeps its single bond to carbon 4 and does not react."
+        }
+      },
+      "10": {
+        "role": {
+          "zh": "乙基甲基（—CH₃）上的氢原子",
+          "en": "Hydrogen atom on the ethyl methyl group (—CH₃)"
+        },
+        "detail": {
+          "zh": "甲基上的氢，在酯化前后保持不变。",
+          "en": "A methyl hydrogen, unchanged before and after esterification."
+        }
+      },
+      "11": {
+        "role": {
+          "zh": "乙基甲基（—CH₃）上的氢原子",
+          "en": "Hydrogen atom on the ethyl methyl group (—CH₃)"
+        },
+        "detail": {
+          "zh": "甲基上的氢，保持与甲基碳的连接，不参与断键。",
+          "en": "A methyl hydrogen, it stays attached to the methyl carbon and takes no part in bond breaking."
+        }
+      },
+      "12": {
+        "role": {
+          "zh": "乙酰基甲基（—CH₃）上的氢原子",
+          "en": "Hydrogen atom on the acetyl methyl group (—CH₃)"
+        },
+        "detail": {
+          "zh": "这个氢保持与 6 号碳相连，不参与酯化断键。",
+          "en": "This hydrogen stays attached to carbon 6 and does not take part in the esterification bond breaking."
+        }
+      },
+      "13": {
+        "role": {
+          "zh": "乙酰基甲基（—CH₃）上的氢原子",
+          "en": "Hydrogen atom on the acetyl methyl group (—CH₃)"
+        },
+        "detail": {
+          "zh": "乙酰甲基上的氢，酯化前后保持不变。",
+          "en": "A hydrogen of the acetyl methyl group, unchanged through esterification."
+        }
+      },
+      "14": {
+        "role": {
+          "zh": "乙酰基甲基（—CH₃）上的氢原子",
+          "en": "Hydrogen atom on the acetyl methyl group (—CH₃)"
+        },
+        "detail": {
+          "zh": "乙酰甲基上的氢，保持与 6 号碳的单键，不参与反应。",
+          "en": "A hydrogen of the acetyl methyl group, it keeps its single bond to carbon 6 and does not react."
+        }
+      }
+    },
+    "stepAtomIds": [
+      [],
+      [],
+      [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      [],
+      [
+        1,
+        5
+      ]
+    ]
   },
   {
     "id": "glucose-cuoh2",
@@ -955,6 +1494,259 @@
         }
       ]
     },
-    "reviewed": true
+    "reviewed": true,
+    "atomInsights": {
+      "1": {
+        "role": {
+          "zh": "吡喃环中的环醚氧（连接 C9 与 C11 的成环氧）",
+          "en": "The ring ether oxygen of the pyranose ring (the oxygen linking C9 and C11)"
+        },
+        "detail": {
+          "zh": "这个氧是葡萄糖成环时形成的环氧，一头连 C9、一头连 C11，使分子闭合成六元环。它在醛基氧化为羧基的过程中不直接参与断键。",
+          "en": "This oxygen closes the molecule into a six-membered ring, linking C9 on one side and C11 on the other. It is not directly involved in the bond breaking when the aldehyde is oxidized to a carboxyl group."
+        }
+      },
+      "2": {
+        "role": {
+          "zh": "C7 上的羟基氧（—OH，环上的醇羟基）",
+          "en": "Hydroxyl oxygen on C7 (—OH, an alcohol hydroxyl of the ring)"
+        },
+        "detail": {
+          "zh": "这是葡萄糖分子众多羟基之一，与 C7 成单键并带一个氢。这类羟基说明葡萄糖是多羟基化合物，在氧化中保持不变。",
+          "en": "One of glucose's many hydroxyl groups, single-bonded to C7 and carrying a hydrogen. Such hydroxyls show glucose is a polyhydroxy compound and remain unchanged in the oxidation."
+        }
+      },
+      "3": {
+        "role": {
+          "zh": "C8 上的羟基氧（—OH）",
+          "en": "Hydroxyl oxygen on C8 (—OH)"
+        },
+        "detail": {
+          "zh": "与 C8 相连的醇羟基氧，连同它的氢组成一个 —OH。它不在醛基氧化中变化。",
+          "en": "An alcohol hydroxyl oxygen bonded to C8, which together with its hydrogen forms a —OH group. It does not change in the aldehyde oxidation."
+        }
+      },
+      "4": {
+        "role": {
+          "zh": "C10 上的羟基氧（—OH）",
+          "en": "Hydroxyl oxygen on C10 (—OH)"
+        },
+        "detail": {
+          "zh": "与 C10 相连的醇羟基氧，是葡萄糖多羟基结构的一部分，氧化时保留不变。",
+          "en": "An alcohol hydroxyl oxygen bonded to C10, part of glucose's polyhydroxy structure, retained unchanged on oxidation."
+        }
+      },
+      "5": {
+        "role": {
+          "zh": "C11（异头碳，对应开链醛基碳）上的羟基氧",
+          "en": "Hydroxyl oxygen on C11 (the anomeric carbon, which corresponds to the open-chain aldehyde carbon)"
+        },
+        "detail": {
+          "zh": "这个氧连接在异头碳 C11 上，相当于开链葡萄糖醛基（—CHO）里连氧的部位。当葡萄糖开链被氧化时，这一位置由醛基变为羧基，氧的成键随之改变。",
+          "en": "This oxygen is attached to the anomeric carbon C11, corresponding to the oxygen-bearing site of the open-chain aldehyde (—CHO). When open-chain glucose is oxidized this position changes from aldehyde to carboxyl, and this oxygen's bonding changes with it."
+        }
+      },
+      "6": {
+        "role": {
+          "zh": "末端羟甲基（—CH₂OH）中的羟基氧",
+          "en": "Hydroxyl oxygen of the terminal —CH₂OH group"
+        },
+        "detail": {
+          "zh": "它连接在末端碳 C12 上，构成 —CH₂OH 的羟基氧，并带一个氢。这个端位羟甲基在氧化中不变。",
+          "en": "Bonded to the terminal carbon C12, it forms the hydroxyl oxygen of the —CH₂OH group and carries a hydrogen. This terminal hydroxymethyl group is unchanged by the oxidation."
+        }
+      },
+      "7": {
+        "role": {
+          "zh": "环上的羟基碳（—CHOH，C2 位）",
+          "en": "A ring hydroxyl carbon (—CHOH, the C2 position)"
+        },
+        "detail": {
+          "zh": "这个碳位于葡萄糖吡喃环上，连着一个羟基（O2）和一个氢（H13）。它是多羟基碳链的一部分，在氧化中不变化。",
+          "en": "This carbon sits on the glucose pyranose ring, carrying one hydroxyl (O2) and one hydrogen (H13). It is part of the polyhydroxy chain and does not change on oxidation."
+        }
+      },
+      "8": {
+        "role": {
+          "zh": "环上的羟基碳（—CHOH，C3 位）",
+          "en": "A ring hydroxyl carbon (—CHOH, the C3 position)"
+        },
+        "detail": {
+          "zh": "与 C7 相邻的环上碳，连有一个羟基（O3）和一个氢（H14），属多羟基结构，氧化时不变。",
+          "en": "A ring carbon adjacent to C7, bearing a hydroxyl (O3) and a hydrogen (H14); part of the polyhydroxy structure, unchanged on oxidation."
+        }
+      },
+      "9": {
+        "role": {
+          "zh": "连有羟甲基侧链的环碳（—CH—，C5 位）",
+          "en": "The ring carbon carrying the hydroxymethyl side chain (—CH—, the C5 position)"
+        },
+        "detail": {
+          "zh": "这个碳连接环氧（O1）和末端羟甲基（C12），是糖环上挂侧链的位置。它在氧化中不参与断键，保持与 O1、C7、C12 和 H15 的键。",
+          "en": "This carbon links the ring oxygen (O1) and the terminal hydroxymethyl group (C12), the position where the side chain is attached. It takes no part in the oxidative bond breaking and keeps its bonds to O1, C7, C12 and H15."
+        }
+      },
+      "10": {
+        "role": {
+          "zh": "环上的羟基碳（—CHOH，C4 位）",
+          "en": "A ring hydroxyl carbon (—CHOH, the C4 position)"
+        },
+        "detail": {
+          "zh": "连有一个羟基（O4）和一个氢（H16）的环上碳，属多羟基结构，氧化时保持不变。",
+          "en": "A ring carbon bearing a hydroxyl (O4) and a hydrogen (H16); part of the polyhydroxy structure, unchanged on oxidation."
+        }
+      },
+      "11": {
+        "role": {
+          "zh": "异头碳（C1 位，开链时即醛基—CHO 的碳，被氧化的碳）",
+          "en": "The anomeric carbon (the C1 position, which in the open chain is the aldehyde —CHO carbon being oxidized)"
+        },
+        "detail": {
+          "zh": "这个碳是葡萄糖的异头碳，成环时连环氧（O1）与羟基（O5）。开链时它表现为醛基碳（—CHO），与 Cu(OH)₂ 反应即被氧化为羧基碳（—COOH），生成葡萄糖酸。整条反应的关键变化就发生在这个碳上：由醛基被氧化为羧基。",
+          "en": "This is glucose's anomeric carbon, which in the ring is bonded to the ring oxygen (O1) and a hydroxyl (O5). In the open chain it is the aldehyde carbon (—CHO), and it is this carbon that is oxidized to a carboxyl carbon (—COOH) by Cu(OH)₂, giving gluconic acid. The key change of the reaction — the oxidation of the aldehyde group — happens at this carbon."
+        }
+      },
+      "12": {
+        "role": {
+          "zh": "末端羟甲基碳（—CH₂OH，C6 位）",
+          "en": "The terminal hydroxymethyl carbon (—CH₂OH, the C6 position)"
+        },
+        "detail": {
+          "zh": "这是链末端的碳，连着一个羟基（O6）和两个氢（H18、H19）。它构成 —CH₂OH，在氧化中不参与变化。",
+          "en": "This is the terminal carbon of the chain, bearing one hydroxyl (O6) and two hydrogens (H18, H19). It forms —CH₂OH and does not change in the oxidation."
+        }
+      },
+      "13": {
+        "role": {
+          "zh": "C7 上的氢原子（—CH—）",
+          "en": "Hydrogen atom on C7 (—CH—)"
+        },
+        "detail": {
+          "zh": "连在 C7 上的氢，与 C7 成单键，氧化中保持不变。",
+          "en": "Bonded to C7, this hydrogen stays single-bonded and unchanged on oxidation."
+        }
+      },
+      "14": {
+        "role": {
+          "zh": "C8 上的氢原子（—CH—）",
+          "en": "Hydrogen atom on C8 (—CH—)"
+        },
+        "detail": {
+          "zh": "连在 C8 上的氢，氧化前后保持不变。",
+          "en": "Bonded to C8, this hydrogen is unchanged before and after oxidation."
+        }
+      },
+      "15": {
+        "role": {
+          "zh": "C9 上的氢原子（—CH—）",
+          "en": "Hydrogen atom on C9 (—CH—)"
+        },
+        "detail": {
+          "zh": "连在 C9（侧链位碳）上的氢，不参与氧化断键。",
+          "en": "Bonded to C9 (the side-chain carbon), this hydrogen takes no part in the oxidative bond breaking."
+        }
+      },
+      "16": {
+        "role": {
+          "zh": "C10 上的氢原子（—CH—）",
+          "en": "Hydrogen atom on C10 (—CH—)"
+        },
+        "detail": {
+          "zh": "连在 C10 上的氢，氧化中保持不变。",
+          "en": "Bonded to C10, this hydrogen is unchanged on oxidation."
+        }
+      },
+      "17": {
+        "role": {
+          "zh": "异头碳 C11 上的氢原子（开链醛基的—CHO 氢）",
+          "en": "Hydrogen atom on the anomeric carbon C11 (the hydrogen of the open-chain —CHO)"
+        },
+        "detail": {
+          "zh": "这个氢与异头碳 C11 相连，开链时即醛基（—CHO）上的那个氢。氧化时醛基变为羧基，这个氢以及相关成键随之改变，是“醛基”被氧化的直接体现。",
+          "en": "This hydrogen is attached to the anomeric carbon C11; in the open chain it is the hydrogen of the aldehyde (—CHO). When the aldehyde is oxidized to a carboxyl group, this hydrogen and the associated bonding change, directly reflecting the oxidation of the aldehyde group."
+        }
+      },
+      "18": {
+        "role": {
+          "zh": "末端羟甲基（—CH₂OH）上的氢原子",
+          "en": "Hydrogen atom on the terminal —CH₂OH group"
+        },
+        "detail": {
+          "zh": "这是末端的两个氢之一，与 C12 成单键，氧化中不变。",
+          "en": "One of the two terminal hydrogens, single-bonded to C12 and unchanged on oxidation."
+        }
+      },
+      "19": {
+        "role": {
+          "zh": "末端羟甲基（—CH₂OH）上的氢原子",
+          "en": "Hydrogen atom on the terminal —CH₂OH group"
+        },
+        "detail": {
+          "zh": "末端羟甲基的另一个氢，与 C12 保持单键，不参与反应。",
+          "en": "The other hydrogen of the terminal hydroxymethyl group, it keeps a single bond to C12 and does not react."
+        }
+      },
+      "20": {
+        "role": {
+          "zh": "C7 羟基（—OH）上的氢原子",
+          "en": "Hydrogen atom of the C7 hydroxyl group (—OH)"
+        },
+        "detail": {
+          "zh": "连在 O2 上的羟基氢，与氧成单键，属于多羟基中的醇羟基氢，氧化中不变。",
+          "en": "A hydroxyl hydrogen attached to O2, single-bonded to the oxygen; an alcohol hydroxyl hydrogen of the polyhydroxy structure, unchanged on oxidation."
+        }
+      },
+      "21": {
+        "role": {
+          "zh": "C8 羟基（—OH）上的氢原子",
+          "en": "Hydrogen atom of the C8 hydroxyl group (—OH)"
+        },
+        "detail": {
+          "zh": "连在 O3 上的羟基氢，氧化中保持不变。",
+          "en": "A hydroxyl hydrogen attached to O3, unchanged on oxidation."
+        }
+      },
+      "22": {
+        "role": {
+          "zh": "C10 羟基（—OH）上的氢原子",
+          "en": "Hydrogen atom of the C10 hydroxyl group (—OH)"
+        },
+        "detail": {
+          "zh": "连在 O4 上的羟基氢，氧化中保持不变。",
+          "en": "A hydroxyl hydrogen attached to O4, unchanged on oxidation."
+        }
+      },
+      "23": {
+        "role": {
+          "zh": "C11 羟基（—OH）上的氢原子（异头碳羟基氢）",
+          "en": "Hydrogen atom of the C11 hydroxyl (—OH, the anomeric hydroxyl hydrogen)"
+        },
+        "detail": {
+          "zh": "连在 O5 上的羟基氢。这一位置在开链时对应醛基的成氧部位，氧化时与 C11 相关的成键（由醛基变羧基）会改变；该氢是异头羟基的一部分。",
+          "en": "A hydroxyl hydrogen attached to O5. In the open chain this position corresponds to the oxygen-bearing site of the aldehyde; when C11 is oxidized from aldehyde to carboxyl, the bonding here changes, making this hydrogen part of the anomeric hydroxyl."
+        }
+      },
+      "24": {
+        "role": {
+          "zh": "末端羟甲基（—CH₂OH）羟基氧上的氢原子",
+          "en": "Hydrogen atom of the terminal —CH₂OH hydroxyl oxygen"
+        },
+        "detail": {
+          "zh": "连在 O6（末端羟甲基的羟基氧）上的氢，氧化中不变。",
+          "en": "A hydrogen attached to O6 (the hydroxyl oxygen of the terminal hydroxymethyl group), unchanged on oxidation."
+        }
+      }
+    },
+    "stepAtomIds": [
+      [],
+      [],
+      [],
+      [
+        5,
+        11,
+        17
+      ],
+      []
+    ]
   }
 ]

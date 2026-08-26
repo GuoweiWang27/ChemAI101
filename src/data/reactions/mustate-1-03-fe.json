@@ -86,7 +86,69 @@
         }
       ]
     },
-    "reviewed": true
+    "reviewed": true,
+    "atomInsights": {
+      "1": {
+        "role": {
+          "zh": "被 Cl₂ 氧化、由 +2 价升到 +3 价的铁原子",
+          "en": "The iron atom oxidized by Cl₂ from +2 to +3"
+        },
+        "detail": {
+          "zh": "在 FeCl₂ 中 Fe 为 +2 价，通入氯气后失去 1 个电子被氧化为 +3 价，生成 FeCl₃。Fe²⁺ 充当还原剂，是溶液由浅绿色逐渐变成黄色、铁元素价态升高的根本原因；这一电子得失正是“Fe²⁺ 具有还原性、可作还原剂”的实验依据。",
+          "en": "In FeCl₂ the iron is +2; when chlorine is passed in it loses one electron and is oxidized to +3, forming FeCl₃. Fe²⁺ acts as the reducing agent, and this is why the pale-green solution gradually turns yellow as the iron's oxidation state rises. This electron transfer is exactly the evidence that Fe²⁺ is reducing and can serve as a reducing agent."
+        }
+      },
+      "2": {
+        "role": {
+          "zh": "产物 FeCl₃ 中的氯离子（-1 价）",
+          "en": "A chloride ion (-1) in the product FeCl₃"
+        },
+        "detail": {
+          "zh": "在 FeCl₃ 中氯以 Cl⁻ 形式存在，仍为 -1 价。这类氯离子大部分来自 FeCl₂ 原有的 Cl⁻，价态不变，属旁观离子；只有由 Cl₂ 得电子还原生成的那一个才属于还原产物，体现氯气把 Fe²⁺ 氧化、自身被还原的氧化性。",
+          "en": "In FeCl₃ the chlorine exists as Cl⁻ at -1. Most of these ions come unchanged from FeCl₂ and are spectators; only the one formed when Cl₂ gains electrons is the reduced product, showing that chlorine oxidizes Fe²⁺ while being reduced itself."
+        }
+      },
+      "3": {
+        "role": {
+          "zh": "产物 FeCl₃ 中的氯离子（-1 价，来自 FeCl₂）",
+          "en": "A chloride ion (-1) in FeCl₃, carried over from FeCl₂"
+        },
+        "detail": {
+          "zh": "这个氯离子原本就是 FeCl₂ 中的 Cl⁻，在 Fe²⁺ 被氧化为 Fe³⁺ 的全过程中价态始终是 -1，是未被氧化的旁观离子。它只帮助平衡 Fe³⁺ 的电荷，与溶液由浅绿变黄的变色现象无关。",
+          "en": "This chloride ion was already a Cl⁻ in FeCl₂, and it stays at -1 throughout the oxidation of Fe²⁺ to Fe³⁺, so it is a spectator. It only helps balance the charge on Fe³⁺ and is not responsible for the color change from pale green to yellow."
+        }
+      },
+      "4": {
+        "role": {
+          "zh": "产物 FeCl₃ 中的氯离子（-1 价，旁观离子）",
+          "en": "A chloride ion (-1) in FeCl₃, a spectator"
+        },
+        "detail": {
+          "zh": "在 FeCl₃ 中该氯原子为 -1 价的 Cl⁻，参与构成离子型结构的阴离子部分。它在氧化还原前后价态不变，只随 Fe³⁺ 一起构成产物 FeCl₃；Cl₂ 的还原正好为产物补充了新的 Cl⁻，使总氯量符合方程式。",
+          "en": "This chlorine is a Cl⁻ at -1 in FeCl₃, forming the anionic part of the ionic structure. Its oxidation state does not change through the redox; it simply accompanies Fe³⁺ to make up FeCl₃, while the reduction of Cl₂ supplies the extra chloride needed to balance the equation."
+        }
+      }
+    },
+    "stepAtomIds": [
+      [
+        1
+      ],
+      [
+        1
+      ],
+      [
+        1,
+        2,
+        3,
+        4
+      ],
+      [
+        1
+      ],
+      [
+        1
+      ]
+    ]
   },
   {
     "id": "fecl3-fe",
@@ -141,7 +203,53 @@
         }
       ]
     },
-    "reviewed": true
+    "reviewed": true,
+    "atomInsights": {
+      "1": {
+        "role": {
+          "zh": "由 Fe³⁺ 被还原、同时 Fe 单质被氧化而得到的 +2 价铁原子",
+          "en": "The +2 iron atom formed as Fe³⁺ is reduced while Fe metal is oxidized"
+        },
+        "detail": {
+          "zh": "产物 FeCl₂ 中 Fe 为 +2 价，它一分为二地体现“铁的价态可相互转化”：一方面 FeCl₃ 中的 Fe³⁺ 得到电子被还原为 Fe²⁺，另一方面铁粉（Fe 单质）失去电子被氧化为 Fe²⁺，两类电子转移汇聚成同一种 +2 价铁。Fe³⁺ 因此表现出氧化性，这也是用铁粉处理含 Fe³⁺ 溶液、避免其水解等应用的化学基础。",
+          "en": "In the product FeCl₂ the iron is +2, showing the interconversion among iron's valences. Fe³⁺ from FeCl₃ gains an electron and is reduced to Fe²⁺, while iron powder (Fe metal) loses electrons and is oxidized to Fe²⁺; both electron transfers converge on the same +2 state. This makes Fe³⁺ an oxidant and underlies uses such as treating Fe³⁺-bearing solutions with iron to prevent hydrolysis."
+        }
+      },
+      "2": {
+        "role": {
+          "zh": "产物 FeCl₂ 中的氯离子（-1 价，旁观离子）",
+          "en": "A chloride ion (-1) in the product FeCl₂, a spectator"
+        },
+        "detail": {
+          "zh": "在 FeCl₂ 中氯为 Cl⁻、-1 价。它来自 FeCl₃ 原有的 Cl⁻，在 Fe³⁺ 被还原为 Fe²⁺ 的过程中价态不变，只起平衡电荷的作用。反应后溶液由黄色变为浅绿色，正是 Fe³⁺/Fe²⁺ 变化所致，与 Cl⁻ 无关。",
+          "en": "In FeCl₂ the chlorine is Cl⁻ at -1. It comes unchanged from FeCl₃ and keeps this state while Fe³⁺ is reduced to Fe²⁺, merely balancing charge. The color change from yellow to pale green comes from the Fe³⁺/Fe²⁺ redox, not from the chloride."
+        }
+      },
+      "3": {
+        "role": {
+          "zh": "产物 FeCl₂ 中的氯离子（-1 价，来自 FeCl₃）",
+          "en": "A chloride ion (-1) in FeCl₂, carried over from FeCl₃"
+        },
+        "detail": {
+          "zh": "这个氯离子原本是 FeCl₃ 中的 Cl⁻，在反应前后始终为 -1 价，是未被还原的旁观离子。它与 +2 价 Fe 结合构成 FeCl₂，像“搭桥”一样完成了黄→浅绿的价态转换而不改变自身的氧化数。",
+          "en": "This chloride ion was originally a Cl⁻ in FeCl₃ and stays at -1 throughout, so it is not reduced. It pairs with the +2 iron to form FeCl₂, acting as a carrier that lets the yellow-to-pale-green valence change happen without altering its own oxidation number."
+        }
+      }
+    },
+    "stepAtomIds": [
+      [
+        1
+      ],
+      [
+        1
+      ],
+      [
+        1
+      ],
+      [
+        1
+      ]
+    ]
   },
   {
     "id": "fecl3-cu",
@@ -197,6 +305,50 @@
         }
       ]
     },
-    "reviewed": true
+    "reviewed": true,
+    "atomInsights": {
+      "1": {
+        "role": {
+          "zh": "被 Fe³⁺ 氧化、由 0 价升到 +2 价的铜原子",
+          "en": "The copper atom oxidized by Fe³⁺ from 0 to +2"
+        },
+        "detail": {
+          "zh": "铜片中的铜为 0 价，放入 FeCl₃ 溶液后失去 2 个电子被氧化为 Cu²⁺，与 Cl⁻ 结合生成蓝绿色的 CuCl₂，因而铜片逐渐溶解。Cu 是还原剂、Fe³⁺ 是氧化剂，这正是印刷电路板用 FeCl₃ 蚀刻铜箔的原理：被蚀去的铜变成可溶的 Cu²⁺ 进入溶液。",
+          "en": "The copper in the sheet is 0-valent. In FeCl₃ solution it loses two electrons and is oxidized to Cu²⁺, which pairs with Cl⁻ to give blue-green CuCl₂, so the copper gradually dissolves. Cu is the reducing agent and Fe³⁺ the oxidant — precisely why FeCl₃ is used to etch copper foil on printed circuit boards: the copper becomes soluble Cu²⁺ and leaves the board."
+        }
+      },
+      "2": {
+        "role": {
+          "zh": "产物 CuCl₂ 中的氯离子（-1 价，来自 FeCl₃ 的旁观离子）",
+          "en": "A chloride ion (-1) in the product CuCl₂, a spectator from FeCl₃"
+        },
+        "detail": {
+          "zh": "在 CuCl₂ 中氯为 Cl⁻、-1 价。它原本是 FeCl₃ 中的 Cl⁻，在 Cu 被氧化为 Cu²⁺ 的过程中价态不变，只提供离子环境并与 Cu²⁺ 形成可溶的氯化铜，使被蚀刻的铜以蓝绿色 Cu²⁺ 形式进入溶液。",
+          "en": "In CuCl₂ the chlorine is Cl⁻ at -1. It comes from FeCl₃ unchanged while Cu is oxidized to Cu²⁺, providing the ionic environment and forming soluble copper chloride, which is why the etched copper shows up as blue-green Cu²⁺ in solution."
+        }
+      },
+      "3": {
+        "role": {
+          "zh": "产物 CuCl₂ 中的氯离子（-1 价，旁观离子）",
+          "en": "A chloride ion (-1) in the product CuCl₂, a spectator"
+        },
+        "detail": {
+          "zh": "这个氯离子始终以 -1 价的 Cl⁻ 存在，来自 FeCl₃，在氧化还原中不被氧化也不被还原。它与 Cu²⁺ 共同构成 CuCl₂，是蓝色溶液里“铜的载体”，保证了方程式两侧氯原子数守恒。",
+          "en": "This chloride ion exists as Cl⁻ at -1, carried over from FeCl₃, and is neither oxidized nor reduced in the redox. Together with Cu²⁺ it makes up CuCl₂, serving as the carrier of copper in the blue solution and keeping the chlorine balanced on both sides of the equation."
+        }
+      }
+    },
+    "stepAtomIds": [
+      [
+        1
+      ],
+      [
+        1
+      ],
+      [
+        1
+      ],
+      []
+    ]
   }
 ]
