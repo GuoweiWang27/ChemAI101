@@ -10,7 +10,7 @@ type Translations = {
 
 const translations: Translations = {
   en: {
-    appTitle: "ChemAI Pro",
+    appTitle: "ChemAI101",
     navReaction: "Reaction Lab",
     navBuilder: "Structure Builder",
     reactionSetup: "Reaction Setup",
@@ -128,7 +128,7 @@ const translations: Translations = {
     chainHint: "Pick an element and keep clicking — new atoms auto-bond to the previous one."
   },
   zh: {
-    appTitle: "化学AI专家",
+    appTitle: "ChemAI101 化学智能实验室",
     navReaction: "反应实验室",
     navBuilder: "结构构建器",
     reactionSetup: "反应设置",
