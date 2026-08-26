@@ -43,9 +43,7 @@ function App() {
       <header className="bg-white border-b border-[#e8d5b8] sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="bg-science-600 p-2 rounded-lg">
-              <Atom className="w-6 h-6 text-white" />
-            </div>
+            <img src="/logo.png" alt="ChemAI101" className="w-9 h-9 rounded-lg ring-1 ring-black/10" />
             <h1 className="hidden sm:block font-display text-2xl font-bold">
               <span className="text-science-700">ChemAI</span>
               <span className="text-science-400">101</span>
