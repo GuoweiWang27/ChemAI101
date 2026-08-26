@@ -3,6 +3,7 @@ import { Atom, BookOpen, ChevronRight, Database, FlaskConical } from 'lucide-rea
 import { ALL_REACTIONS } from '../src/data/reactions';
 import { fetchUsageStats, UsageStats } from '../services/geminiService';
 import { useLanguage } from '../contexts/LanguageContext';
+import { HeroReactionCanvas } from './HeroReactionCanvas';
 
 export type HomeTab = 'textbook' | 'reaction' | 'builder' | 'library';
 
@@ -84,21 +85,29 @@ export const HomeModule: React.FC<HomeModuleProps> = ({ onOpen }) => {
   return (
     <div className="h-full overflow-y-auto">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-        {/* Hero */}
-        <div className="mb-8 sm:mb-10">
-          <p className="text-xs font-bold uppercase tracking-widest text-science-500 mb-3">ChemAI101</p>
-          <h2 className="text-3xl sm:text-5xl font-bold font-display leading-tight tracking-tight">
-            <span className="text-[#1a1a1a]">{t('homeTaglineMain')}</span>
-            <span className="bg-gradient-to-r from-science-600 to-science-400 bg-clip-text text-transparent">
-              {t('homeTaglineAccent')}
-            </span>
-          </h2>
-          <p className="mt-4 text-sm sm:text-base text-[#6f685d] max-w-xl leading-relaxed">{t('homeSubline')}</p>
-          {stats && stats.total > 0 && (
-            <p className="mt-3 text-sm text-[#a39a89]">
-              {t('homeStatsLine', { count: stats.total.toLocaleString('en-US') })}
-            </p>
-          )}
+        {/* Hero：暗夜实验室反应动画 + 反白标语 */}
+        <div className="relative mb-8 sm:mb-10 rounded-3xl overflow-hidden bg-[#101613] border border-[#0d1f19] shadow-xl">
+          <div className="absolute inset-0">
+            <HeroReactionCanvas />
+          </div>
+          {/* 可读性渐变：左浓右淡，文字压左侧 */}
+          <div className="absolute inset-0 pointer-events-none bg-gradient-to-r from-black/75 via-black/40 to-transparent" />
+          <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(120% 90% at 85% 30%, transparent 55%, rgba(0,0,0,0.45) 100%)' }} />
+          <div className="relative z-10 p-7 sm:p-12 min-h-[360px] sm:min-h-[440px] flex flex-col justify-center max-w-2xl pointer-events-none select-none">
+            <p className="text-xs font-bold uppercase tracking-widest text-emerald-300/80 mb-3">ChemAI101</p>
+            <h2 className="text-3xl sm:text-5xl font-bold font-display leading-tight tracking-tight text-white">
+              {t('homeTaglineMain')}
+              <span className="bg-gradient-to-r from-emerald-300 to-teal-200 bg-clip-text text-transparent">
+                {t('homeTaglineAccent')}
+              </span>
+            </h2>
+            <p className="mt-4 text-sm sm:text-base text-white/70 max-w-xl leading-relaxed">{t('homeSubline')}</p>
+            {stats && stats.total > 0 && (
+              <p className="mt-3 text-sm text-white/50 font-mono">
+                {t('homeStatsLine', { count: stats.total.toLocaleString('en-US') })}
+              </p>
+            )}
+          </div>
         </div>
 
         {/* Module cards */}
