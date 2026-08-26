@@ -172,7 +172,7 @@ export const FlameHeroCanvas: React.FC = () => {
       />
       {/* 元素切换 */}
       <div
-        className="absolute bottom-2 inset-x-0 flex justify-center gap-1 flex-nowrap px-1.5 overflow-hidden"
+        className="absolute left-2 top-1/2 -translate-y-1/2 flex flex-col items-start gap-1"
         style={{ pointerEvents: 'auto' }}
       >
         {FLAME_ELEMENTS.map((el, i) => (
