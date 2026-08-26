@@ -104,7 +104,81 @@
         2,
         3
       ]
-    ]
+    ],
+    "reactionFlow": {
+      "reactants": [
+        {
+          "label": "S",
+          "structure": {
+            "atoms": [
+              {
+                "id": 1,
+                "element": "S",
+                "x": 0,
+                "y": 0,
+                "z": 0
+              }
+            ],
+            "bonds": []
+          },
+          "position": [
+            -3.0,
+            0.8,
+            0
+          ]
+        },
+        {
+          "label": "O₂",
+          "structure": {
+            "atoms": [
+              {
+                "id": 1,
+                "element": "O",
+                "x": 0,
+                "y": 0.5,
+                "z": 0
+              },
+              {
+                "id": 2,
+                "element": "O",
+                "x": 0,
+                "y": -0.5,
+                "z": 0
+              }
+            ],
+            "bonds": [
+              {
+                "source": 1,
+                "target": 2,
+                "order": 1
+              }
+            ]
+          },
+          "position": [
+            -1.7,
+            -0.8,
+            0
+          ]
+        }
+      ],
+      "atomMap": [
+        {
+          "reactant": 0,
+          "atom": 1,
+          "to": 1
+        },
+        {
+          "reactant": 1,
+          "atom": 1,
+          "to": 2
+        },
+        {
+          "reactant": 1,
+          "atom": 2,
+          "to": 3
+        }
+      ]
+    }
   },
   {
     "id": "so2-cat-oxidation",
@@ -241,7 +315,111 @@
         4
       ],
       []
-    ]
+    ],
+    "reactionFlow": {
+      "reactants": [
+        {
+          "label": "SO₂",
+          "structure": {
+            "atoms": [
+              {
+                "id": 1,
+                "element": "S",
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              {
+                "id": 2,
+                "element": "O",
+                "x": 1.42,
+                "y": 0,
+                "z": 0
+              },
+              {
+                "id": 3,
+                "element": "O",
+                "x": -0.688,
+                "y": 1.242,
+                "z": 0
+              }
+            ],
+            "bonds": [
+              {
+                "source": 1,
+                "target": 2,
+                "order": 2
+              },
+              {
+                "source": 1,
+                "target": 3,
+                "order": 2
+              }
+            ]
+          },
+          "position": [
+            -2.6,
+            0.5,
+            0
+          ]
+        },
+        {
+          "label": "O₂",
+          "structure": {
+            "atoms": [
+              {
+                "id": 1,
+                "element": "O",
+                "x": -0.7,
+                "y": 0,
+                "z": 0
+              },
+              {
+                "id": 2,
+                "element": "O",
+                "x": 0.7,
+                "y": 0,
+                "z": 0
+              }
+            ],
+            "bonds": [
+              {
+                "source": 1,
+                "target": 2,
+                "order": 2
+              }
+            ]
+          },
+          "position": [
+            -2.6,
+            -1.05,
+            0
+          ]
+        }
+      ],
+      "atomMap": [
+        {
+          "reactant": 0,
+          "atom": 1,
+          "to": 1
+        },
+        {
+          "reactant": 0,
+          "atom": 2,
+          "to": 2
+        },
+        {
+          "reactant": 0,
+          "atom": 3,
+          "to": 3
+        },
+        {
+          "reactant": 1,
+          "atom": 1,
+          "to": 4
+        }
+      ]
+    }
   },
   {
     "id": "cu-conc-h2so4",
@@ -408,7 +586,156 @@
       [
         2
       ]
-    ]
+    ],
+    "reactionFlow": {
+      "reactants": [
+        {
+          "label": "Cu",
+          "structure": {
+            "atoms": [
+              {
+                "id": 1,
+                "element": "Cu",
+                "x": 0,
+                "y": 0,
+                "z": 0
+              }
+            ],
+            "bonds": []
+          },
+          "position": [
+            -2.8,
+            0.9,
+            0.0
+          ]
+        },
+        {
+          "label": "H₂SO₄",
+          "structure": {
+            "atoms": [
+              {
+                "id": 1,
+                "element": "S",
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              {
+                "id": 2,
+                "element": "O",
+                "x": 0.9,
+                "y": 0.9,
+                "z": 0.0
+              },
+              {
+                "id": 3,
+                "element": "O",
+                "x": -0.9,
+                "y": -0.9,
+                "z": 0.0
+              },
+              {
+                "id": 4,
+                "element": "O",
+                "x": 0.9,
+                "y": -0.9,
+                "z": 0.9
+              },
+              {
+                "id": 5,
+                "element": "O",
+                "x": -0.9,
+                "y": 0.9,
+                "z": 0.9
+              },
+              {
+                "id": 6,
+                "element": "H",
+                "x": 1.5,
+                "y": -1.5,
+                "z": 1.5
+              },
+              {
+                "id": 7,
+                "element": "H",
+                "x": -1.5,
+                "y": 1.5,
+                "z": 1.5
+              }
+            ],
+            "bonds": [
+              {
+                "source": 1,
+                "target": 2,
+                "order": 2
+              },
+              {
+                "source": 1,
+                "target": 3,
+                "order": 2
+              },
+              {
+                "source": 1,
+                "target": 4,
+                "order": 1
+              },
+              {
+                "source": 1,
+                "target": 5,
+                "order": 1
+              },
+              {
+                "source": 4,
+                "target": 6,
+                "order": 1
+              },
+              {
+                "source": 5,
+                "target": 7,
+                "order": 1
+              }
+            ]
+          },
+          "position": [
+            -1.8,
+            -0.7,
+            0.0
+          ]
+        }
+      ],
+      "atomMap": [
+        {
+          "reactant": 0,
+          "atom": 1,
+          "to": 1
+        },
+        {
+          "reactant": 1,
+          "atom": 1,
+          "to": 2
+        },
+        {
+          "reactant": 1,
+          "atom": 2,
+          "to": 5
+        },
+        {
+          "reactant": 1,
+          "atom": 3,
+          "to": 6
+        },
+        {
+          "reactant": 1,
+          "atom": 4,
+          "to": 3
+        },
+        {
+          "reactant": 1,
+          "atom": 5,
+          "to": 4
+        }
+      ]
+    }
   },
   {
     "id": "n2-o2",
@@ -495,7 +822,89 @@
         1,
         2
       ]
-    ]
+    ],
+    "reactionFlow": {
+      "reactants": [
+        {
+          "label": "N₂",
+          "structure": {
+            "atoms": [
+              {
+                "id": 1,
+                "element": "N",
+                "x": -0.55,
+                "y": 0.0,
+                "z": 0.0
+              },
+              {
+                "id": 2,
+                "element": "N",
+                "x": 0.55,
+                "y": 0.0,
+                "z": 0.0
+              }
+            ],
+            "bonds": [
+              {
+                "source": 1,
+                "target": 2,
+                "order": 3
+              }
+            ]
+          },
+          "position": [
+            -2.8,
+            -0.7,
+            0.0
+          ]
+        },
+        {
+          "label": "O₂",
+          "structure": {
+            "atoms": [
+              {
+                "id": 1,
+                "element": "O",
+                "x": -0.6,
+                "y": 0.0,
+                "z": 0.0
+              },
+              {
+                "id": 2,
+                "element": "O",
+                "x": 0.6,
+                "y": 0.0,
+                "z": 0.0
+              }
+            ],
+            "bonds": [
+              {
+                "source": 1,
+                "target": 2,
+                "order": 2
+              }
+            ]
+          },
+          "position": [
+            -2.0,
+            0.7,
+            0.0
+          ]
+        }
+      ],
+      "atomMap": [
+        {
+          "reactant": 0,
+          "atom": 1,
+          "to": 2
+        },
+        {
+          "reactant": 1,
+          "atom": 1,
+          "to": 1
+        }
+      ]
+    }
   },
   {
     "id": "no2-h2o",
@@ -647,7 +1056,128 @@
         5
       ],
       []
-    ]
+    ],
+    "reactionFlow": {
+      "reactants": [
+        {
+          "label": "NO₂",
+          "structure": {
+            "atoms": [
+              {
+                "id": 1,
+                "element": "N",
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              {
+                "id": 2,
+                "element": "O",
+                "x": -1.05,
+                "y": -0.55,
+                "z": 0
+              },
+              {
+                "id": 3,
+                "element": "O",
+                "x": 1.05,
+                "y": -0.55,
+                "z": 0
+              }
+            ],
+            "bonds": [
+              {
+                "source": 1,
+                "target": 2,
+                "order": 1
+              },
+              {
+                "source": 1,
+                "target": 3,
+                "order": 1
+              }
+            ]
+          },
+          "position": [
+            -3.0,
+            0.6,
+            0.3
+          ]
+        },
+        {
+          "label": "H₂O",
+          "structure": {
+            "atoms": [
+              {
+                "id": 1,
+                "element": "O",
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              {
+                "id": 2,
+                "element": "H",
+                "x": 0.71,
+                "y": 0.55,
+                "z": 0
+              },
+              {
+                "id": 3,
+                "element": "H",
+                "x": -0.71,
+                "y": 0.55,
+                "z": 0
+              }
+            ],
+            "bonds": [
+              {
+                "source": 1,
+                "target": 2,
+                "order": 1
+              },
+              {
+                "source": 1,
+                "target": 3,
+                "order": 1
+              }
+            ]
+          },
+          "position": [
+            -1.7,
+            -0.5,
+            -0.3
+          ]
+        }
+      ],
+      "atomMap": [
+        {
+          "reactant": 0,
+          "atom": 1,
+          "to": 4
+        },
+        {
+          "reactant": 0,
+          "atom": 2,
+          "to": 2
+        },
+        {
+          "reactant": 0,
+          "atom": 3,
+          "to": 3
+        },
+        {
+          "reactant": 1,
+          "atom": 1,
+          "to": 1
+        },
+        {
+          "reactant": 1,
+          "atom": 2,
+          "to": 5
+        }
+      ]
+    }
   },
   {
     "id": "nh3-fountain",
@@ -789,7 +1319,90 @@
         3,
         4
       ]
-    ]
+    ],
+    "reactionFlow": {
+      "reactants": [
+        {
+          "label": "NH₃",
+          "structure": {
+            "atoms": [
+              {
+                "id": 1,
+                "element": "N",
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              {
+                "id": 2,
+                "element": "H",
+                "x": 0.75,
+                "y": 0,
+                "z": 0
+              },
+              {
+                "id": 3,
+                "element": "H",
+                "x": -0.375,
+                "y": 0.65,
+                "z": 0
+              },
+              {
+                "id": 4,
+                "element": "H",
+                "x": -0.375,
+                "y": -0.65,
+                "z": 0
+              }
+            ],
+            "bonds": [
+              {
+                "source": 1,
+                "target": 2,
+                "order": 1
+              },
+              {
+                "source": 1,
+                "target": 3,
+                "order": 1
+              },
+              {
+                "source": 1,
+                "target": 4,
+                "order": 1
+              }
+            ]
+          },
+          "position": [
+            -2.6,
+            0.4,
+            0
+          ]
+        }
+      ],
+      "atomMap": [
+        {
+          "reactant": 0,
+          "atom": 1,
+          "to": 1
+        },
+        {
+          "reactant": 0,
+          "atom": 2,
+          "to": 2
+        },
+        {
+          "reactant": 0,
+          "atom": 3,
+          "to": 3
+        },
+        {
+          "reactant": 0,
+          "atom": 4,
+          "to": 4
+        }
+      ]
+    }
   },
   {
     "id": "nh3-hcl-smoke",
@@ -1436,7 +2049,102 @@
         3,
         4
       ]
-    ]
+    ],
+    "reactionFlow": {
+      "reactants": [
+        {
+          "label": "NH₄⁺（来自 NH₄Cl）",
+          "structure": {
+            "atoms": [
+              {
+                "id": 1,
+                "element": "N",
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              {
+                "id": 2,
+                "element": "H",
+                "x": 0.49,
+                "y": 0.49,
+                "z": 0.49
+              },
+              {
+                "id": 3,
+                "element": "H",
+                "x": 0.49,
+                "y": -0.49,
+                "z": -0.49
+              },
+              {
+                "id": 4,
+                "element": "H",
+                "x": -0.49,
+                "y": 0.49,
+                "z": -0.49
+              },
+              {
+                "id": 5,
+                "element": "H",
+                "x": -0.49,
+                "y": -0.49,
+                "z": 0.49
+              }
+            ],
+            "bonds": [
+              {
+                "source": 1,
+                "target": 2,
+                "order": 1
+              },
+              {
+                "source": 1,
+                "target": 3,
+                "order": 1
+              },
+              {
+                "source": 1,
+                "target": 4,
+                "order": 1
+              },
+              {
+                "source": 1,
+                "target": 5,
+                "order": 1
+              }
+            ]
+          },
+          "position": [
+            -2.6,
+            0.2,
+            0
+          ]
+        }
+      ],
+      "atomMap": [
+        {
+          "reactant": 0,
+          "atom": 1,
+          "to": 1
+        },
+        {
+          "reactant": 0,
+          "atom": 2,
+          "to": 2
+        },
+        {
+          "reactant": 0,
+          "atom": 3,
+          "to": 3
+        },
+        {
+          "reactant": 0,
+          "atom": 4,
+          "to": 4
+        }
+      ]
+    }
   },
   {
     "id": "cu-dil-hno3",
@@ -1675,7 +2383,216 @@
         9
       ],
       []
-    ]
+    ],
+    "reactionFlow": {
+      "reactants": [
+        {
+          "label": "Cu",
+          "structure": {
+            "atoms": [
+              {
+                "id": 1,
+                "element": "Cu",
+                "x": 0,
+                "y": 0,
+                "z": 0
+              }
+            ],
+            "bonds": []
+          },
+          "position": [
+            -3.0,
+            0.9,
+            0.5
+          ]
+        },
+        {
+          "label": "HNO₃",
+          "structure": {
+            "atoms": [
+              {
+                "id": 1,
+                "element": "N",
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              {
+                "id": 2,
+                "element": "O",
+                "x": 0.9,
+                "y": 0.7,
+                "z": 0.0
+              },
+              {
+                "id": 3,
+                "element": "O",
+                "x": -0.9,
+                "y": 0.7,
+                "z": 0.0
+              },
+              {
+                "id": 4,
+                "element": "O",
+                "x": 0.0,
+                "y": -0.9,
+                "z": 0.7
+              },
+              {
+                "id": 5,
+                "element": "H",
+                "x": -1.5,
+                "y": 1.2,
+                "z": 0.0
+              }
+            ],
+            "bonds": [
+              {
+                "source": 1,
+                "target": 2,
+                "order": 2
+              },
+              {
+                "source": 1,
+                "target": 3,
+                "order": 1
+              },
+              {
+                "source": 1,
+                "target": 4,
+                "order": 1
+              },
+              {
+                "source": 3,
+                "target": 5,
+                "order": 1
+              }
+            ]
+          },
+          "position": [
+            -1.9,
+            0.5,
+            -0.6
+          ]
+        },
+        {
+          "label": "HNO₃",
+          "structure": {
+            "atoms": [
+              {
+                "id": 1,
+                "element": "N",
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              {
+                "id": 2,
+                "element": "O",
+                "x": 0.9,
+                "y": 0.7,
+                "z": 0.0
+              },
+              {
+                "id": 3,
+                "element": "O",
+                "x": -0.9,
+                "y": 0.7,
+                "z": 0.0
+              },
+              {
+                "id": 4,
+                "element": "O",
+                "x": 0.0,
+                "y": -0.9,
+                "z": 0.7
+              },
+              {
+                "id": 5,
+                "element": "H",
+                "x": -1.5,
+                "y": 1.2,
+                "z": 0.0
+              }
+            ],
+            "bonds": [
+              {
+                "source": 1,
+                "target": 2,
+                "order": 2
+              },
+              {
+                "source": 1,
+                "target": 3,
+                "order": 1
+              },
+              {
+                "source": 1,
+                "target": 4,
+                "order": 1
+              },
+              {
+                "source": 3,
+                "target": 5,
+                "order": 1
+              }
+            ]
+          },
+          "position": [
+            -1.95,
+            -1.0,
+            0.3
+          ]
+        }
+      ],
+      "atomMap": [
+        {
+          "reactant": 0,
+          "atom": 1,
+          "to": 1
+        },
+        {
+          "reactant": 1,
+          "atom": 1,
+          "to": 8
+        },
+        {
+          "reactant": 1,
+          "atom": 2,
+          "to": 6
+        },
+        {
+          "reactant": 1,
+          "atom": 3,
+          "to": 3
+        },
+        {
+          "reactant": 1,
+          "atom": 4,
+          "to": 2
+        },
+        {
+          "reactant": 2,
+          "atom": 1,
+          "to": 9
+        },
+        {
+          "reactant": 2,
+          "atom": 2,
+          "to": 7
+        },
+        {
+          "reactant": 2,
+          "atom": 3,
+          "to": 5
+        },
+        {
+          "reactant": 2,
+          "atom": 4,
+          "to": 4
+        }
+      ]
+    }
   },
   {
     "id": "cu-conc-hno3",
@@ -1907,6 +2824,215 @@
         8,
         9
       ]
-    ]
+    ],
+    "reactionFlow": {
+      "reactants": [
+        {
+          "label": "Cu",
+          "structure": {
+            "atoms": [
+              {
+                "id": 1,
+                "element": "Cu",
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              }
+            ],
+            "bonds": []
+          },
+          "position": [
+            -3.1,
+            0.5,
+            0.0
+          ]
+        },
+        {
+          "label": "HNO₃",
+          "structure": {
+            "atoms": [
+              {
+                "id": 1,
+                "element": "N",
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              {
+                "id": 2,
+                "element": "O",
+                "x": -0.8,
+                "y": 0.6,
+                "z": 0.0
+              },
+              {
+                "id": 3,
+                "element": "O",
+                "x": -0.8,
+                "y": -0.6,
+                "z": 0.0
+              },
+              {
+                "id": 4,
+                "element": "O",
+                "x": 1.1,
+                "y": 0.4,
+                "z": 0.0
+              },
+              {
+                "id": 5,
+                "element": "H",
+                "x": -1.35,
+                "y": -0.95,
+                "z": 0.0
+              }
+            ],
+            "bonds": [
+              {
+                "source": 1,
+                "target": 2,
+                "order": 1
+              },
+              {
+                "source": 1,
+                "target": 3,
+                "order": 1
+              },
+              {
+                "source": 1,
+                "target": 4,
+                "order": 2
+              },
+              {
+                "source": 3,
+                "target": 5,
+                "order": 1
+              }
+            ]
+          },
+          "position": [
+            -2.1,
+            -0.7,
+            0.3
+          ]
+        },
+        {
+          "label": "HNO₃",
+          "structure": {
+            "atoms": [
+              {
+                "id": 1,
+                "element": "N",
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              {
+                "id": 2,
+                "element": "O",
+                "x": -0.8,
+                "y": 0.6,
+                "z": 0.0
+              },
+              {
+                "id": 3,
+                "element": "O",
+                "x": -0.8,
+                "y": -0.6,
+                "z": 0.0
+              },
+              {
+                "id": 4,
+                "element": "O",
+                "x": 1.1,
+                "y": 0.4,
+                "z": 0.0
+              },
+              {
+                "id": 5,
+                "element": "H",
+                "x": -1.35,
+                "y": -0.95,
+                "z": 0.0
+              }
+            ],
+            "bonds": [
+              {
+                "source": 1,
+                "target": 2,
+                "order": 1
+              },
+              {
+                "source": 1,
+                "target": 3,
+                "order": 1
+              },
+              {
+                "source": 1,
+                "target": 4,
+                "order": 2
+              },
+              {
+                "source": 3,
+                "target": 5,
+                "order": 1
+              }
+            ]
+          },
+          "position": [
+            -1.7,
+            0.5,
+            -0.6
+          ]
+        }
+      ],
+      "atomMap": [
+        {
+          "reactant": 0,
+          "atom": 1,
+          "to": 1
+        },
+        {
+          "reactant": 1,
+          "atom": 1,
+          "to": 8
+        },
+        {
+          "reactant": 1,
+          "atom": 2,
+          "to": 2
+        },
+        {
+          "reactant": 1,
+          "atom": 3,
+          "to": 3
+        },
+        {
+          "reactant": 1,
+          "atom": 4,
+          "to": 6
+        },
+        {
+          "reactant": 2,
+          "atom": 1,
+          "to": 9
+        },
+        {
+          "reactant": 2,
+          "atom": 2,
+          "to": 4
+        },
+        {
+          "reactant": 2,
+          "atom": 3,
+          "to": 5
+        },
+        {
+          "reactant": 2,
+          "atom": 4,
+          "to": 7
+        }
+      ]
+    }
   }
 ]

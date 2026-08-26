@@ -165,7 +165,156 @@
       ],
       [],
       []
-    ]
+    ],
+    "reactionFlow": {
+      "reactants": [
+        {
+          "label": "Zn",
+          "structure": {
+            "atoms": [
+              {
+                "id": 1,
+                "element": "Zn",
+                "x": 0,
+                "y": 0,
+                "z": 0
+              }
+            ],
+            "bonds": []
+          },
+          "position": [
+            -3.0,
+            0.5,
+            0
+          ]
+        },
+        {
+          "label": "H₂SO₄",
+          "structure": {
+            "atoms": [
+              {
+                "id": 1,
+                "element": "S",
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              {
+                "id": 2,
+                "element": "O",
+                "x": 0,
+                "y": 1.25,
+                "z": 0.3
+              },
+              {
+                "id": 3,
+                "element": "O",
+                "x": 0,
+                "y": -1.25,
+                "z": 0.3
+              },
+              {
+                "id": 4,
+                "element": "O",
+                "x": 1.3,
+                "y": 0,
+                "z": -0.3
+              },
+              {
+                "id": 5,
+                "element": "O",
+                "x": -1.3,
+                "y": 0,
+                "z": -0.3
+              },
+              {
+                "id": 6,
+                "element": "H",
+                "x": 1.8,
+                "y": 0.68,
+                "z": -0.42
+              },
+              {
+                "id": 7,
+                "element": "H",
+                "x": -1.8,
+                "y": 0.68,
+                "z": -0.42
+              }
+            ],
+            "bonds": [
+              {
+                "source": 1,
+                "target": 2,
+                "order": 2
+              },
+              {
+                "source": 1,
+                "target": 3,
+                "order": 2
+              },
+              {
+                "source": 1,
+                "target": 4,
+                "order": 1
+              },
+              {
+                "source": 1,
+                "target": 5,
+                "order": 1
+              },
+              {
+                "source": 4,
+                "target": 6,
+                "order": 1
+              },
+              {
+                "source": 5,
+                "target": 7,
+                "order": 1
+              }
+            ]
+          },
+          "position": [
+            -1.7,
+            -0.6,
+            0.2
+          ]
+        }
+      ],
+      "atomMap": [
+        {
+          "reactant": 0,
+          "atom": 1,
+          "to": 1
+        },
+        {
+          "reactant": 1,
+          "atom": 1,
+          "to": 2
+        },
+        {
+          "reactant": 1,
+          "atom": 2,
+          "to": 3
+        },
+        {
+          "reactant": 1,
+          "atom": 3,
+          "to": 4
+        },
+        {
+          "reactant": 1,
+          "atom": 4,
+          "to": 5
+        },
+        {
+          "reactant": 1,
+          "atom": 5,
+          "to": 6
+        }
+      ]
+    }
   },
   {
     "id": "cao-water-exothermic",
@@ -300,7 +449,116 @@
       [],
       [],
       []
-    ]
+    ],
+    "reactionFlow": {
+      "reactants": [
+        {
+          "label": "CaO",
+          "structure": {
+            "atoms": [
+              {
+                "id": 1,
+                "element": "Ca",
+                "x": -0.45,
+                "y": 0,
+                "z": 0
+              },
+              {
+                "id": 2,
+                "element": "O",
+                "x": 0.45,
+                "y": 0,
+                "z": 0
+              }
+            ],
+            "bonds": [
+              {
+                "source": 1,
+                "target": 2,
+                "order": 1
+              }
+            ]
+          },
+          "position": [
+            -3.0,
+            0.7,
+            0
+          ]
+        },
+        {
+          "label": "H₂O",
+          "structure": {
+            "atoms": [
+              {
+                "id": 1,
+                "element": "O",
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              {
+                "id": 2,
+                "element": "H",
+                "x": 0.65,
+                "y": 0.5,
+                "z": 0
+              },
+              {
+                "id": 3,
+                "element": "H",
+                "x": 0.65,
+                "y": -0.5,
+                "z": 0
+              }
+            ],
+            "bonds": [
+              {
+                "source": 1,
+                "target": 2,
+                "order": 1
+              },
+              {
+                "source": 1,
+                "target": 3,
+                "order": 1
+              }
+            ]
+          },
+          "position": [
+            -1.6,
+            -0.8,
+            0
+          ]
+        }
+      ],
+      "atomMap": [
+        {
+          "reactant": 0,
+          "atom": 1,
+          "to": 1
+        },
+        {
+          "reactant": 0,
+          "atom": 2,
+          "to": 2
+        },
+        {
+          "reactant": 1,
+          "atom": 1,
+          "to": 3
+        },
+        {
+          "reactant": 1,
+          "atom": 2,
+          "to": 4
+        },
+        {
+          "reactant": 1,
+          "atom": 3,
+          "to": 5
+        }
+      ]
+    }
   },
   {
     "id": "baoh2-nh4cl-endothermic",
@@ -401,7 +659,249 @@
       [],
       [],
       []
-    ]
+    ],
+    "reactionFlow": {
+      "reactants": [
+        {
+          "label": "Ba(OH)₂",
+          "structure": {
+            "atoms": [
+              {
+                "id": 1,
+                "element": "Ba",
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              {
+                "id": 2,
+                "element": "O",
+                "x": 0.95,
+                "y": 0,
+                "z": 0
+              },
+              {
+                "id": 3,
+                "element": "H",
+                "x": 1.62,
+                "y": 0.5,
+                "z": 0
+              },
+              {
+                "id": 4,
+                "element": "O",
+                "x": -0.48,
+                "y": 0.82,
+                "z": 0
+              },
+              {
+                "id": 5,
+                "element": "H",
+                "x": -0.85,
+                "y": 1.5,
+                "z": 0
+              }
+            ],
+            "bonds": [
+              {
+                "source": 1,
+                "target": 2,
+                "order": 1
+              },
+              {
+                "source": 1,
+                "target": 4,
+                "order": 1
+              },
+              {
+                "source": 2,
+                "target": 3,
+                "order": 1
+              },
+              {
+                "source": 4,
+                "target": 5,
+                "order": 1
+              }
+            ]
+          },
+          "position": [
+            -2.7,
+            0.9,
+            0.4
+          ]
+        },
+        {
+          "label": "NH₄Cl",
+          "structure": {
+            "atoms": [
+              {
+                "id": 1,
+                "element": "N",
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              {
+                "id": 2,
+                "element": "H",
+                "x": 0.49,
+                "y": 0.49,
+                "z": 0.49
+              },
+              {
+                "id": 3,
+                "element": "H",
+                "x": 0.49,
+                "y": -0.49,
+                "z": -0.49
+              },
+              {
+                "id": 4,
+                "element": "H",
+                "x": -0.49,
+                "y": 0.49,
+                "z": -0.49
+              },
+              {
+                "id": 5,
+                "element": "H",
+                "x": -0.49,
+                "y": -0.49,
+                "z": 0.49
+              },
+              {
+                "id": 6,
+                "element": "Cl",
+                "x": 1.6,
+                "y": 0,
+                "z": 0
+              }
+            ],
+            "bonds": [
+              {
+                "source": 1,
+                "target": 2,
+                "order": 1
+              },
+              {
+                "source": 1,
+                "target": 3,
+                "order": 1
+              },
+              {
+                "source": 1,
+                "target": 4,
+                "order": 1
+              },
+              {
+                "source": 1,
+                "target": 5,
+                "order": 1
+              }
+            ]
+          },
+          "position": [
+            -2.7,
+            -0.9,
+            0.4
+          ]
+        },
+        {
+          "label": "NH₄Cl",
+          "structure": {
+            "atoms": [
+              {
+                "id": 1,
+                "element": "N",
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              {
+                "id": 2,
+                "element": "H",
+                "x": 0.49,
+                "y": 0.49,
+                "z": 0.49
+              },
+              {
+                "id": 3,
+                "element": "H",
+                "x": 0.49,
+                "y": -0.49,
+                "z": -0.49
+              },
+              {
+                "id": 4,
+                "element": "H",
+                "x": -0.49,
+                "y": 0.49,
+                "z": -0.49
+              },
+              {
+                "id": 5,
+                "element": "H",
+                "x": -0.49,
+                "y": -0.49,
+                "z": 0.49
+              },
+              {
+                "id": 6,
+                "element": "Cl",
+                "x": 1.6,
+                "y": 0,
+                "z": 0
+              }
+            ],
+            "bonds": [
+              {
+                "source": 1,
+                "target": 2,
+                "order": 1
+              },
+              {
+                "source": 1,
+                "target": 3,
+                "order": 1
+              },
+              {
+                "source": 1,
+                "target": 4,
+                "order": 1
+              },
+              {
+                "source": 1,
+                "target": 5,
+                "order": 1
+              }
+            ]
+          },
+          "position": [
+            -1.9,
+            0,
+            -0.6
+          ]
+        }
+      ],
+      "atomMap": [
+        {
+          "reactant": 0,
+          "atom": 1,
+          "to": 1
+        },
+        {
+          "reactant": 1,
+          "atom": 6,
+          "to": 2
+        },
+        {
+          "reactant": 2,
+          "atom": 6,
+          "to": 3
+        }
+      ]
+    }
   },
   {
     "id": "al-fe2o3-thermite",
@@ -460,6 +960,116 @@
         1
       ],
       []
-    ]
+    ],
+    "reactionFlow": {
+      "reactants": [
+        {
+          "label": "Al",
+          "structure": {
+            "atoms": [
+              {
+                "id": 1,
+                "element": "Al",
+                "x": 0,
+                "y": 0,
+                "z": 0
+              }
+            ],
+            "bonds": []
+          },
+          "position": [
+            -3.0,
+            0.7,
+            0.0
+          ]
+        },
+        {
+          "label": "Fe₂O₃",
+          "structure": {
+            "atoms": [
+              {
+                "id": 1,
+                "element": "Fe",
+                "x": -0.9,
+                "y": 0.0,
+                "z": 0.5
+              },
+              {
+                "id": 2,
+                "element": "Fe",
+                "x": 0.9,
+                "y": 0.0,
+                "z": -0.5
+              },
+              {
+                "id": 3,
+                "element": "O",
+                "x": 0.0,
+                "y": 1.0,
+                "z": 0.0
+              },
+              {
+                "id": 4,
+                "element": "O",
+                "x": 0.0,
+                "y": -0.8,
+                "z": 0.0
+              },
+              {
+                "id": 5,
+                "element": "O",
+                "x": 0.0,
+                "y": 0.2,
+                "z": 0.9
+              }
+            ],
+            "bonds": [
+              {
+                "source": 1,
+                "target": 3,
+                "order": 1
+              },
+              {
+                "source": 2,
+                "target": 3,
+                "order": 1
+              },
+              {
+                "source": 1,
+                "target": 4,
+                "order": 1
+              },
+              {
+                "source": 2,
+                "target": 4,
+                "order": 1
+              },
+              {
+                "source": 1,
+                "target": 5,
+                "order": 1
+              },
+              {
+                "source": 2,
+                "target": 5,
+                "order": 1
+              }
+            ]
+          },
+          "position": [
+            -1.85,
+            -0.55,
+            0.0
+          ]
+        }
+      ],
+      "atomMap": [
+        {
+          "reactant": 1,
+          "atom": 1,
+          "to": 1
+        }
+      ]
+    }
   }
 ]
