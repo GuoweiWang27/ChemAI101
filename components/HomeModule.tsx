@@ -97,7 +97,8 @@ export const HomeModule: React.FC<HomeModuleProps> = ({ onOpen }) => {
                   {t('homeTaglineAccent')}
                 </span>
               </h2>
-              <p className="mt-4 text-sm sm:text-base text-[#6f685d] max-w-md leading-relaxed">{t('homeSubline')}</p>
+              <p className="mt-4 text-base sm:text-lg text-[#5c5549] font-medium">{t('homeSubtitle')}</p>
+              <p className="mt-2 text-xs sm:text-sm text-[#a39a89] tracking-wider">{t('homeCapabilities')}</p>
               {stats && stats.total > 0 && (
                 <p className="mt-3 text-sm text-[#a39a89] font-mono">
                   {t('homeStatsLine', { count: stats.total.toLocaleString('en-US') })}
