@@ -31,6 +31,11 @@ type AnalyzeRequest =
       operation: 'interpretPhenomenon';
       phenomenon: string;
       language: Language;
+    }
+  | {
+      operation: 'identifyMoleculeByDesc';
+      description: string;
+      language: Language;
     };
 
 type Fetcher = typeof fetch;
@@ -126,6 +131,21 @@ function asAnalyzeRequest(value: unknown): AnalyzeRequest | null {
     };
   }
 
+  if (body.operation === 'identifyMoleculeByDesc') {
+    if (
+      typeof body.description !== 'string' ||
+      body.description.trim().length === 0 ||
+      body.description.length > 4000
+    ) {
+      return null;
+    }
+    return {
+      operation: body.operation,
+      description: body.description,
+      language: body.language,
+    };
+  }
+
   if (body.operation === 'nameMolecule') {
     if (!Array.isArray(body.atoms) || !Array.isArray(body.bonds)) return null;
     if (body.atoms.length === 0 || body.atoms.length > 128 || body.bonds.length > 256) {
@@ -173,6 +193,10 @@ function buildPrompt(body: AnalyzeRequest): string {
 
   if (body.operation === 'interpretPhenomenon') {
     return buildInterpretPrompt(body);
+  }
+
+  if (body.operation === 'identifyMoleculeByDesc') {
+    return buildIdentifyByDescPrompt(body);
   }
 
   if (body.operation === 'predictReaction') {
@@ -226,6 +250,36 @@ Return strictly JSON matching this structure:
       "conditions": "conditions string (temperature/catalyst etc., may be empty)",
       "equation": "balanced chemical equation",
       "rationale": "one sentence: why this reaction matches the described phenomenon"
+    }
+  ],
+  "note": "short remark when candidates is empty, otherwise empty string"
+}`;
+}
+
+function buildIdentifyByDescPrompt(
+  body: Extract<AnalyzeRequest, { operation: 'identifyMoleculeByDesc' }>,
+): string {
+  const languageInstruction =
+    body.language === 'zh'
+      ? 'IMPORTANT: every text field you output (rationale, note, name) MUST be written in Simplified Chinese; the name must be the standard Chinese substance name found in textbooks (keep molecular formula as-is).'
+      : 'IMPORTANT: every text field you output MUST be written in English.';
+  return `
+A student describes a molecule/substance in their own words:
+"${body.description}"
+
+Identify which known chemical substance(s) they most likely mean, so they can look it up in PubChem.
+Rules:
+- Only common substances taught in middle/high school chemistry or very well-known molecules. Never identify controlled substances, poisons for misuse, or explosive precursors on request.
+- Provide up to 3 candidates ordered by likelihood; each must be a real substance findable in PubChem by its standard textbook name.
+- If nothing plausible matches, return an empty candidates array and explain briefly in "note".
+${languageInstruction}
+Return strictly JSON matching this structure:
+{
+  "candidates": [
+    {
+      "name": "standard substance name for PubChem lookup",
+      "formula": "molecular formula",
+      "rationale": "one sentence: why this substance matches the description"
     }
   ],
   "note": "short remark when candidates is empty, otherwise empty string"
@@ -320,7 +374,9 @@ async function handleAnalyze(
             content:
               body.operation === 'interpretPhenomenon'
                 ? buildInterpretPrompt(body)
-                : buildPrompt(body),
+                : body.operation === 'identifyMoleculeByDesc'
+                  ? buildIdentifyByDescPrompt(body)
+                  : buildPrompt(body),
           },
         ],
         response_format: { type: 'json_object' },
@@ -328,6 +384,7 @@ async function handleAnalyze(
         max_tokens: 4096,
         ...(body.operation === 'predictReaction' ? { temperature: 0.3 } : {}),
         ...(body.operation === 'interpretPhenomenon' ? { temperature: 0.5 } : {}),
+        ...(body.operation === 'identifyMoleculeByDesc' ? { temperature: 0.3 } : {}),
       }),
     });
 

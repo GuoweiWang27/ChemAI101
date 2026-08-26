@@ -127,6 +127,20 @@ describe('interpretPhenomenon request validation', () => {
     }
   });
 
+  it('rejects malformed identifyMoleculeByDesc payloads before hitting upstream', async () => {
+    const badBodies = [
+      { operation: 'identifyMoleculeByDesc', description: '', language: 'zh' },
+      { operation: 'identifyMoleculeByDesc', description: '   ', language: 'en' },
+      { operation: 'identifyMoleculeByDesc', description: 'x'.repeat(4001), language: 'zh' },
+      { operation: 'identifyMoleculeByDesc', description: 42, language: 'zh' },
+      { operation: 'identifyMoleculeByDesc' },
+    ];
+    for (const body of badBodies) {
+      const response = await handleRequest(interpretRequest(body), env, fetch);
+      expect(response.status).toBe(400);
+    }
+  });
+
   it('rejects unknown operations and non-POST on analyze', async () => {
     const unknown = await handleRequest(
       interpretRequest({ operation: 'hack', phenomenon: 'x', language: 'zh' }),
