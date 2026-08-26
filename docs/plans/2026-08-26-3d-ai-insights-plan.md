@@ -122,8 +122,8 @@ interface Molecule3DViewerProps {
 
 ### Task 8: 全量验证 + 发布
 
-- [ ] **Step 8.1** `npm test && npx tsc --noEmit && npm run build && npm run worker:check` 全绿
-- [ ] **Step 8.2** push origin main → Pages 自动构建 → curl 线上 bundle 验证含「化学探索」与新面板特征串
+- [x] **Step 8.1** `npm test && npx tsc --noEmit && npm run build && npm run worker:check` 全绿
+- [x] **Step 8.2** push origin main → Pages 自动构建 → curl 线上 bundle 验证含「化学探索」与新面板特征串
 - [ ] **Step 8.3** 手验清单：悬停标签中英切换、点击出面板、空白处取消、自转暂停恢复、步骤点亮原子、演示模式行为不变、无 insights 原子的降级卡
 - [ ] **Step 8.4** Commit（如有收尾修正）+ 本文件进度日志收尾
 
@@ -134,3 +134,4 @@ interface Molecule3DViewerProps {
 - [2026-08-26 11:40] 洋米(Mac本地): docs/plans/2026-08-26-3d-ai-insights-plan.md → 设计经主人批准后立此计划，Tasks 1–8 待执行
 - [2026-08-26 12:55] 洋米(Mac本地): Tasks 1–6 完成（schema/ELEMENT_NAMES/校验用例/viewer 交互/讲解面板/页面装线/生成脚本），52 tests 绿，分 5 次提交；待 Task 7 需要 DEEPSEEK_API_KEY
 - [2026-08-26 13:20] 洋米(Mac本地): Task 7 完成——未用 DeepSeek API，由当前模型经 5 个并行子代理直接生成 38 条双语内容；有机章 id 类型问题已修；52 tests 绿；数据以 draft 提交待签核
+- [2026-08-26 13:30] 洋米(Mac本地): Task 8 完成——全量验证绿，main 已推送(35c6570)，Pages bundle 验证含 insights 数据与新 UI；Step 8.3 手验清单与任课老师签核留给主人
