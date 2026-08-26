@@ -496,6 +496,42 @@ async function handleTrack(request: Request, env: Env, origin: string): Promise<
   return new Response(null, { status: 204 });
 }
 
+/** 计数基线：计数功能启用前的既有用量。存 KV 单键 JSON，可通过 wrangler 配置，无需重新部署。 */
+const BASES_KEY = 'bases';
+
+/** 读计数基线。键不存在 / JSON 损坏 / 字段非法时一律按 0 处理——基线只参与汇总，绝不能弄坏 stats。 */
+function emptyBases(): Record<string, number> {
+  const bases: Record<string, number> = {};
+  for (const event of TRACK_EVENTS) bases[event] = 0;
+  return bases;
+}
+
+async function readBases(env: Env): Promise<Record<string, number>> {
+  let raw: string | null;
+  try {
+    raw = await env.COUNTERS.get(BASES_KEY);
+  } catch (error) {
+    console.error(
+      JSON.stringify({ message: 'bases read failed', error: error instanceof Error ? error.message : 'unknown' }),
+    );
+    return emptyBases();
+  }
+  if (!raw) return emptyBases();
+  try {
+    const parsed = JSON.parse(raw) as Record<string, unknown>;
+    const bases = emptyBases();
+    for (const event of TRACK_EVENTS) {
+      const value = parsed[event];
+      if (typeof value === 'number' && Number.isFinite(value) && value > 0) {
+        bases[event] = Math.floor(value);
+      }
+    }
+    return bases;
+  } catch {
+    return emptyBases();
+  }
+}
+
 async function countPrefix(env: Env, prefix: string): Promise<number> {
   let count = 0;
   let cursor: string | undefined;
@@ -516,16 +552,18 @@ async function handleStats(request: Request, env: Env, origin: string): Promise<
   if (request.method !== 'GET') {
     return jsonResponse({ error: 'Method not allowed' }, 405, origin);
   }
+  const bases = await readBases(env);
   const totals: Record<string, number> = {};
   const today: Record<string, number> = {};
   const stamp = todayStamp();
   let total = 0;
   for (const event of TRACK_EVENTS) {
-    totals[event] = await countPrefix(env, `t:${event}:`);
+    totals[event] = (await countPrefix(env, `t:${event}:`)) + (bases[event] ?? 0);
+    // 今日数只统计当日事件，不含基线
     today[event] = await countPrefix(env, `t:${event}:${stamp}`);
     total += totals[event];
   }
-  return jsonResponse({ totals, today, total }, 200, origin);
+  return jsonResponse({ totals, today, total, bases }, 200, origin);
 }
 
 export default {

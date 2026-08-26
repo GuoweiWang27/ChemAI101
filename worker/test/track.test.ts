@@ -60,4 +60,46 @@ describe('anonymous usage counters', () => {
     const response = await handleRequest(request, env, fetch);
     expect(response.status).toBe(405);
   });
+
+  it('adds KV-stored baselines to totals but not to today', async () => {
+    await env.COUNTERS.put('bases', JSON.stringify({ reaction: 120, textbook: 80 }));
+    try {
+      await handleRequest(trackRequest('reaction'), env, fetch);
+
+      const stats = await handleRequest(statsRequest(), env, fetch);
+      expect(stats.status).toBe(200);
+      const body = (await stats.json()) as {
+        totals: Record<string, number>;
+        today: Record<string, number>;
+        total: number;
+        bases: Record<string, number>;
+      };
+      expect(body.bases.reaction).toBe(120);
+      expect(body.bases.textbook).toBe(80);
+      // 总数 = 事件计数 + 基线
+      expect(body.totals.reaction).toBeGreaterThanOrEqual(121);
+      expect(body.totals.textbook).toBeGreaterThanOrEqual(80);
+      expect(body.total).toBeGreaterThanOrEqual(201);
+      // 今日只算当日事件，不含基线
+      expect(body.today.reaction).toBeGreaterThanOrEqual(1);
+      expect(body.today.reaction).toBeLessThan(body.totals.reaction);
+    } finally {
+      await env.COUNTERS.delete('bases');
+    }
+  });
+
+  it('survives a corrupted or invalid bases key', async () => {
+    await env.COUNTERS.put('bases', '{not valid json');
+    try {
+      const stats = await handleRequest(statsRequest(), env, fetch);
+      expect(stats.status).toBe(200);
+      const body = (await stats.json()) as { totals: Record<string, number>; bases: Record<string, number> };
+      for (const event of ['reaction', 'builder', 'compound', 'textbook']) {
+        expect(body.bases[event]).toBe(0);
+        expect(body.totals[event]).toBeGreaterThanOrEqual(0);
+      }
+    } finally {
+      await env.COUNTERS.delete('bases');
+    }
+  });
 });

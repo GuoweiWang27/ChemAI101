@@ -66,6 +66,8 @@ export interface UsageStats {
   totals: Record<string, number>;
   today: Record<string, number>;
   total: number;
+  /** 服务端计数基线（计数功能启用前的既有用量），已计入 totals / total，但不含在 today */
+  bases?: Record<string, number>;
 }
 
 export async function fetchUsageStats(signal?: AbortSignal): Promise<UsageStats> {
