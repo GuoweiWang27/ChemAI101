@@ -46,19 +46,19 @@ interface Molecule3DViewerProps {
 - Modify: `src/data/reactions/schema.ts`
 - Modify: `types.ts`
 
-- [ ] **Step 1.1** schema.ts 增加 `BilingualText` / `AtomInsight` 接口与 `atomInsights?: Record<string, AtomInsight>` 字段（带中文注释：键为 atom id 十进制字符串）
-- [ ] **Step 1.2** types.ts 增加 `ELEMENT_NAMES`，覆盖 KNOWN_ELEMENTS 全部 ~48 元素 + default 兜底
-- [ ] **Step 1.3** `npx tsc --noEmit` 通过
-- [ ] **Step 1.4** Commit: `feat(schema): atomInsights field + bilingual element names`
+- [x] **Step 1.1** schema.ts 增加 `BilingualText` / `AtomInsight` 接口与 `atomInsights?: Record<string, AtomInsight>` 字段（带中文注释：键为 atom id 十进制字符串）
+- [x] **Step 1.2** types.ts 增加 `ELEMENT_NAMES`，覆盖 KNOWN_ELEMENTS 全部 ~48 元素 + default 兜底
+- [x] **Step 1.3** `npx tsc --noEmit` 通过
+- [x] **Step 1.4** Commit: `feat(schema): atomInsights field + bilingual element names`
 
 ### Task 2: 数据校验测试（TDD）
 
 **Files:**
 - Modify: `src/data/reactions/data.test.ts`
 
-- [ ] **Step 2.1** 先写失败测试：新增 `it('validates atomInsights keys and bilingual content')` —— 对每条 reaction：(a) 每个 insights 键必须能 parseInt 后命中该结构 atoms id 集；(b) role/detail 四个字段均为非空 string
-- [ ] **Step 2.2** `npm test` 确认新用例失败或通过（当前无数据应直接通过——空集不算失败）
-- [ ] **Step 2.3** Commit: `test(data): atomInsights structural validation`
+- [x] **Step 2.1** 先写失败测试：新增 `it('validates atomInsights keys and bilingual content')` —— 对每条 reaction：(a) 每个 insights 键必须能 parseInt 后命中该结构 atoms id 集；(b) role/detail 四个字段均为非空 string
+- [x] **Step 2.2** `npm test` 确认新用例失败或通过（当前无数据应直接通过——空集不算失败）
+- [x] **Step 2.3** Commit: `test(data): atomInsights structural validation`
 
 ### Task 3: Molecule3DViewer 交互升级
 
@@ -67,13 +67,13 @@ interface Molecule3DViewerProps {
 
 实现要点（r3f 事件即射线拾取，无需手写 raycaster）：
 
-- [ ] **Step 3.1** AtomMesh 增加事件：`onPointerOver`(stopPropagation→hover=id)、`onPointerOut`(清 hover)、`onClick`(stopPropagation→回调选中或取消)。悬停 scale 1.15，选中 scale 1.25 + 白色描边（用 `<mesh>` 外套一层略大 backside 材质球做描边，避免引 postprocessing 依赖）
-- [ ] **Step 3.2** SceneContent 自转暂停：useFrame 里 `if (!pausedRef.current) rotation.y += 0.002`；paused = hovered!==null || selectedAtomId!=null
-- [ ] **Step 3.3** Tooltip：Canvas 外层 relative div 内绝对定位小标签，内容 `ELEMENT_NAMES[element][lang]`，坐标取 pointer event 的 clientX/clientY 减容器偏移；鼠标离开即隐藏
-- [ ] **Step 3.4** 重置视角按钮（右上角）：drei OrbitControls `makeDefault` 已设，内部组件 `useThree(s=>s.controls)` 取到后 `controls.reset()`；按钮文案走 i18n key `resetViewBtn`
-- [ ] **Step 3.5** 点击画布空白（Canvas onClick 无 stopPropagation 冒泡层）→ `onAtomSelect?.(null)`
-- [ ] **Step 3.6** `npm test && npx tsc --noEmit` 通过（viewer 无组件测试，靠 tsc + 手验）
-- [ ] **Step 3.7** Commit: `feat(3d): atom hover/click picking, pause-on-focus, reset view`
+- [x] **Step 3.1** AtomMesh 增加事件：`onPointerOver`(stopPropagation→hover=id)、`onPointerOut`(清 hover)、`onClick`(stopPropagation→回调选中或取消)。悬停 scale 1.15，选中 scale 1.25 + 白色描边（用 `<mesh>` 外套一层略大 backside 材质球做描边，避免引 postprocessing 依赖）
+- [x] **Step 3.2** SceneContent 自转暂停：useFrame 里 `if (!pausedRef.current) rotation.y += 0.002`；paused = hovered!==null || selectedAtomId!=null
+- [x] **Step 3.3** Tooltip：Canvas 外层 relative div 内绝对定位小标签，内容 `ELEMENT_NAMES[element][lang]`，坐标取 pointer event 的 clientX/clientY 减容器偏移；鼠标离开即隐藏
+- [x] **Step 3.4** 重置视角按钮（右上角）：drei OrbitControls `makeDefault` 已设，内部组件 `useThree(s=>s.controls)` 取到后 `controls.reset()`；按钮文案走 i18n key `resetViewBtn`
+- [x] **Step 3.5** 点击画布空白（Canvas onClick 无 stopPropagation 冒泡层）→ `onAtomSelect?.(null)`
+- [x] **Step 3.6** `npm test && npx tsc --noEmit` 通过（viewer 无组件测试，靠 tsc + 手验）
+- [x] **Step 3.7** Commit: `feat(3d): atom hover/click picking, pause-on-focus, reset view`
 
 ### Task 4: 讲解面板 + i18n
 
@@ -81,21 +81,21 @@ interface Molecule3DViewerProps {
 - Create: `components/AtomInsightPanel.tsx`
 - Modify: `contexts/LanguageContext.tsx`（zh/en 各加 `resetViewBtn`、`insightFallbackHint`）
 
-- [ ] **Step 4.1** 面板组件：props `{ insight?: AtomInsight; element: string }`。有 insight → 角色标题(role[lang]) + 正文(detail[lang])；无 insight → 元素静态卡（ELEMENT_NAMES + 序号兜底，hint 文案说明暂无 AI 讲解）。右上 × 关闭回调由父级传
-- [ ] **Step 4.2** 样式对齐暖纸主题（白底圆角卡 border #f0ece4），绝对定位于 3D 容器底部 inset-x-4 bottom-4
-- [ ] **Step 4.3** Commit: `feat(ui): atom insight panel with element fallback`
+- [x] **Step 4.1** 面板组件：props `{ insight?: AtomInsight; element: string }`。有 insight → 角色标题(role[lang]) + 正文(detail[lang])；无 insight → 元素静态卡（ELEMENT_NAMES + 序号兜底，hint 文案说明暂无 AI 讲解）。右上 × 关闭回调由父级传
+- [x] **Step 4.2** 样式对齐暖纸主题（白底圆角卡 border #f0ece4），绝对定位于 3D 容器底部 inset-x-4 bottom-4
+- [x] **Step 4.3** Commit: `feat(ui): atom insight panel with element fallback`
 
 ### Task 5: ReactionPage 装线
 
 **Files:**
 - Modify: `components/ReactionPage.tsx`
 
-- [ ] **Step 5.1** state：`selectedAtomId`、`activeStepIdx:number|null`。传给 viewer：`selectedAtomId` + `onAtomSelect`
-- [ ] **Step 5.2** 高亮优先级：`activeStepIdx!==null ? stepAtomIds[activeStepIdx] : selectedAtomId!=null ? [selectedAtomId] : undefined`（步骤高亮压过点选）
-- [ ] **Step 5.3** 机制步骤 <li> 改 button：点击切换 activeStepIdx（同点再击取消）；激活态样式复用 science 色系左边框条
-- [ ] **Step 5.4** 面板渲染：selectedAtomId 对应原子有 insight 传 insight 否则只传 element；× 清 selectedAtomId
-- [ ] **Step 5.5** `npm test && npx tsc --noEmit && npm run build` 通过
-- [ ] **Step 5.6** Commit: `feat(textbook): mechanism-step highlight toggle + atom insight panel wiring`
+- [x] **Step 5.1** state：`selectedAtomId`、`activeStepIdx:number|null`。传给 viewer：`selectedAtomId` + `onAtomSelect`
+- [x] **Step 5.2** 高亮优先级：`activeStepIdx!==null ? stepAtomIds[activeStepIdx] : selectedAtomId!=null ? [selectedAtomId] : undefined`（步骤高亮压过点选）
+- [x] **Step 5.3** 机制步骤 <li> 改 button：点击切换 activeStepIdx（同点再击取消）；激活态样式复用 science 色系左边框条
+- [x] **Step 5.4** 面板渲染：selectedAtomId 对应原子有 insight 传 insight 否则只传 element；× 清 selectedAtomId
+- [x] **Step 5.5** `npm test && npx tsc --noEmit && npm run build` 通过
+- [x] **Step 5.6** Commit: `feat(textbook): mechanism-step highlight toggle + atom insight panel wiring`
 
 ### Task 6: 离线生成脚本
 
@@ -104,12 +104,12 @@ interface Molecule3DViewerProps {
 
 要点：
 
-- [ ] **Step 6.1** 读 5 个章节 JSON → 找出缺 `atomInsights` 或 `stepAtomIds` 缺失的反应 → 逐条调 DeepSeek（`process.env.DEEPSEEK_API_KEY`，model `deepseek-v4-flash`，JSON response_format，temperature 0.3）
-- [ ] **Step 6.2** Prompt 固化在脚本内（system：人教版高中化学教研员角色；user 附 title/equation/mechanismSteps/atoms/bonds，要求输出 `{insights:{<id>:{role:{zh,en},detail:{zh,en}}},stepAtomIds:[[..]]}` 且 stepAtomIds 长度=步数、id 必须来自给定原子表）
-- [ ] **Step 6.3** 写回前本地校验器复跑 Task 2 同规则 + stepAtomIds 长度断言；不合法则拒绝写盘并打印原因
-- [ ] **Step 6.4** 断点续接：逐条处理、逐条立即写盘；重跑自动跳过已完整条目（有 insights 且 stepAtomIds 合格的跳过）；`--dry-run` 只打印计划；`--only=<slug>` 单跑一条
-- [ ] **Step 6.5** 请求间隔 800ms；单条失败重试 2 次后记入 `.gen-errors.json` 继续（不中断整批）
-- [ ] **Step 6.6** Commit: `feat(tools): offline insight generator with resume support`
+- [x] **Step 6.1** 读 5 个章节 JSON → 找出缺 `atomInsights` 或 `stepAtomIds` 缺失的反应 → 逐条调 DeepSeek（`process.env.DEEPSEEK_API_KEY`，model `deepseek-v4-flash`，JSON response_format，temperature 0.3）
+- [x] **Step 6.2** Prompt 固化在脚本内（system：人教版高中化学教研员角色；user 附 title/equation/mechanismSteps/atoms/bonds，要求输出 `{insights:{<id>:{role:{zh,en},detail:{zh,en}}},stepAtomIds:[[..]]}` 且 stepAtomIds 长度=步数、id 必须来自给定原子表）
+- [x] **Step 6.3** 写回前本地校验器复跑 Task 2 同规则 + stepAtomIds 长度断言；不合法则拒绝写盘并打印原因
+- [x] **Step 6.4** 断点续接：逐条处理、逐条立即写盘；重跑自动跳过已完整条目（有 insights 且 stepAtomIds 合格的跳过）；`--dry-run` 只打印计划；`--only=<slug>` 单跑一条
+- [x] **Step 6.5** 请求间隔 800ms；单条失败重试 2 次后记入 `.gen-errors.json` 继续（不中断整批）
+- [x] **Step 6.6** Commit: `feat(tools): offline insight generator with resume support`
 
 ### Task 7: 批量生成 + 化学签核 ⚠️ 需要 DEEPSEEK_API_KEY（向主人索取）
 
@@ -132,3 +132,4 @@ interface Molecule3DViewerProps {
 ## 进度日志（追加式，勿改旧行）
 
 - [2026-08-26 11:40] 洋米(Mac本地): docs/plans/2026-08-26-3d-ai-insights-plan.md → 设计经主人批准后立此计划，Tasks 1–8 待执行
+- [2026-08-26 12:55] 洋米(Mac本地): Tasks 1–6 完成（schema/ELEMENT_NAMES/校验用例/viewer 交互/讲解面板/页面装线/生成脚本），52 tests 绿，分 5 次提交；待 Task 7 需要 DEEPSEEK_API_KEY
