@@ -90,7 +90,6 @@ export const HomeModule: React.FC<HomeModuleProps> = ({ onOpen }) => {
               </h2>
               <p className="mt-4 text-base sm:text-lg text-[#5c5549] font-medium">{t('homeSubtitle')}</p>
               <p className="mt-2 text-xs sm:text-sm text-[#6f685d] tracking-wider">{t('homeCapabilities')}</p>
-              <LiveStatsLine />
             </div>
             {/* 右：炉膛窗口（唯一深色区，像壁炉口） */}
             <div className="sm:w-[44%] p-4 sm:p-5 flex">
@@ -101,6 +100,10 @@ export const HomeModule: React.FC<HomeModuleProps> = ({ onOpen }) => {
                 <FlameHeroCanvas />
               </div>
             </div>
+          </div>
+          {/* 状态条：实时使用计数 */}
+          <div className="relative z-10 border-t border-[#e8d5b8]/70 bg-white/40 px-6 sm:px-10 py-2.5">
+            <LiveStatsLine />
           </div>
         </div>
 

@@ -85,7 +85,7 @@ export const LiveStatsLine: React.FC = () => {
   const prev = prevStringRef.current;
 
   return (
-    <p className="mt-3 text-sm text-[#8a8171] font-mono flex items-center gap-2">
+    <p className="text-xs font-mono text-[#8a8171] flex items-center gap-2">
       {/* 呼吸活点 */}
       <span className="relative flex h-1.5 w-1.5 shrink-0">
         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-60" />
