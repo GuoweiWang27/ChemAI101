@@ -46,8 +46,9 @@ function App() {
             <div className="bg-science-600 p-2 rounded-lg">
               <Atom className="w-6 h-6 text-white" />
             </div>
-            <h1 className="hidden sm:block font-display text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-science-700 to-science-500">
-              {t('appTitle')}
+            <h1 className="hidden sm:block font-display text-2xl font-bold">
+              <span className="text-science-700">ChemAI</span>
+              <span className="text-science-400">101</span>
             </h1>
           </div>
           

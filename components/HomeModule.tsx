@@ -98,9 +98,9 @@ export const HomeModule: React.FC<HomeModuleProps> = ({ onOpen }) => {
                 </span>
               </h2>
               <p className="mt-4 text-base sm:text-lg text-[#5c5549] font-medium">{t('homeSubtitle')}</p>
-              <p className="mt-2 text-xs sm:text-sm text-[#a39a89] tracking-wider">{t('homeCapabilities')}</p>
+              <p className="mt-2 text-xs sm:text-sm text-[#6f685d] tracking-wider">{t('homeCapabilities')}</p>
               {stats && stats.total > 0 && (
-                <p className="mt-3 text-sm text-[#a39a89] font-mono">
+                <p className="mt-3 text-sm text-[#8a8171] font-mono">
                   {t('homeStatsLine', { count: stats.total.toLocaleString('en-US') })}
                 </p>
               )}
