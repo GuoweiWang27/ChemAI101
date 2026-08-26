@@ -361,7 +361,167 @@
       ],
       [],
       []
-    ]
+    ],
+    "reactionFlow": {
+      "reactants": [
+        {
+          "label": "C2H4",
+          "structure": {
+            "atoms": [
+              {
+                "id": 1,
+                "element": "C",
+                "x": -0.45,
+                "y": 0,
+                "z": 0
+              },
+              {
+                "id": 2,
+                "element": "C",
+                "x": 0.45,
+                "y": 0,
+                "z": 0
+              },
+              {
+                "id": 3,
+                "element": "H",
+                "x": -0.9,
+                "y": 0.55,
+                "z": 0
+              },
+              {
+                "id": 4,
+                "element": "H",
+                "x": -0.9,
+                "y": -0.55,
+                "z": 0
+              },
+              {
+                "id": 5,
+                "element": "H",
+                "x": 0.9,
+                "y": 0.55,
+                "z": 0
+              },
+              {
+                "id": 6,
+                "element": "H",
+                "x": 0.9,
+                "y": -0.55,
+                "z": 0
+              }
+            ],
+            "bonds": [
+              {
+                "source": 1,
+                "target": 2,
+                "order": 2
+              },
+              {
+                "source": 1,
+                "target": 3,
+                "order": 1
+              },
+              {
+                "source": 1,
+                "target": 4,
+                "order": 1
+              },
+              {
+                "source": 2,
+                "target": 5,
+                "order": 1
+              },
+              {
+                "source": 2,
+                "target": 6,
+                "order": 1
+              }
+            ]
+          },
+          "position": [
+            -2.8,
+            0.5,
+            0
+          ]
+        },
+        {
+          "label": "Br2",
+          "structure": {
+            "atoms": [
+              {
+                "id": 1,
+                "element": "Br",
+                "x": -0.7,
+                "y": 0,
+                "z": 0
+              },
+              {
+                "id": 2,
+                "element": "Br",
+                "x": 0.7,
+                "y": 0,
+                "z": 0
+              }
+            ],
+            "bonds": [
+              {
+                "source": 1,
+                "target": 2,
+                "order": 1
+              }
+            ]
+          },
+          "position": [
+            -1.6,
+            -0.5,
+            0
+          ]
+        }
+      ],
+      "atomMap": [
+        {
+          "reactant": 0,
+          "atom": 1,
+          "to": 3
+        },
+        {
+          "reactant": 0,
+          "atom": 2,
+          "to": 4
+        },
+        {
+          "reactant": 0,
+          "atom": 3,
+          "to": 5
+        },
+        {
+          "reactant": 0,
+          "atom": 4,
+          "to": 6
+        },
+        {
+          "reactant": 0,
+          "atom": 5,
+          "to": 7
+        },
+        {
+          "reactant": 0,
+          "atom": 6,
+          "to": 8
+        },
+        {
+          "reactant": 1,
+          "atom": 1,
+          "to": 1
+        },
+        {
+          "reactant": 1,
+          "atom": 2,
+          "to": 2
+        }
+      ]
+    }
   },
   {
     "id": "c2h4-hydration",
@@ -607,7 +767,184 @@
       ],
       [],
       []
-    ]
+    ],
+    "reactionFlow": {
+      "reactants": [
+        {
+          "label": "C2H4",
+          "structure": {
+            "atoms": [
+              {
+                "id": 1,
+                "element": "C",
+                "x": -0.45,
+                "y": 0,
+                "z": 0
+              },
+              {
+                "id": 2,
+                "element": "C",
+                "x": 0.45,
+                "y": 0,
+                "z": 0
+              },
+              {
+                "id": 3,
+                "element": "H",
+                "x": -0.9,
+                "y": 0.55,
+                "z": 0
+              },
+              {
+                "id": 4,
+                "element": "H",
+                "x": -0.9,
+                "y": -0.55,
+                "z": 0
+              },
+              {
+                "id": 5,
+                "element": "H",
+                "x": 0.9,
+                "y": 0.55,
+                "z": 0
+              },
+              {
+                "id": 6,
+                "element": "H",
+                "x": 0.9,
+                "y": -0.55,
+                "z": 0
+              }
+            ],
+            "bonds": [
+              {
+                "source": 1,
+                "target": 2,
+                "order": 2
+              },
+              {
+                "source": 1,
+                "target": 3,
+                "order": 1
+              },
+              {
+                "source": 1,
+                "target": 4,
+                "order": 1
+              },
+              {
+                "source": 2,
+                "target": 5,
+                "order": 1
+              },
+              {
+                "source": 2,
+                "target": 6,
+                "order": 1
+              }
+            ]
+          },
+          "position": [
+            -2.8,
+            0.6,
+            0
+          ]
+        },
+        {
+          "label": "H2O",
+          "structure": {
+            "atoms": [
+              {
+                "id": 1,
+                "element": "O",
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              {
+                "id": 2,
+                "element": "H",
+                "x": 0.8,
+                "y": 0.4,
+                "z": 0
+              },
+              {
+                "id": 3,
+                "element": "H",
+                "x": -0.8,
+                "y": 0.4,
+                "z": 0
+              }
+            ],
+            "bonds": [
+              {
+                "source": 1,
+                "target": 2,
+                "order": 1
+              },
+              {
+                "source": 1,
+                "target": 3,
+                "order": 1
+              }
+            ]
+          },
+          "position": [
+            -1.7,
+            -0.6,
+            0
+          ]
+        }
+      ],
+      "atomMap": [
+        {
+          "reactant": 0,
+          "atom": 1,
+          "to": 3
+        },
+        {
+          "reactant": 0,
+          "atom": 2,
+          "to": 2
+        },
+        {
+          "reactant": 0,
+          "atom": 3,
+          "to": 6
+        },
+        {
+          "reactant": 0,
+          "atom": 4,
+          "to": 7
+        },
+        {
+          "reactant": 0,
+          "atom": 5,
+          "to": 4
+        },
+        {
+          "reactant": 0,
+          "atom": 6,
+          "to": 5
+        },
+        {
+          "reactant": 1,
+          "atom": 1,
+          "to": 1
+        },
+        {
+          "reactant": 1,
+          "atom": 2,
+          "to": 9
+        },
+        {
+          "reactant": 1,
+          "atom": 3,
+          "to": 8
+        }
+      ]
+    }
   },
   {
     "id": "c2h4-polymerization",
@@ -1371,7 +1708,305 @@
         1,
         5
       ]
-    ]
+    ],
+    "reactionFlow": {
+      "reactants": [
+        {
+          "label": "CH3COOH",
+          "structure": {
+            "atoms": [
+              {
+                "id": 1,
+                "element": "C",
+                "x": -1.1,
+                "y": 0,
+                "z": 0
+              },
+              {
+                "id": 2,
+                "element": "C",
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              {
+                "id": 3,
+                "element": "O",
+                "x": 0,
+                "y": 0.9,
+                "z": 0
+              },
+              {
+                "id": 4,
+                "element": "O",
+                "x": 0.9,
+                "y": -0.7,
+                "z": 0
+              },
+              {
+                "id": 5,
+                "element": "H",
+                "x": 1.5,
+                "y": -1.2,
+                "z": 0
+              },
+              {
+                "id": 6,
+                "element": "H",
+                "x": -1.6,
+                "y": 0.62,
+                "z": 0
+              },
+              {
+                "id": 7,
+                "element": "H",
+                "x": -1.6,
+                "y": -0.62,
+                "z": 0
+              },
+              {
+                "id": 8,
+                "element": "H",
+                "x": -1.75,
+                "y": 0,
+                "z": 0
+              }
+            ],
+            "bonds": [
+              {
+                "source": 1,
+                "target": 2,
+                "order": 1
+              },
+              {
+                "source": 2,
+                "target": 3,
+                "order": 2
+              },
+              {
+                "source": 2,
+                "target": 4,
+                "order": 1
+              },
+              {
+                "source": 4,
+                "target": 5,
+                "order": 1
+              },
+              {
+                "source": 1,
+                "target": 6,
+                "order": 1
+              },
+              {
+                "source": 1,
+                "target": 7,
+                "order": 1
+              },
+              {
+                "source": 1,
+                "target": 8,
+                "order": 1
+              }
+            ]
+          },
+          "position": [
+            -2.8,
+            0.6,
+            0
+          ]
+        },
+        {
+          "label": "C2H5OH",
+          "structure": {
+            "atoms": [
+              {
+                "id": 1,
+                "element": "C",
+                "x": -1.05,
+                "y": 0,
+                "z": 0
+              },
+              {
+                "id": 2,
+                "element": "C",
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              {
+                "id": 3,
+                "element": "O",
+                "x": 1.0,
+                "y": -0.6,
+                "z": 0
+              },
+              {
+                "id": 4,
+                "element": "H",
+                "x": 1.5,
+                "y": -1.2,
+                "z": 0
+              },
+              {
+                "id": 5,
+                "element": "H",
+                "x": -1.5,
+                "y": 0.62,
+                "z": 0
+              },
+              {
+                "id": 6,
+                "element": "H",
+                "x": -1.5,
+                "y": -0.62,
+                "z": 0
+              },
+              {
+                "id": 7,
+                "element": "H",
+                "x": -1.7,
+                "y": 0,
+                "z": 0
+              },
+              {
+                "id": 8,
+                "element": "H",
+                "x": 0.4,
+                "y": 0.7,
+                "z": 0
+              },
+              {
+                "id": 9,
+                "element": "H",
+                "x": 0.4,
+                "y": -0.7,
+                "z": 0
+              }
+            ],
+            "bonds": [
+              {
+                "source": 1,
+                "target": 2,
+                "order": 1
+              },
+              {
+                "source": 2,
+                "target": 3,
+                "order": 1
+              },
+              {
+                "source": 3,
+                "target": 4,
+                "order": 1
+              },
+              {
+                "source": 1,
+                "target": 5,
+                "order": 1
+              },
+              {
+                "source": 1,
+                "target": 6,
+                "order": 1
+              },
+              {
+                "source": 1,
+                "target": 7,
+                "order": 1
+              },
+              {
+                "source": 2,
+                "target": 8,
+                "order": 1
+              },
+              {
+                "source": 2,
+                "target": 9,
+                "order": 1
+              }
+            ]
+          },
+          "position": [
+            -1.6,
+            -0.6,
+            0.6
+          ]
+        }
+      ],
+      "atomMap": [
+        {
+          "reactant": 0,
+          "atom": 1,
+          "to": 6
+        },
+        {
+          "reactant": 0,
+          "atom": 2,
+          "to": 5
+        },
+        {
+          "reactant": 0,
+          "atom": 3,
+          "to": 2
+        },
+        {
+          "reactant": 0,
+          "atom": 6,
+          "to": 12
+        },
+        {
+          "reactant": 0,
+          "atom": 7,
+          "to": 13
+        },
+        {
+          "reactant": 0,
+          "atom": 8,
+          "to": 14
+        },
+        {
+          "reactant": 1,
+          "atom": 1,
+          "to": 4
+        },
+        {
+          "reactant": 1,
+          "atom": 2,
+          "to": 3
+        },
+        {
+          "reactant": 1,
+          "atom": 3,
+          "to": 1
+        },
+        {
+          "reactant": 1,
+          "atom": 5,
+          "to": 9
+        },
+        {
+          "reactant": 1,
+          "atom": 6,
+          "to": 10
+        },
+        {
+          "reactant": 1,
+          "atom": 7,
+          "to": 11
+        },
+        {
+          "reactant": 1,
+          "atom": 8,
+          "to": 7
+        },
+        {
+          "reactant": 1,
+          "atom": 9,
+          "to": 8
+        }
+      ]
+    }
   },
   {
     "id": "glucose-cuoh2",

@@ -976,7 +976,133 @@
         5,
         6
       ]
-    ]
+    ],
+    "reactionFlow": {
+      "reactants": [
+        {
+          "label": "NH₃",
+          "structure": {
+            "atoms": [
+              {
+                "id": 1,
+                "element": "N",
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              {
+                "id": 2,
+                "element": "H",
+                "x": 0.714,
+                "y": 0,
+                "z": -0.7
+              },
+              {
+                "id": 3,
+                "element": "H",
+                "x": -0.357,
+                "y": 0.618,
+                "z": -0.7
+              },
+              {
+                "id": 4,
+                "element": "H",
+                "x": -0.357,
+                "y": -0.618,
+                "z": -0.7
+              }
+            ],
+            "bonds": [
+              {
+                "source": 1,
+                "target": 2,
+                "order": 1
+              },
+              {
+                "source": 1,
+                "target": 3,
+                "order": 1
+              },
+              {
+                "source": 1,
+                "target": 4,
+                "order": 1
+              }
+            ]
+          },
+          "position": [
+            -3.0,
+            0.5,
+            0
+          ]
+        },
+        {
+          "label": "HCl",
+          "structure": {
+            "atoms": [
+              {
+                "id": 1,
+                "element": "H",
+                "x": 0.6,
+                "y": 0,
+                "z": 0
+              },
+              {
+                "id": 2,
+                "element": "Cl",
+                "x": -0.6,
+                "y": 0,
+                "z": 0
+              }
+            ],
+            "bonds": [
+              {
+                "source": 1,
+                "target": 2,
+                "order": 1
+              }
+            ]
+          },
+          "position": [
+            -1.7,
+            -0.6,
+            0
+          ]
+        }
+      ],
+      "atomMap": [
+        {
+          "reactant": 0,
+          "atom": 1,
+          "to": 2
+        },
+        {
+          "reactant": 0,
+          "atom": 2,
+          "to": 3
+        },
+        {
+          "reactant": 0,
+          "atom": 3,
+          "to": 4
+        },
+        {
+          "reactant": 0,
+          "atom": 4,
+          "to": 5
+        },
+        {
+          "reactant": 1,
+          "atom": 1,
+          "to": 6
+        },
+        {
+          "reactant": 1,
+          "atom": 2,
+          "to": 1
+        }
+      ]
+    }
   },
   {
     "id": "nh3-cat-oxidation",
@@ -1060,7 +1186,113 @@
         1,
         2
       ]
-    ]
+    ],
+    "reactionFlow": {
+      "reactants": [
+        {
+          "label": "NH₃",
+          "structure": {
+            "atoms": [
+              {
+                "id": 1,
+                "element": "N",
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              {
+                "id": 2,
+                "element": "H",
+                "x": 0.714,
+                "y": 0,
+                "z": -0.7
+              },
+              {
+                "id": 3,
+                "element": "H",
+                "x": -0.357,
+                "y": 0.618,
+                "z": -0.7
+              },
+              {
+                "id": 4,
+                "element": "H",
+                "x": -0.357,
+                "y": -0.618,
+                "z": -0.7
+              }
+            ],
+            "bonds": [
+              {
+                "source": 1,
+                "target": 2,
+                "order": 1
+              },
+              {
+                "source": 1,
+                "target": 3,
+                "order": 1
+              },
+              {
+                "source": 1,
+                "target": 4,
+                "order": 1
+              }
+            ]
+          },
+          "position": [
+            -3.0,
+            0.5,
+            0
+          ]
+        },
+        {
+          "label": "O₂",
+          "structure": {
+            "atoms": [
+              {
+                "id": 1,
+                "element": "O",
+                "x": 0.6,
+                "y": 0,
+                "z": 0
+              },
+              {
+                "id": 2,
+                "element": "O",
+                "x": -0.6,
+                "y": 0,
+                "z": 0
+              }
+            ],
+            "bonds": [
+              {
+                "source": 1,
+                "target": 2,
+                "order": 1
+              }
+            ]
+          },
+          "position": [
+            -1.7,
+            -0.6,
+            0
+          ]
+        }
+      ],
+      "atomMap": [
+        {
+          "reactant": 0,
+          "atom": 1,
+          "to": 2
+        },
+        {
+          "reactant": 1,
+          "atom": 1,
+          "to": 1
+        }
+      ]
+    }
   },
   {
     "id": "nh4cl-caoh2-lab",

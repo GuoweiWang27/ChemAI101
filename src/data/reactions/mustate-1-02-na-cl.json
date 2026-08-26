@@ -103,7 +103,93 @@
       [
         3
       ]
-    ]
+    ],
+    "reactionFlow": {
+      "reactants": [
+        {
+          "label": "Na",
+          "structure": {
+            "atoms": [
+              {
+                "id": 1,
+                "element": "Na",
+                "x": 0,
+                "y": 0,
+                "z": 0
+              }
+            ],
+            "bonds": []
+          },
+          "position": [
+            -3.0,
+            0.5,
+            0
+          ]
+        },
+        {
+          "label": "H₂O",
+          "structure": {
+            "atoms": [
+              {
+                "id": 1,
+                "element": "O",
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              {
+                "id": 2,
+                "element": "H",
+                "x": 0.712,
+                "y": 0,
+                "z": 0.551
+              },
+              {
+                "id": 3,
+                "element": "H",
+                "x": -0.712,
+                "y": 0,
+                "z": 0.551
+              }
+            ],
+            "bonds": [
+              {
+                "source": 1,
+                "target": 2,
+                "order": 1
+              },
+              {
+                "source": 1,
+                "target": 3,
+                "order": 1
+              }
+            ]
+          },
+          "position": [
+            -1.7,
+            -0.6,
+            0
+          ]
+        }
+      ],
+      "atomMap": [
+        {
+          "reactant": 0,
+          "atom": 1,
+          "to": 1
+        },
+        {
+          "reactant": 1,
+          "atom": 1,
+          "to": 2
+        },
+        {
+          "reactant": 1,
+          "atom": 3,
+          "to": 3
+        }
+      ]
+    }
   },
   {
     "id": "na-o2-heat",
@@ -725,7 +811,76 @@
         2
       ],
       []
-    ]
+    ],
+    "reactionFlow": {
+      "reactants": [
+        {
+          "label": "Na",
+          "structure": {
+            "atoms": [
+              {
+                "id": 1,
+                "element": "Na",
+                "x": 0,
+                "y": 0,
+                "z": 0
+              }
+            ],
+            "bonds": []
+          },
+          "position": [
+            -3.0,
+            0.5,
+            0
+          ]
+        },
+        {
+          "label": "Cl₂",
+          "structure": {
+            "atoms": [
+              {
+                "id": 1,
+                "element": "Cl",
+                "x": 0.7,
+                "y": 0,
+                "z": 0
+              },
+              {
+                "id": 2,
+                "element": "Cl",
+                "x": -0.7,
+                "y": 0,
+                "z": 0
+              }
+            ],
+            "bonds": [
+              {
+                "source": 1,
+                "target": 2,
+                "order": 1
+              }
+            ]
+          },
+          "position": [
+            -1.7,
+            -0.6,
+            0
+          ]
+        }
+      ],
+      "atomMap": [
+        {
+          "reactant": 0,
+          "atom": 1,
+          "to": 2
+        },
+        {
+          "reactant": 1,
+          "atom": 1,
+          "to": 1
+        }
+      ]
+    }
   },
   {
     "id": "cl2-fe",
@@ -1156,7 +1311,89 @@
         2
       ],
       []
-    ]
+    ],
+    "reactionFlow": {
+      "reactants": [
+        {
+          "label": "H2",
+          "structure": {
+            "atoms": [
+              {
+                "id": 1,
+                "element": "H",
+                "x": -0.35,
+                "y": 0,
+                "z": 0
+              },
+              {
+                "id": 2,
+                "element": "H",
+                "x": 0.35,
+                "y": 0,
+                "z": 0
+              }
+            ],
+            "bonds": [
+              {
+                "source": 1,
+                "target": 2,
+                "order": 1
+              }
+            ]
+          },
+          "position": [
+            -2.9,
+            0.5,
+            0
+          ]
+        },
+        {
+          "label": "Cl2",
+          "structure": {
+            "atoms": [
+              {
+                "id": 1,
+                "element": "Cl",
+                "x": -0.7,
+                "y": 0,
+                "z": 0
+              },
+              {
+                "id": 2,
+                "element": "Cl",
+                "x": 0.7,
+                "y": 0,
+                "z": 0
+              }
+            ],
+            "bonds": [
+              {
+                "source": 1,
+                "target": 2,
+                "order": 1
+              }
+            ]
+          },
+          "position": [
+            -1.7,
+            -0.6,
+            0
+          ]
+        }
+      ],
+      "atomMap": [
+        {
+          "reactant": 0,
+          "atom": 1,
+          "to": 2
+        },
+        {
+          "reactant": 1,
+          "atom": 1,
+          "to": 1
+        }
+      ]
+    }
   },
   {
     "id": "cl2-h2o",
