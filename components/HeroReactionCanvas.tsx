@@ -121,10 +121,10 @@ const SceneContent: React.FC<{ structure: MoleculeStructure; reduced: boolean }>
       const isAssembled = !dissolving && t > PULSE_START;
       if (isAssembled && t < PULSE_END) {
         const k = Math.sin(((t - PULSE_START) / (PULSE_END - PULSE_START)) * Math.PI);
-        material.emissiveIntensity = 0.15 + k * 0.75;
+        material.emissiveIntensity = 0.12 + k * 0.4;
         mesh.scale.setScalar(1 + k * 0.05);
       } else {
-        material.emissiveIntensity = 0.15;
+        material.emissiveIntensity = 0.12;
         mesh.scale.setScalar(1);
       }
     });
@@ -165,7 +165,7 @@ const SceneContent: React.FC<{ structure: MoleculeStructure; reduced: boolean }>
               roughness={0.25}
               metalness={0.15}
               emissive={atom.color}
-              emissiveIntensity={0.15}
+              emissiveIntensity={0.12}
               transparent
               opacity={0}
             />
@@ -181,7 +181,7 @@ const SceneContent: React.FC<{ structure: MoleculeStructure; reduced: boolean }>
           >
             <mesh>
               <cylinderGeometry args={[0.075, 0.075, bond.length, 10]} />
-              <meshStandardMaterial color="#cfd8cf" roughness={0.4} metalness={0.1} transparent opacity={0.85} />
+              <meshStandardMaterial color="#6f685d" roughness={0.45} metalness={0.08} transparent opacity={0.8} />
             </mesh>
           </group>
         ))}
@@ -207,7 +207,7 @@ const DustField: React.FC = () => {
       <bufferGeometry>
         <bufferAttribute attach="attributes-position" args={[positions, 3]} />
       </bufferGeometry>
-      <pointsMaterial size={0.045} color="#8ee3d0" transparent opacity={0.4} sizeAttenuation />
+      <pointsMaterial size={0.045} color="#b99455" transparent opacity={0.38} sizeAttenuation />
     </points>
   );
 };
@@ -240,10 +240,10 @@ export const HeroReactionCanvas: React.FC = () => {
       camera={{ position: [0, 0, 9], fov: 42 }}
       gl={{ antialias: true }}
     >
-      <fog attach="fog" args={['#101613', 9, 17]} />
-      <ambientLight intensity={0.55} />
-      <spotLight position={[8, 9, 8]} angle={0.3} penumbra={1} intensity={1.1} />
-      <pointLight position={[-7, -6, -6]} intensity={0.45} color="#5eead4" />
+      <fog attach="fog" args={['#f6f1e7', 9, 17]} />
+      <ambientLight intensity={0.9} />
+      <spotLight position={[8, 9, 8]} angle={0.3} penumbra={1} intensity={1.25} />
+      <pointLight position={[-7, -6, -6]} intensity={0.4} color="#d9b36a" />
       <SceneContent structure={structure} reduced={reduced} />
       <DustField />
       <Environment preset="city" />
