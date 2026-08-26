@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Atom, BookOpen, ChevronRight, Database, FlaskConical } from 'lucide-react';
 import { ALL_REACTIONS } from '../src/data/reactions';
-import { fetchUsageStats, UsageStats } from '../services/geminiService';
+import { LiveStatsLine } from './LiveStatsLine';
 import { useLanguage } from '../contexts/LanguageContext';
 import { FlameHeroCanvas } from './FlameHeroCanvas';
 
@@ -14,15 +14,6 @@ interface HomeModuleProps {
 /** 首页 Dashboard：四大模块入口卡片，默认落地页。 */
 export const HomeModule: React.FC<HomeModuleProps> = ({ onOpen }) => {
   const { t } = useLanguage();
-  const [stats, setStats] = useState<UsageStats | null>(null);
-
-  useEffect(() => {
-    const controller = new AbortController();
-    fetchUsageStats(controller.signal)
-      .then(setStats)
-      .catch(() => {});
-    return () => controller.abort();
-  }, []);
 
   const cards: Array<{
     tab: HomeTab;
@@ -99,11 +90,7 @@ export const HomeModule: React.FC<HomeModuleProps> = ({ onOpen }) => {
               </h2>
               <p className="mt-4 text-base sm:text-lg text-[#5c5549] font-medium">{t('homeSubtitle')}</p>
               <p className="mt-2 text-xs sm:text-sm text-[#6f685d] tracking-wider">{t('homeCapabilities')}</p>
-              {stats && stats.total > 0 && (
-                <p className="mt-3 text-sm text-[#8a8171] font-mono">
-                  {t('homeStatsLine', { count: stats.total.toLocaleString('en-US') })}
-                </p>
-              )}
+              <LiveStatsLine />
             </div>
             {/* 右：炉膛窗口（唯一深色区，像壁炉口） */}
             <div className="sm:w-[44%] p-4 sm:p-5 flex">
