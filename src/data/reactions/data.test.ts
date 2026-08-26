@@ -48,6 +48,27 @@ describe('curated reactions dataset', () => {
     }
   });
 
+  it('validates atomInsights keys and bilingual content', () => {
+    for (const r of ALL_REACTIONS) {
+      if (!r.atomInsights) continue;
+      expect(r.productStructure).not.toBeNull();
+      if (!r.productStructure) continue;
+      const ids = new Set(r.productStructure.atoms.map((a) => a.id));
+      for (const [key, insight] of Object.entries(r.atomInsights)) {
+        // 键必须是结构内真实原子 id 的十进制字符串
+        expect(key).toMatch(/^\d+$/);
+        expect(ids.has(Number(key))).toBe(true);
+        // 双语四字段全部非空
+        for (const text of [insight.role, insight.detail]) {
+          expect(typeof text.zh).toBe('string');
+          expect(typeof text.en).toBe('string');
+          expect(text.zh.trim().length).toBeGreaterThan(0);
+          expect(text.en.trim().length).toBeGreaterThan(0);
+        }
+      }
+    }
+  });
+
   it('keeps chapters ordered and non-empty once content lands', () => {
     expect(CHAPTERS.every((c) => c.length > 0)).toBe(true);
     // 发布门槛（Task 7 门禁复核）：签核条目 >= 10
