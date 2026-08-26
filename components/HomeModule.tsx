@@ -93,7 +93,7 @@ export const HomeModule: React.FC<HomeModuleProps> = ({ onOpen }) => {
           {/* 可读性渐变：左浓右淡，文字压左侧 */}
           <div className="absolute inset-0 pointer-events-none bg-gradient-to-r from-[#fbf9f4]/85 via-[#fbf9f4]/35 to-transparent" />
           <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(120% 90% at 85% 30%, transparent 55%, rgba(134,96,39,0.12) 100%)' }} />
-          <div className="relative z-10 p-7 sm:p-12 min-h-[360px] sm:min-h-[440px] flex flex-col justify-center max-w-2xl pointer-events-none select-none">
+          <div className="relative z-10 p-6 sm:p-10 min-h-[270px] sm:min-h-[330px] flex flex-col justify-center max-w-xl pointer-events-none select-none">
             <p className="text-xs font-bold uppercase tracking-widest text-science-500 mb-3">ChemAI101</p>
             <h2 className="text-3xl sm:text-5xl font-bold font-display leading-tight tracking-tight text-[#1a1a1a]">
               {t('homeTaglineMain')}

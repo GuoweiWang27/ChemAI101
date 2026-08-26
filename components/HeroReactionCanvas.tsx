@@ -94,6 +94,8 @@ const SceneContent: React.FC<{ structure: MoleculeStructure; reduced: boolean }>
   useFrame(({ clock }) => {
     if (!groupRef.current) return;
     const dt = clock.getDelta();
+    groupRef.current.position.set(1.5, 0, 0);
+    groupRef.current.scale.setScalar(1.18);
     if (reduced) {
       // 静帧：直接呈现组装完成态
       groupRef.current.rotation.y = -0.45;
@@ -195,7 +197,7 @@ const DustField: React.FC = () => {
   const positions = useMemo(() => {
     const arr = new Float32Array(42 * 3);
     for (let i = 0; i < 42; i++) {
-      const v = randomSpherePoint(3.5, 8);
+      const v = randomSpherePoint(3, 6.5);
       arr[i * 3] = v.x;
       arr[i * 3 + 1] = v.y;
       arr[i * 3 + 2] = v.z;
@@ -237,7 +239,7 @@ export const HeroReactionCanvas: React.FC = () => {
     <Canvas
       frameloop={running && !reduced ? 'always' : 'demand'}
       dpr={[1, 1.75]}
-      camera={{ position: [0, 0, 9], fov: 42 }}
+      camera={{ position: [0, 0, 7], fov: 42 }}
       gl={{ antialias: true }}
     >
       <fog attach="fog" args={['#f6f1e7', 9, 17]} />
