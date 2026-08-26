@@ -854,7 +854,119 @@
       [
         1
       ]
-    ]
+    ],
+    "reactionFlow": {
+      "reactants": [
+        {
+          "label": "Fe",
+          "structure": {
+            "atoms": [
+              {
+                "id": 1,
+                "element": "Fe",
+                "x": 0,
+                "y": 0,
+                "z": 0
+              }
+            ],
+            "bonds": []
+          },
+          "position": [
+            -1.75,
+            0,
+            0
+          ]
+        },
+        {
+          "label": "Cl₂",
+          "structure": {
+            "atoms": [
+              {
+                "id": 1,
+                "element": "Cl",
+                "x": 0.7,
+                "y": 0,
+                "z": 0
+              },
+              {
+                "id": 2,
+                "element": "Cl",
+                "x": -0.7,
+                "y": 0,
+                "z": 0
+              }
+            ],
+            "bonds": [
+              {
+                "source": 1,
+                "target": 2,
+                "order": 1
+              }
+            ]
+          },
+          "position": [
+            -3.0,
+            1.0,
+            0
+          ]
+        },
+        {
+          "label": "Cl₂",
+          "structure": {
+            "atoms": [
+              {
+                "id": 1,
+                "element": "Cl",
+                "x": 0.7,
+                "y": 0,
+                "z": 0
+              },
+              {
+                "id": 2,
+                "element": "Cl",
+                "x": -0.7,
+                "y": 0,
+                "z": 0
+              }
+            ],
+            "bonds": [
+              {
+                "source": 1,
+                "target": 2,
+                "order": 1
+              }
+            ]
+          },
+          "position": [
+            -3.0,
+            -1.0,
+            0
+          ]
+        }
+      ],
+      "atomMap": [
+        {
+          "reactant": 0,
+          "atom": 1,
+          "to": 1
+        },
+        {
+          "reactant": 1,
+          "atom": 1,
+          "to": 2
+        },
+        {
+          "reactant": 1,
+          "atom": 2,
+          "to": 3
+        },
+        {
+          "reactant": 2,
+          "atom": 1,
+          "to": 4
+        }
+      ]
+    }
   },
   {
     "id": "cl2-cu",

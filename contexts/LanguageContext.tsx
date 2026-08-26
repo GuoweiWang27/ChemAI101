@@ -57,6 +57,9 @@ const translations: Translations = {
     resetViewBtn: "Reset view",
     insightFallbackHint: "AI insight for this atom is coming soon.",
     closeBtn: "Close",
+    flowPlayBtn: "Full reaction",
+    flowReplayBtn: "Replay",
+    flowBackBtn: "Back to steps",
     failedToAnalyze: "Failed to analyze reaction. Please check your API key and try again.",
     failedToName: "Could not name molecule. Try again.",
     toolsTooltip: {
@@ -175,6 +178,9 @@ const translations: Translations = {
     resetViewBtn: "重置视角",
     insightFallbackHint: "这个原子的 AI 讲解即将上线。",
     closeBtn: "关闭",
+    flowPlayBtn: "全程动画",
+    flowReplayBtn: "重播",
+    flowBackBtn: "返回步骤",
     failedToAnalyze: "分析反应失败。请检查您的 API 密钥并重试。",
     failedToName: "无法命名分子。请重试。",
     toolsTooltip: {

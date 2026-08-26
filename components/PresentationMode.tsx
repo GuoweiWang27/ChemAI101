@@ -2,8 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { MoleculeStructure } from '../types';
 import { AtomInsight } from '../src/data/reactions/schema';
 import { MechanismMolecule } from './MechanismMolecule';
+import { ReactionFlowScene } from './ReactionFlowScene';
+import type { CuratedReaction } from '../src/data/reactions/schema';
 import { AtomInsightPanel } from './AtomInsightPanel';
-import { ChevronLeft, ChevronRight, Minimize2 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Minimize2, Play, RotateCcw, Undo2 } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
 
 interface PresentationModeProps {
   equation: string;
@@ -15,6 +18,8 @@ interface PresentationModeProps {
   highlightSteps?: number[][];
   /** 原子级 AI 讲解（演示模式下点击原子同样弹出） */
   atomInsights?: Record<string, AtomInsight>;
+  /** 全程反应动画数据（精选反应才有） */
+  reactionFlow?: CuratedReaction['reactionFlow'];
   onClose: () => void;
 }
 
@@ -26,10 +31,14 @@ export const PresentationMode: React.FC<PresentationModeProps> = ({
   structure,
   highlightSteps,
   atomInsights,
+  reactionFlow,
   onClose,
 }) => {
+  const { t } = useLanguage();
   const [stepIndex, setStepIndex] = useState(0);
   const [selectedAtomId, setSelectedAtomId] = useState<number | null>(null);
+  const [flowPlaying, setFlowPlaying] = useState(false);
+  const [flowPlayKey, setFlowPlayKey] = useState(0);
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
@@ -100,13 +109,60 @@ export const PresentationMode: React.FC<PresentationModeProps> = ({
         {/* Structure：机理编舞场景 */}
         {structure && (
           <div className="relative md:w-[55%] min-h-[240px] md:min-h-0 rounded-3xl overflow-hidden bg-black/30">
-            <MechanismMolecule
-              structure={structure}
-              stepAtomIds={highlightSteps}
-              stepIndex={stepIndex}
-              selectedAtomId={selectedAtomId}
-              onAtomSelect={setSelectedAtomId}
-            />
+            {flowPlaying && reactionFlow ? (
+              <ReactionFlowScene
+                structure={structure}
+                flow={reactionFlow}
+                playKey={flowPlayKey}
+                selectedAtomId={selectedAtomId}
+                onAtomSelect={setSelectedAtomId}
+              />
+            ) : (
+              <MechanismMolecule
+                structure={structure}
+                stepAtomIds={highlightSteps}
+                stepIndex={stepIndex}
+                selectedAtomId={selectedAtomId}
+                onAtomSelect={setSelectedAtomId}
+              />
+            )}
+            {reactionFlow && (
+              <div className="absolute top-3 right-3 z-20 flex gap-2">
+                {!flowPlaying ? (
+                  <button
+                    onClick={() => {
+                      setSelectedAtomId(null);
+                      setFlowPlayKey((k) => k + 1);
+                      setFlowPlaying(true);
+                    }}
+                    className="flex items-center gap-1.5 bg-white/10 hover:bg-white/25 backdrop-blur-sm text-white text-xs px-3 py-1.5 rounded-lg transition-colors"
+                  >
+                    <Play className="w-3 h-3" /> {t('flowPlayBtn')}
+                  </button>
+                ) : (
+                  <>
+                    <button
+                      onClick={() => {
+                        setSelectedAtomId(null);
+                        setFlowPlayKey((k) => k + 1);
+                      }}
+                      className="flex items-center gap-1.5 bg-white/10 hover:bg-white/25 backdrop-blur-sm text-white text-xs px-3 py-1.5 rounded-lg transition-colors"
+                    >
+                      <RotateCcw className="w-3 h-3" /> {t('flowReplayBtn')}
+                    </button>
+                    <button
+                      onClick={() => {
+                        setSelectedAtomId(null);
+                        setFlowPlaying(false);
+                      }}
+                      className="flex items-center gap-1.5 bg-white/10 hover:bg-white/25 backdrop-blur-sm text-white text-xs px-3 py-1.5 rounded-lg transition-colors"
+                    >
+                      <Undo2 className="w-3 h-3" /> {t('flowBackBtn')}
+                    </button>
+                  </>
+                )}
+              </div>
+            )}
             {selectedAtomId !== null && (() => {
               const atom = structure.atoms.find((a) => a.id === selectedAtomId);
               if (!atom) return null;
