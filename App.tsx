@@ -43,7 +43,7 @@ function App() {
       <header className="bg-white border-b border-[#e8d5b8] sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="bg-[#f0ece4] rounded-lg p-1 ring-1 ring-black/5">
+            <div className="bg-science-700 rounded-lg p-1 ring-1 ring-white/10">
               <img src="/logo-mark.png" alt="ChemAI101" className="h-7 w-7" />
             </div>
             <h1 className="hidden sm:block font-display text-2xl font-bold">
