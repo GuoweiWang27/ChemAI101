@@ -6,8 +6,9 @@ import { PresentationMode } from './PresentationMode';
 import { QrShare } from './QrShare';
 import { updateRouteParams } from '../utils/routeParams';
 import { trackEvent } from '../services/geminiService';
-import { ArrowLeft, Presentation as PresentationIcon } from 'lucide-react';
+import { ArrowLeft, Presentation as PresentationIcon, GraduationCap } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { parseChapter } from '../utils/textbook';
 
 interface ReactionPageProps {
   reaction: CuratedReaction;
@@ -16,7 +17,7 @@ interface ReactionPageProps {
 }
 
 export const ReactionPage: React.FC<ReactionPageProps> = ({ reaction, present, onExit }) => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [selectedAtomId, setSelectedAtomId] = React.useState<number | null>(null);
   const [activeStepIdx, setActiveStepIdx] = React.useState<number | null>(null);
   React.useEffect(() => {
@@ -48,9 +49,16 @@ export const ReactionPage: React.FC<ReactionPageProps> = ({ reaction, present, o
           >
             <ArrowLeft className="w-4 h-4" /> {t('backBtn')}
           </button>
-          <span className="px-3 py-1 rounded-full text-xs font-medium bg-[#f5f0e8] text-[#866027] border border-[#e8d5b8]">
-            {reaction.chapter}
-          </span>
+          <div className="flex items-center gap-2">
+            <span className="hidden sm:inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-science-50 text-science-700 border border-science-200">
+              <GraduationCap className="w-3 h-3" />
+              {parseChapter(reaction.chapter).volumeLabel[language]}
+              {parseChapter(reaction.chapter).grade[language] ? ` · ${parseChapter(reaction.chapter).grade[language]}` : ''}
+            </span>
+            <span className="px-3 py-1 rounded-full text-xs font-medium bg-[#f5f0e8] text-[#866027] border border-[#e8d5b8]">
+              {reaction.chapter}
+            </span>
+          </div>
         </div>
         <h2 className="text-xl sm:text-2xl font-bold font-display text-[#1a1a1a] mb-3">{reaction.title}</h2>
         <div className="p-4 bg-science-50 rounded-xl border border-science-200 font-mono text-base sm:text-lg text-science-800 break-words mb-3">
