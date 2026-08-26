@@ -86,10 +86,14 @@ export const HomeModule: React.FC<HomeModuleProps> = ({ onOpen }) => {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         {/* Hero */}
         <div className="mb-8 sm:mb-10">
-          <p className="text-xs font-bold uppercase tracking-widest text-science-500 mb-2">ChemAI101</p>
-          <h2 className="text-2xl sm:text-4xl font-bold font-display text-[#1a1a1a] leading-tight">
-            {t('homeTagline')}
+          <p className="text-xs font-bold uppercase tracking-widest text-science-500 mb-3">ChemAI101</p>
+          <h2 className="text-3xl sm:text-5xl font-bold font-display leading-tight tracking-tight">
+            <span className="text-[#1a1a1a]">{t('homeTaglineMain')}</span>
+            <span className="bg-gradient-to-r from-science-600 to-science-400 bg-clip-text text-transparent">
+              {t('homeTaglineAccent')}
+            </span>
           </h2>
+          <p className="mt-4 text-sm sm:text-base text-[#6f685d] max-w-xl leading-relaxed">{t('homeSubline')}</p>
           {stats && stats.total > 0 && (
             <p className="mt-3 text-sm text-[#a39a89]">
               {t('homeStatsLine', { count: stats.total.toLocaleString('en-US') })}
