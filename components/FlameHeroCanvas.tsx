@@ -62,6 +62,9 @@ const CYCLE_MS = 6000;
 // 离屏缓冲分辨率（低分辨率 + 模糊 = 柔软火舌）；横幅比例匹配窗口
 const W = 170;
 const H = 140;
+// 焰心水平位置（右侧让位给元素按钮）与每帧水平收敛（烧出锥形）
+const FLAME_CX = W * 0.6;
+const CONVERGE = 0.972;
 
 export const FlameHeroCanvas: React.FC = () => {
   const { language } = useLanguage();
@@ -109,16 +112,16 @@ export const FlameHeroCanvas: React.FC = () => {
       paletteRef.current = lerpPalette(paletteRef.current, targetRef.current, 1 - Math.exp(-dt * 6));
       const pal = paletteRef.current;
 
-      // 1) 整帧上移（火上升）
+      // 1) 整帧上移 + 向焰心水平收敛（底宽顶尖的锥形火）
       ctx.globalCompositeOperation = 'source-over';
-      ctx.drawImage(canvas, 0, -3.4);
+      ctx.drawImage(canvas, FLAME_CX * (1 - CONVERGE), -3.4, W * CONVERGE, H);
       // 2) 向黑衰减（火苗冷却）
       ctx.fillStyle = 'rgba(8,3,1,0.115)';
       ctx.fillRect(0, 0, W, H);
       // 3) 底部生成新火团（加色混合）
       ctx.globalCompositeOperation = 'lighter';
       for (let i = 0; i < 4; i++) {
-        const x = W * 0.5 + (Math.random() - 0.5) * W * 0.44;
+        const x = FLAME_CX + (Math.random() - 0.5) * W * 0.38;
         const y = H - 4 - Math.random() * 8;
         const r = 10 + Math.random() * 14;
         const g = ctx.createRadialGradient(x, y, 0, x, y, r);
@@ -133,7 +136,7 @@ export const FlameHeroCanvas: React.FC = () => {
       // 4) 火星
       if (Math.random() < 0.3) {
         sparks.push({
-          x: W * 0.5 + (Math.random() - 0.5) * W * 0.3,
+          x: FLAME_CX + (Math.random() - 0.5) * W * 0.3,
           y: H * (0.35 + Math.random() * 0.3),
           vy: 14 + Math.random() * 16,
           life: 1,
