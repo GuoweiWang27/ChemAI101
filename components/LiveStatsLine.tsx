@@ -93,17 +93,19 @@ export const LiveStatsLine: React.FC = () => {
       </span>
       <span>
         {prefix}
-        {str.split('').map((ch, i) => {
-          const changed = prev !== '' && prev[i] !== ch;
-          return (
-            <span
-              key={`${flashKey}-${i}`}
-              className={`inline-block ${changed && !reduced.current ? 'stat-digit' : ''}`}
-            >
-              {ch}
-            </span>
-          );
-        })}
+        <span className="text-amber-600 font-semibold">
+          {str.split('').map((ch, i) => {
+            const changed = prev !== '' && prev[i] !== ch;
+            return (
+              <span
+                key={`${flashKey}-${i}`}
+                className={`inline-block ${changed && !reduced.current ? 'stat-digit' : ''}`}
+              >
+                {ch}
+              </span>
+            );
+          })}
+        </span>
         {suffix}
       </span>
       <style>{`@keyframes stat-pop{0%{transform:translateY(0.3em);color:#f59e0b;opacity:0}100%{transform:translateY(0);opacity:1}}.stat-digit{animation:stat-pop 0.35s ease}`}</style>

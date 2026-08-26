@@ -81,15 +81,15 @@ export const HomeModule: React.FC<HomeModuleProps> = ({ onOpen }) => {
           <div className="flex flex-col sm:flex-row items-stretch">
             {/* 左：标语（暖纸底、深色字） */}
             <div className="flex-1 p-6 sm:p-10 flex flex-col justify-center min-h-[240px] sm:min-h-[340px]">
-              <p className="text-xs font-bold uppercase tracking-widest text-science-500 mb-3">ChemAI101 · 焰色反应</p>
+              <p className="text-xs font-bold uppercase tracking-widest text-science-500 mb-4">ChemAI101 · 焰色反应</p>
               <h2 className="text-3xl sm:text-5xl font-bold font-display leading-tight tracking-tight text-[#1a1a1a]">
                 {t('homeTaglineMain')}
                 <span className="bg-gradient-to-r from-science-600 to-science-400 bg-clip-text text-transparent">
                   {t('homeTaglineAccent')}
                 </span>
               </h2>
-              <p className="mt-4 text-base sm:text-lg text-[#5c5549] font-medium">{t('homeSubtitle')}</p>
-              <p className="mt-2 text-xs sm:text-sm text-[#6f685d] tracking-wider">{t('homeCapabilities')}</p>
+              <p className="mt-5 text-base sm:text-lg text-[#5c5549] font-medium">{t('homeSubtitle')}</p>
+              <p className="mt-3 text-xs sm:text-sm text-[#6f685d] tracking-[0.15em]">{t('homeCapabilities')}</p>
             </div>
             {/* 右：炉膛窗口（唯一深色区，像壁炉口） */}
             <div className="sm:w-[44%] p-4 sm:p-5 flex">
