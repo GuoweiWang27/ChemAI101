@@ -3,7 +3,7 @@ import { Atom, BookOpen, ChevronRight, Database, FlaskConical } from 'lucide-rea
 import { ALL_REACTIONS } from '../src/data/reactions';
 import { fetchUsageStats, UsageStats } from '../services/geminiService';
 import { useLanguage } from '../contexts/LanguageContext';
-import { HeroReactionCanvas } from './HeroReactionCanvas';
+import { FlameHeroCanvas } from './FlameHeroCanvas';
 
 export type HomeTab = 'textbook' | 'reaction' | 'builder' | 'library';
 
@@ -85,25 +85,25 @@ export const HomeModule: React.FC<HomeModuleProps> = ({ onOpen }) => {
   return (
     <div className="h-full overflow-y-auto">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-        {/* Hero：暖纸色反应动画 + 标语 */}
-        <div className="relative mb-8 sm:mb-10 rounded-3xl overflow-hidden bg-gradient-to-br from-[#fbf9f4] via-[#f6f1e7] to-[#efe7d8] border border-[#e8d5b8] shadow-lg">
+        {/* Hero：元素之火（焰色反应）+ 标语 */}
+        <div className="relative mb-8 sm:mb-10 rounded-3xl overflow-hidden bg-[#191210] border border-[#46311f] shadow-xl">
+          <div className="absolute inset-0 bg-gradient-to-br from-[#1d1510] via-[#191210] to-[#241811]" />
           <div className="absolute inset-0">
-            <HeroReactionCanvas />
+            <FlameHeroCanvas />
           </div>
-          {/* 可读性渐变：左浓右淡，文字压左侧 */}
-          <div className="absolute inset-0 pointer-events-none bg-gradient-to-r from-[#fbf9f4]/85 via-[#fbf9f4]/35 to-transparent" />
-          <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(120% 90% at 85% 30%, transparent 55%, rgba(134,96,39,0.12) 100%)' }} />
-          <div className="relative z-10 p-6 sm:p-10 min-h-[270px] sm:min-h-[330px] flex flex-col justify-center max-w-xl pointer-events-none select-none">
-            <p className="text-xs font-bold uppercase tracking-widest text-science-500 mb-3">ChemAI101</p>
-            <h2 className="text-3xl sm:text-5xl font-bold font-display leading-tight tracking-tight text-[#1a1a1a]">
+          {/* 可读性渐变：左浓右淡 */}
+          <div className="absolute inset-0 pointer-events-none bg-gradient-to-r from-[#191210]/90 via-[#191210]/40 to-transparent" />
+          <div className="relative z-10 p-6 sm:p-10 pb-14 sm:pb-16 min-h-[320px] sm:min-h-[400px] flex flex-col justify-center max-w-xl pointer-events-none select-none">
+            <p className="text-xs font-bold uppercase tracking-widest text-amber-400/90 mb-3">ChemAI101 · 焰色反应</p>
+            <h2 className="text-3xl sm:text-5xl font-bold font-display leading-tight tracking-tight text-white">
               {t('homeTaglineMain')}
-              <span className="bg-gradient-to-r from-science-600 to-science-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-amber-300 to-orange-300 bg-clip-text text-transparent">
                 {t('homeTaglineAccent')}
               </span>
             </h2>
-            <p className="mt-4 text-sm sm:text-base text-[#6f685d] max-w-xl leading-relaxed">{t('homeSubline')}</p>
+            <p className="mt-4 text-sm sm:text-base text-white/70 max-w-xl leading-relaxed">{t('homeSubline')}</p>
             {stats && stats.total > 0 && (
-              <p className="mt-3 text-sm text-[#a39a89] font-mono">
+              <p className="mt-3 text-sm text-white/45 font-mono">
                 {t('homeStatsLine', { count: stats.total.toLocaleString('en-US') })}
               </p>
             )}

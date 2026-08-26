@@ -9,11 +9,11 @@ import mustate206Energy from './mustate-2-06-energy.json';
 import mustate207Organic from './mustate-2-07-organic.json';
 
 const CHAPTER_FILES: CuratedReaction[][] = [
-  mustate102NaCl as CuratedReaction[],
-  mustate103Fe as CuratedReaction[],
-  mustate205Sn as CuratedReaction[],
-  mustate206Energy as CuratedReaction[],
-  mustate207Organic as CuratedReaction[],
+  mustate102NaCl as unknown as CuratedReaction[],
+  mustate103Fe as unknown as CuratedReaction[],
+  mustate205Sn as unknown as CuratedReaction[],
+  mustate206Energy as unknown as CuratedReaction[],
+  mustate207Organic as unknown as CuratedReaction[],
 ];
 
 export const ALL_REACTIONS: CuratedReaction[] = CHAPTER_FILES.flat();
