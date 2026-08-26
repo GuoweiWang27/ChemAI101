@@ -42,6 +42,9 @@ const translations: Translations = {
     ruleLogic: "Rule Logic",
     buildMoleculeInfo: "Build a molecule and click analyze to see IUPAC naming.",
     interactive3D: "Interactive 3D View",
+    resetViewBtn: "Reset view",
+    insightFallbackHint: "AI insight for this atom is coming soon.",
+    closeBtn: "Close",
     failedToAnalyze: "Failed to analyze reaction. Please check your API key and try again.",
     failedToName: "Could not name molecule. Try again.",
     toolsTooltip: {
@@ -135,6 +138,9 @@ const translations: Translations = {
     ruleLogic: "命名规则",
     buildMoleculeInfo: "构建分子并点击分析以查看 IUPAC 命名。",
     interactive3D: "交互式 3D 视图",
+    resetViewBtn: "重置视角",
+    insightFallbackHint: "这个原子的 AI 讲解即将上线。",
+    closeBtn: "关闭",
     failedToAnalyze: "分析反应失败。请检查您的 API 密钥并重试。",
     failedToName: "无法命名分子。请重试。",
     toolsTooltip: {

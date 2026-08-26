@@ -1,6 +1,7 @@
 import React from 'react';
 import { CuratedReaction } from '../src/data/reactions/schema';
 import { Molecule3DViewer } from './Molecule3DViewer';
+import { AtomInsightPanel } from './AtomInsightPanel';
 import { PresentationMode } from './PresentationMode';
 import { QrShare } from './QrShare';
 import { updateRouteParams } from '../utils/routeParams';
@@ -16,8 +17,12 @@ interface ReactionPageProps {
 
 export const ReactionPage: React.FC<ReactionPageProps> = ({ reaction, present, onExit }) => {
   const { t } = useLanguage();
+  const [selectedAtomId, setSelectedAtomId] = React.useState<number | null>(null);
+  const [activeStepIdx, setActiveStepIdx] = React.useState<number | null>(null);
   React.useEffect(() => {
     trackEvent('textbook', reaction.id);
+    setSelectedAtomId(null);
+    setActiveStepIdx(null);
   }, [reaction.id]);
   if (present) {
     return (
@@ -67,10 +72,31 @@ export const ReactionPage: React.FC<ReactionPageProps> = ({ reaction, present, o
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-white p-6 rounded-2xl shadow-lg border border-[#f0ece4]">
           <h3 className="text-lg font-semibold text-[#1a1a1a] mb-3">{t('mechanismLabel')}</h3>
-          <ol className="list-decimal pl-5 space-y-2 text-sm text-[#5c5549]">
-            {reaction.mechanismSteps.map((step, i) => (
-              <li key={i}>{step}</li>
-            ))}
+          <ol className="space-y-2 text-sm text-[#5c5549]">
+            {reaction.mechanismSteps.map((step, i) => {
+              const active = activeStepIdx === i;
+              const highlightable = Boolean(reaction.stepAtomIds?.[i]?.length);
+              return (
+                <li key={i}>
+                  <button
+                    onClick={() => {
+                      setSelectedAtomId(null);
+                      setActiveStepIdx(active ? null : i);
+                    }}
+                    className={`w-full text-left rounded-lg px-3 py-2 border-l-4 transition-colors ${
+                      active
+                        ? 'border-science-500 bg-science-50 text-science-900'
+                        : highlightable
+                          ? 'border-transparent hover:bg-[#faf8f5]'
+                          : 'border-transparent cursor-default'
+                    }`}
+                  >
+                    <span className="font-mono text-xs text-[#a39a89] mr-1.5">{i + 1}.</span>
+                    {step}
+                  </button>
+                </li>
+              );
+            })}
           </ol>
           <div className="mt-4 flex flex-wrap gap-2">
             {reaction.products.map((p, i) => (
@@ -80,9 +106,33 @@ export const ReactionPage: React.FC<ReactionPageProps> = ({ reaction, present, o
             ))}
           </div>
         </div>
-        <div className="min-h-[360px] bg-white rounded-2xl shadow-lg border border-[#f0ece4] overflow-hidden">
+        <div className="relative min-h-[360px] bg-white rounded-2xl shadow-lg border border-[#f0ece4] overflow-hidden">
           {reaction.productStructure ? (
-            <Molecule3DViewer structure={reaction.productStructure} />
+            <>
+              <Molecule3DViewer
+                structure={reaction.productStructure}
+                selectedAtomId={selectedAtomId}
+                onAtomSelect={setSelectedAtomId}
+                highlightAtomIds={
+                  activeStepIdx !== null && reaction.stepAtomIds
+                    ? reaction.stepAtomIds[activeStepIdx]
+                    : selectedAtomId !== null
+                      ? [selectedAtomId]
+                      : undefined
+                }
+              />
+              {selectedAtomId !== null && (() => {
+                const atom = reaction.productStructure!.atoms.find((a) => a.id === selectedAtomId);
+                if (!atom) return null;
+                return (
+                  <AtomInsightPanel
+                    insight={reaction.atomInsights?.[String(selectedAtomId)]}
+                    element={atom.element}
+                    onClose={() => setSelectedAtomId(null)}
+                  />
+                );
+              })()}
+            </>
           ) : (
             <div className="h-full flex items-center justify-center text-[#6f685d] text-sm">
               {t('noStructureMsg')}
