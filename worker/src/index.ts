@@ -205,7 +205,9 @@ Return strictly JSON matching this structure:
 
 function buildInterpretPrompt(body: Extract<AnalyzeRequest, { operation: 'interpretPhenomenon' }>): string {
   const languageInstruction =
-    body.language === 'zh' ? 'All output text in Simplified Chinese.' : 'All output text in English.';
+    body.language === 'zh'
+      ? 'IMPORTANT: every text field you output (rationale, note, conditions, reactant names) MUST be written in Simplified Chinese; keep chemical formulas (H2O2, KI) as-is.'
+      : 'IMPORTANT: every text field you output MUST be written in English.';
   return `
 A student describes a chemistry phenomenon or demo in their own words:
 "${body.phenomenon}"
