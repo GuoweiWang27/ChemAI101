@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { MoleculeStructure } from '../types';
 import { AtomInsight } from '../src/data/reactions/schema';
-import { Molecule3DViewer } from './Molecule3DViewer';
+import { MechanismMolecule } from './MechanismMolecule';
 import { AtomInsightPanel } from './AtomInsightPanel';
 import { ChevronLeft, ChevronRight, Minimize2 } from 'lucide-react';
 
@@ -29,13 +29,7 @@ export const PresentationMode: React.FC<PresentationModeProps> = ({
   onClose,
 }) => {
   const [stepIndex, setStepIndex] = useState(0);
-  const [pulseKey, setPulseKey] = useState(0);
   const [selectedAtomId, setSelectedAtomId] = useState<number | null>(null);
-
-  // 步进时结构轻微脉动，给出明确的联动反馈
-  useEffect(() => {
-    setPulseKey((k) => k + 1);
-  }, [stepIndex]);
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
@@ -103,12 +97,13 @@ export const PresentationMode: React.FC<PresentationModeProps> = ({
           })}
         </div>
 
-        {/* Structure */}
+        {/* Structure：机理编舞场景 */}
         {structure && (
-          <div key={pulseKey} className="chemai-pulse relative md:w-[55%] min-h-[240px] md:min-h-0 rounded-3xl overflow-hidden bg-black/30">
-            <Molecule3DViewer
+          <div className="relative md:w-[55%] min-h-[240px] md:min-h-0 rounded-3xl overflow-hidden bg-black/30">
+            <MechanismMolecule
               structure={structure}
-              highlightAtomIds={highlightSteps?.[stepIndex]}
+              stepAtomIds={highlightSteps}
+              stepIndex={stepIndex}
               selectedAtomId={selectedAtomId}
               onAtomSelect={setSelectedAtomId}
             />
