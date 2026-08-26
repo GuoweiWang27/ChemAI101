@@ -30,6 +30,16 @@ export interface CuratedReaction {
   /** 原子级讲解（离线生成、签核后入库）。键为 productStructure.atoms.id 的十进制字符串
    *  （JSON 键只能为字符串），与 stepAtomIds 同一引用体系。缺省原子走元素静态卡降级。 */
   atomInsights?: Record<string, AtomInsight>;
+  /** 全程反应动画数据（精选反应）。reactants 为反应物结构片段（局部坐标）与场景摆位；
+   *  atomMap 描述反应物原子 → 产物原子 id 的迁移，未映射的反应物原子按副产物淡出。 */
+  reactionFlow?: {
+    reactants: Array<{
+      label: string;
+      structure: MoleculeStructure;
+      position: [number, number, number];
+    }>;
+    atomMap: Array<{ reactant: number; atom: number; to: number }>;
+  };
   smiles?: string;
   reviewed: true;
 }
