@@ -60,6 +60,7 @@ const translations: Translations = {
     flowPlayBtn: "Full reaction",
     flowReplayBtn: "Replay",
     flowBackBtn: "Back to steps",
+    flowExitPreviewBtn: "Exit animation",
     failedToAnalyze: "Failed to analyze reaction. Please check your API key and try again.",
     failedToName: "Could not name molecule. Try again.",
     toolsTooltip: {
@@ -181,6 +182,7 @@ const translations: Translations = {
     flowPlayBtn: "全程动画",
     flowReplayBtn: "重播",
     flowBackBtn: "返回步骤",
+    flowExitPreviewBtn: "退出动画",
     failedToAnalyze: "分析反应失败。请检查您的 API 密钥并重试。",
     failedToName: "无法命名分子。请重试。",
     toolsTooltip: {

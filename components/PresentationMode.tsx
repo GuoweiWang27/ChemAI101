@@ -135,9 +135,9 @@ export const PresentationMode: React.FC<PresentationModeProps> = ({
                       setFlowPlayKey((k) => k + 1);
                       setFlowPlaying(true);
                     }}
-                    className="flex items-center gap-1.5 bg-white/10 hover:bg-white/25 backdrop-blur-sm text-white text-xs px-3 py-1.5 rounded-lg transition-colors"
+                    className="flex items-center gap-2 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-white text-sm font-bold px-5 py-2.5 rounded-xl shadow-lg shadow-amber-500/40 transition-all hover:scale-105"
                   >
-                    <Play className="w-3 h-3" /> {t('flowPlayBtn')}
+                    <Play className="w-4 h-4" /> {t('flowPlayBtn')}
                   </button>
                 ) : (
                   <>

@@ -1,12 +1,13 @@
 import React from 'react';
 import { CuratedReaction } from '../src/data/reactions/schema';
 import { Molecule3DViewer } from './Molecule3DViewer';
+import { ReactionFlowScene } from './ReactionFlowScene';
 import { AtomInsightPanel } from './AtomInsightPanel';
 import { PresentationMode } from './PresentationMode';
 import { QrShare } from './QrShare';
 import { updateRouteParams } from '../utils/routeParams';
 import { trackEvent } from '../services/geminiService';
-import { ArrowLeft, Presentation as PresentationIcon, GraduationCap } from 'lucide-react';
+import { ArrowLeft, Presentation as PresentationIcon, GraduationCap, Play, RotateCcw, X } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { parseChapter } from '../utils/textbook';
 
@@ -20,10 +21,13 @@ export const ReactionPage: React.FC<ReactionPageProps> = ({ reaction, present, o
   const { t, language } = useLanguage();
   const [selectedAtomId, setSelectedAtomId] = React.useState<number | null>(null);
   const [activeStepIdx, setActiveStepIdx] = React.useState<number | null>(null);
+  const [flowPreview, setFlowPreview] = React.useState(false);
+  const [flowKey, setFlowKey] = React.useState(0);
   React.useEffect(() => {
     trackEvent('textbook', reaction.id);
     setSelectedAtomId(null);
     setActiveStepIdx(null);
+    setFlowPreview(false);
   }, [reaction.id]);
   if (present) {
     return (
@@ -117,7 +121,31 @@ export const ReactionPage: React.FC<ReactionPageProps> = ({ reaction, present, o
           </div>
         </div>
         <div className="relative min-h-[360px] bg-white rounded-2xl shadow-lg border border-[#f0ece4] overflow-hidden">
-          {reaction.productStructure ? (
+          {reaction.productStructure && flowPreview && reaction.reactionFlow ? (
+            <>
+              <ReactionFlowScene
+                structure={reaction.productStructure}
+                flow={reaction.reactionFlow}
+                playKey={flowKey}
+                selectedAtomId={selectedAtomId}
+                onAtomSelect={setSelectedAtomId}
+              />
+              <div className="absolute top-3 right-3 z-20 flex gap-2">
+                <button
+                  onClick={() => setFlowKey((k) => k + 1)}
+                  className="flex items-center gap-1.5 bg-science-600 hover:bg-science-700 text-white text-xs font-semibold px-3 py-1.5 rounded-lg shadow-md transition-colors"
+                >
+                  <RotateCcw className="w-3 h-3" /> {t('flowReplayBtn')}
+                </button>
+                <button
+                  onClick={() => setFlowPreview(false)}
+                  className="flex items-center gap-1.5 bg-white/90 hover:bg-white text-[#5c5549] text-xs font-semibold px-3 py-1.5 rounded-lg shadow-md border border-[#e8d5b8] transition-colors"
+                >
+                  <X className="w-3 h-3" /> {t('flowExitPreviewBtn')}
+                </button>
+              </div>
+            </>
+          ) : reaction.productStructure ? (
             <>
               <Molecule3DViewer
                 structure={reaction.productStructure}
@@ -131,6 +159,18 @@ export const ReactionPage: React.FC<ReactionPageProps> = ({ reaction, present, o
                       : undefined
                 }
               />
+              {reaction.reactionFlow && (
+                <button
+                  onClick={() => {
+                    setSelectedAtomId(null);
+                    setFlowKey((k) => k + 1);
+                    setFlowPreview(true);
+                  }}
+                  className="absolute bottom-4 right-4 z-20 flex items-center gap-2 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-white text-sm font-bold px-5 py-2.5 rounded-xl shadow-lg shadow-amber-500/40 transition-all hover:scale-105"
+                >
+                  <Play className="w-4 h-4" /> {t('flowPlayBtn')}
+                </button>
+              )}
               {selectedAtomId !== null && (() => {
                 const atom = reaction.productStructure!.atoms.find((a) => a.id === selectedAtomId);
                 if (!atom) return null;
