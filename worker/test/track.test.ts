@@ -103,3 +103,42 @@ describe('anonymous usage counters', () => {
     }
   });
 });
+
+describe('interpretPhenomenon request validation', () => {
+  function interpretRequest(body: unknown, origin = allowedOrigin): Request {
+    return new Request('https://chemai101-api.guoweiwang27.workers.dev/v1/analyze', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', origin },
+      body: JSON.stringify(body),
+    });
+  }
+
+  it('rejects malformed phenomenon payloads before hitting upstream', async () => {
+    const badBodies = [
+      { operation: 'interpretPhenomenon', phenomenon: '', language: 'zh' },
+      { operation: 'interpretPhenomenon', phenomenon: '   ', language: 'zh' },
+      { operation: 'interpretPhenomenon', phenomenon: 'x'.repeat(4001), language: 'zh' },
+      { operation: 'interpretPhenomenon', phenomenon: 123, language: 'zh' },
+      { operation: 'interpretPhenomenon' },
+    ];
+    for (const body of badBodies) {
+      const response = await handleRequest(interpretRequest(body), env, fetch);
+      expect(response.status).toBe(400);
+    }
+  });
+
+  it('rejects unknown operations and non-POST on analyze', async () => {
+    const unknown = await handleRequest(
+      interpretRequest({ operation: 'hack', phenomenon: 'x', language: 'zh' }),
+      env,
+      fetch,
+    );
+    expect(unknown.status).toBe(400);
+
+    const wrongMethod = new Request('https://chemai101-api.guoweiwang27.workers.dev/v1/analyze', {
+      method: 'GET',
+      headers: { origin: allowedOrigin },
+    });
+    expect((await handleRequest(wrongMethod, env, fetch)).status).toBe(405);
+  });
+});

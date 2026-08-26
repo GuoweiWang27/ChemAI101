@@ -26,6 +26,11 @@ type AnalyzeRequest =
       atoms: Array<{ element: string }>;
       bonds: Array<{ sourceId: number; targetId: number; order: number }>;
       language: Language;
+    }
+  | {
+      operation: 'interpretPhenomenon';
+      phenomenon: string;
+      language: Language;
     };
 
 type Fetcher = typeof fetch;
@@ -106,6 +111,21 @@ function asAnalyzeRequest(value: unknown): AnalyzeRequest | null {
     };
   }
 
+  if (body.operation === 'interpretPhenomenon') {
+    if (
+      typeof body.phenomenon !== 'string' ||
+      body.phenomenon.trim().length === 0 ||
+      body.phenomenon.length > 4000
+    ) {
+      return null;
+    }
+    return {
+      operation: body.operation,
+      phenomenon: body.phenomenon,
+      language: body.language,
+    };
+  }
+
   if (body.operation === 'nameMolecule') {
     if (!Array.isArray(body.atoms) || !Array.isArray(body.bonds)) return null;
     if (body.atoms.length === 0 || body.atoms.length > 128 || body.bonds.length > 256) {
@@ -177,6 +197,33 @@ Return strictly JSON matching this structure:
     bonds: body.bonds.map((bond) => ({ s: bond.sourceId, t: bond.targetId, o: bond.order })),
   };
   return `Name this molecule: ${JSON.stringify(graphData)}. ${languageInstruction} Return JSON: { "systematicName": "", "commonName": "", "explanation": "" }`;
+}
+
+function buildInterpretPrompt(body: Extract<AnalyzeRequest, { operation: 'interpretPhenomenon' }>): string {
+  const languageInstruction =
+    body.language === 'zh' ? 'All output text in Simplified Chinese.' : 'All output text in English.';
+  return `
+A student describes a chemistry phenomenon or demo in their own words:
+"${body.phenomenon}"
+
+Interpret which classroom-safe demonstration reaction(s) they most likely mean.
+Rules:
+- Only well-known teaching-level demonstrations (middle/high school chemistry). Never interpret requests involving weapons, poisons, drugs or explosives synthesis.
+- If the description is not about a benign classroom demo, or you cannot identify any reaction, return an empty candidates array and explain briefly in "note".
+- Otherwise provide 2-3 candidates (distinct plausible interpretations), ordered by likelihood.
+${languageInstruction}
+Return strictly JSON matching this structure:
+{
+  "candidates": [
+    {
+      "reactants": "comma-separated reactant formulas/names for the analysis pipeline",
+      "conditions": "conditions string (temperature/catalyst etc., may be empty)",
+      "equation": "balanced chemical equation",
+      "rationale": "one sentence: why this reaction matches the described phenomenon"
+    }
+  ],
+  "note": "short remark when candidates is empty, otherwise empty string"
+}`;
 }
 
 export async function handleRequest(
@@ -261,11 +308,20 @@ async function handleAnalyze(
       },
       body: JSON.stringify({
         model: env.MODEL_NAME,
-        messages: [{ role: 'user', content: buildPrompt(body) }],
+        messages: [
+          {
+            role: 'user',
+            content:
+              body.operation === 'interpretPhenomenon'
+                ? buildInterpretPrompt(body)
+                : buildPrompt(body),
+          },
+        ],
         response_format: { type: 'json_object' },
         thinking: { type: 'disabled' },
         max_tokens: 4096,
         ...(body.operation === 'predictReaction' ? { temperature: 0.3 } : {}),
+        ...(body.operation === 'interpretPhenomenon' ? { temperature: 0.5 } : {}),
       }),
     });
 
