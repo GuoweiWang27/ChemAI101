@@ -14,6 +14,7 @@ import type {
 } from '../src/data/reactions/schema';
 import {
   getAnimationSnapshot,
+  getAnimationPrimaryFamily,
   getEquationParts,
   getStepNavigationState,
   type AnimationSnapshot,
@@ -148,6 +149,8 @@ export const ReactionAnimationPlayer = forwardRef<ReactionAnimationPlayerHandle,
     };
     const currentStage = snapshot.stage;
     const isComplete = time >= animation.duration;
+    const family = getAnimationPrimaryFamily(animation);
+    const qualityLevel = animation.version === 1 ? 'L3' : animation.qualityLevel;
 
     return (
       <section className={`flex h-full flex-col overflow-hidden rounded-[1.45rem] border border-[#284148] bg-[#101820] text-white shadow-[0_24px_65px_rgba(16,24,32,0.22)] ${compact ? 'min-h-0' : 'min-h-[560px]'}`} aria-label={t('flowTimelineLabel')}>
@@ -171,6 +174,12 @@ export const ReactionAnimationPlayer = forwardRef<ReactionAnimationPlayerHandle,
               <div className="mt-0.5 text-xs leading-relaxed text-white/60">{currentStage.status[language]}</div>
             </div>
           </div>
+          <div className="mt-2 flex flex-wrap items-center gap-2 text-[10px]">
+            <span className="rounded-full border border-[#ffbf69]/30 bg-[#ffbf69]/10 px-2 py-1 font-mono font-bold text-[#ffcf8a]">{qualityLevel}</span>
+            <span className="rounded-full border border-white/10 bg-white/[0.04] px-2 py-1 text-white/55">
+              {language === 'zh' ? '教学示意，非真实动力学轨迹' : 'Teaching illustration, not a real kinetic trajectory'}
+            </span>
+          </div>
           <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
             {t('flowStatusLabel')}: {currentStage.status[language]}
           </div>
@@ -186,7 +195,7 @@ export const ReactionAnimationPlayer = forwardRef<ReactionAnimationPlayerHandle,
             onAtomSelect={onAtomSelect}
           />
           <div className="pointer-events-none absolute bottom-3 left-3 rounded-lg border border-white/10 bg-[#0b1318]/70 px-2 py-1 text-[10px] uppercase tracking-[0.13em] text-white/45 backdrop-blur-sm">
-            {animation.family}
+            {family}
           </div>
         </div>
 

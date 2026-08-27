@@ -5,9 +5,20 @@ import * as THREE from 'three';
 import { MoleculeStructure, ELEMENT_COLORS, ELEMENT_RADII } from '../types';
 import type {
   ReactionAnimationActor,
+  ReactionAnimationEventV2,
   ReactionAnimationScene,
+  ReactionAnimationSceneV2,
 } from '../src/data/reactions/schema';
-import { getAnimationSnapshot, isStageActiveAt } from '../utils/reactionAnimation';
+import {
+  getActiveAnimationEvents,
+  getAnimationSnapshot,
+  isStageActiveAt,
+} from '../utils/reactionAnimation';
+import {
+  buildReactionVisualDirectives,
+  canRenderAtomConservation,
+  type ReactionVisualDirective,
+} from '../utils/reactionAnimationVisuals';
 import { useLanguage } from '../contexts/LanguageContext';
 
 /**
@@ -137,61 +148,154 @@ interface SceneContentProps extends SceneProps {
   onControlsReady: (enabled: boolean) => void;
 }
 
-/** 旧条目的轻量族提示：保留兼容飞行引擎，同时让燃烧/放气/变色/离子/有机键有不同视觉语法。 */
-const FamilyCue: React.FC<{ animation: ReactionAnimationScene; time: number }> = ({ animation, time }) => {
-  const p = Math.min(1, Math.max(0, time / Math.max(0.001, animation.duration)));
-  if (animation.family === 'combustion') {
-    return (
-      <>
-        <pointLight position={[0, -0.8, 0.4]} color="#ffae47" intensity={0.55 + p * 0.8} distance={4} />
-        <mesh position={[0, -1.2, -0.4]} scale={[0.75 + p * 0.2, 0.7 + p * 0.4, 0.75 + p * 0.2]}>
-          <coneGeometry args={[0.48, 1.1, 20]} />
-          <meshBasicMaterial color="#ff9f43" transparent opacity={0.13 + p * 0.18} />
-        </mesh>
-      </>
-    );
-  }
-  if (animation.family === 'gas-evolution') {
-    return (
-      <group>
-        {Array.from({ length: 8 }, (_, index) => {
-          const x = (index % 4) * 0.42 - 0.63;
-          const y = -0.8 + ((index * 0.23 + p * 1.7) % 2.1);
-          return (
-            <mesh key={index} position={[x, y, -0.45]}>
-              <sphereGeometry args={[0.07 + (index % 3) * 0.018, 10, 10]} />
-              <meshBasicMaterial color="#9ae8ed" transparent opacity={0.15 + p * 0.17} />
+const numberParam = (directive: ReactionVisualDirective, name: string, fallback: number) => {
+  const value = directive.params[name];
+  return typeof value === 'number' ? value : fallback;
+};
+
+const stringParam = (directive: ReactionVisualDirective, name: string, fallback: string) => {
+  const value = directive.params[name];
+  return typeof value === 'string' ? value : fallback;
+};
+
+/** 反应族 1：燃烧 / 热反应。颜色与强度都来自 effect.params。 */
+const HeatReactionRenderer: React.FC<{ directives: ReactionVisualDirective[] }> = ({ directives }) => (
+  <>
+    {directives.filter((directive) => directive.renderer === 'heat').map((directive) => {
+      const color = stringParam(directive, 'color', '#ffae47');
+      const intensity = numberParam(directive, 'intensity', 1);
+      return (
+        <group key={directive.id} position={[0, -0.85, -0.35]}>
+          <pointLight color={color} intensity={(0.35 + directive.progress) * intensity} distance={5} />
+          <mesh scale={[0.7 + directive.progress * 0.35, 0.75 + directive.progress * 0.7, 0.7]}>
+            <coneGeometry args={[0.52, 1.35, 24]} />
+            <meshBasicMaterial color={color} transparent opacity={0.12 + directive.progress * 0.24} />
+          </mesh>
+        </group>
+      );
+    })}
+  </>
+);
+
+/** 反应族 2：放气；气泡与烟粒子是两种可叠加 effect。 */
+const GasEvolutionRenderer: React.FC<{ directives: ReactionVisualDirective[]; time: number }> = ({ directives, time }) => (
+  <>
+    {directives.filter((directive) => directive.renderer === 'bubbles' || directive.renderer === 'smoke').map((directive) => {
+      const isSmoke = directive.renderer === 'smoke';
+      const count = Math.min(28, Math.max(3, Math.round(numberParam(directive, 'count', 10))));
+      const color = stringParam(directive, 'color', isSmoke ? '#f1eee5' : '#9ae8ed');
+      return (
+        <group key={directive.id}>
+          {Array.from({ length: count }, (_, index) => {
+            const cycle = (time * (isSmoke ? 0.08 : 0.18) + index * 0.137) % 1;
+            const x = ((index * 0.73) % 3.6) - 1.8;
+            const y = -1.25 + cycle * 3.2;
+            const radius = (isSmoke ? 0.11 : 0.055) + (index % 4) * 0.018;
+            return (
+              <mesh key={index} position={[x, y, -0.4 + (index % 3) * 0.16]}>
+                <sphereGeometry args={[radius, 10, 10]} />
+                <meshBasicMaterial color={color} transparent opacity={(0.12 + directive.progress * 0.28) * (1 - cycle * 0.45)} />
+              </mesh>
+            );
+          })}
+        </group>
+      );
+    })}
+  </>
+);
+
+/** 反应族 3：沉淀 / 变色。两类 effect 可独立或同时出现。 */
+const PrecipitationColorRenderer: React.FC<{ directives: ReactionVisualDirective[] }> = ({ directives }) => (
+  <>
+    {directives.filter((directive) => directive.renderer === 'solution-color').map((directive) => (
+      <mesh key={directive.id} position={[0, -0.9, -0.65]} scale={[2.4, 0.72, 1.05]}>
+        <sphereGeometry args={[1, 24, 16]} />
+        <meshStandardMaterial
+          color={stringParam(directive, directive.progress < 0.5 ? 'from' : 'to', '#8ac7cf')}
+          transparent
+          opacity={0.1 + directive.progress * 0.18}
+          roughness={0.25}
+        />
+      </mesh>
+    ))}
+    {directives.filter((directive) => directive.renderer === 'precipitate').map((directive) => {
+      const count = Math.min(30, Math.max(4, Math.round(numberParam(directive, 'count', 16))));
+      const color = stringParam(directive, 'color', '#d79068');
+      return (
+        <group key={directive.id}>
+          {Array.from({ length: count }, (_, index) => (
+            <mesh key={index} position={[
+              ((index * 0.61) % 3.6) - 1.8,
+              -1.35 + ((index * 0.19) % 0.6) * directive.progress,
+              -0.35 + (index % 4) * 0.12,
+            ]}>
+              <dodecahedronGeometry args={[0.045 + (index % 3) * 0.012, 0]} />
+              <meshStandardMaterial color={color} roughness={0.8} transparent opacity={0.25 + directive.progress * 0.65} />
             </mesh>
-          );
-        })}
+          ))}
+        </group>
+      );
+    })}
+  </>
+);
+
+/** 反应族 4：离子 / 电子。环场与电子路径均由声明式 effect 驱动。 */
+const IonicElectronRenderer: React.FC<{ directives: ReactionVisualDirective[] }> = ({ directives }) => (
+  <>
+    {directives.filter((directive) => directive.renderer === 'ion-field').map((directive) => (
+      <group key={directive.id}>
+        {[-1, 1].map((x) => (
+          <mesh key={x} rotation={[Math.PI / 2, 0, 0]} position={[x, 0, -0.55]}>
+            <torusGeometry args={[0.62 + directive.progress * 0.16, 0.026, 8, 40]} />
+            <meshBasicMaterial color={stringParam(directive, 'color', '#9fe6df')} transparent opacity={0.12 + directive.progress * 0.35} />
+          </mesh>
+        ))}
       </group>
-    );
-  }
-  if (animation.family === 'precipitation-color') {
-    return (
-      <mesh position={[0, -0.9, -0.5]} scale={[1.5, 0.5 + p * 0.8, 0.7]}>
-        <sphereGeometry args={[1, 18, 12]} />
-        <meshBasicMaterial color="#df8eae" transparent opacity={0.06 + p * 0.12} />
-      </mesh>
-    );
-  }
-  if (animation.family === 'ionic') {
-    return (
-      <mesh rotation={[Math.PI / 2, 0, 0]} position={[0, 0, -0.6]}>
-        <torusGeometry args={[1.2, 0.028, 8, 48]} />
-        <meshBasicMaterial color="#9fe6df" transparent opacity={0.08 + p * 0.14} />
-      </mesh>
-    );
-  }
-  if (animation.family === 'organic-bond') {
-    return (
-      <mesh rotation={[Math.PI / 2, 0, 0]} position={[0, 0, -0.6]}>
-        <torusGeometry args={[1.1, 0.045, 8, 48]} />
-        <meshBasicMaterial color="#b6d58a" transparent opacity={0.08 + p * 0.14} />
-      </mesh>
-    );
-  }
-  return null;
+    ))}
+    {directives.filter((directive) => directive.renderer === 'electron-path').map((directive) => (
+      <group key={directive.id}>
+        <Line points={[[-1.9, 0.7, 0], [0, 1.15, 0.2], [1.9, 0.55, 0]]} color={stringParam(directive, 'color', '#f4c95d')} transparent opacity={0.3 + directive.progress * 0.5} dashed dashSize={0.12} gapSize={0.08} />
+        <mesh position={[-1.9 + directive.progress * 3.8, 0.7 + Math.sin(directive.progress * Math.PI) * 0.45, 0.12]}>
+          <sphereGeometry args={[0.1, 14, 14]} />
+          <meshBasicMaterial color={stringParam(directive, 'color', '#f4c95d')} />
+        </mesh>
+      </group>
+    ))}
+  </>
+);
+
+/** 反应族 5：有机成键。新键数量和颜色来自 effect.params。 */
+const OrganicBondRenderer: React.FC<{ directives: ReactionVisualDirective[] }> = ({ directives }) => (
+  <>
+    {directives.filter((directive) => directive.renderer === 'bond-rewire').map((directive) => {
+      const count = Math.min(4, Math.max(1, Math.round(numberParam(directive, 'bonds', 1))));
+      const color = stringParam(directive, 'color', '#b6d58a');
+      return (
+        <group key={directive.id}>
+          {Array.from({ length: count }, (_, index) => {
+            const y = (index - (count - 1) / 2) * 0.34;
+            return <Line key={index} points={[[-1.25, y, 0], [0, y + 0.18, 0.12], [1.25, y, 0]]} color={color} transparent opacity={0.18 + directive.progress * 0.72} lineWidth={1.6 + directive.progress * 1.4} />;
+          })}
+        </group>
+      );
+    })}
+  </>
+);
+
+const DeclarativeEffectDispatcher: React.FC<{
+  animation: ReactionAnimationSceneV2;
+  time: number;
+}> = ({ animation, time }) => {
+  const directives = useMemo(() => buildReactionVisualDirectives(animation, time), [animation, time]);
+  return (
+    <>
+      <HeatReactionRenderer directives={directives} />
+      <GasEvolutionRenderer directives={directives} time={time} />
+      <PrecipitationColorRenderer directives={directives} />
+      <IonicElectronRenderer directives={directives} />
+      <OrganicBondRenderer directives={directives} />
+    </>
+  );
 };
 
 const SceneContent: React.FC<SceneContentProps> = ({
@@ -487,7 +591,7 @@ const SceneContent: React.FC<SceneContentProps> = ({
 
   return (
     <group ref={groupRef}>
-      {animation && <FamilyCue animation={animation} time={time ?? 0} />}
+      {animation?.version === 2 && <DeclarativeEffectDispatcher animation={animation} time={time ?? 0} />}
       {atoms.map((a) => (
         <mesh
           key={a.key}
@@ -830,6 +934,97 @@ const SodiumWaterScene: React.FC<{
   </Canvas>
 );
 
+const IllustrativeReactionSceneContent: React.FC<{
+  animation: ReactionAnimationSceneV2;
+  flow: NonNullable<import('../src/data/reactions/schema').CuratedReaction['reactionFlow']>;
+  time: number;
+}> = ({ animation, flow, time }) => {
+  const { language } = useLanguage();
+  const activeEvents = getActiveAnimationEvents(animation, time);
+  const activeEvent = activeEvents[0] as ReactionAnimationEventV2 | undefined;
+  const actorById = useMemo(
+    () => new Map(animation.actors.map((actor) => [actor.id, actor])),
+    [animation.actors],
+  );
+  const activeActorIds = useMemo(
+    () => new Set(activeEvents.flatMap((event) => [
+      ...(event.actorIds ?? []),
+      event.fromActorId,
+      event.toActorId,
+    ].filter((actorId): actorId is string => typeof actorId === 'string'))),
+    [activeEvents],
+  );
+  const productActorsActive = animation.actors.some(
+    (actor) => actor.id.startsWith('product-atom-') && activeActorIds.has(actor.id),
+  );
+  const phenomena = activeEvent?.params.phenomena;
+  const phenomenon = Array.isArray(phenomena) ? phenomena[0] : undefined;
+  const pulse = activeEvent ? 1 + Math.sin((time - activeEvent.at) * 3.2) * 0.045 : 1;
+  const productLabel = animation.productGraphs?.map((graph) => graph.label[language]).join(' + ')
+    || (language === 'zh' ? '产物图待签核' : 'Product graph pending');
+
+  return (
+    <group>
+      <DeclarativeEffectDispatcher animation={animation} time={time} />
+      <group position={[-2.15, 0.25, 0]} scale={pulse}>
+        {flow.reactants.slice(0, 4).map((reactant, index) => {
+          const y = (index - (Math.min(flow.reactants.length, 4) - 1) / 2) * 0.72;
+          const actor = actorById.get(`reactant-${index}`);
+          const actorActive = actor ? activeActorIds.has(actor.id) : false;
+          const position = actor?.position ?? [0, y, 0] as [number, number, number];
+          return (
+            <group key={`${reactant.label}-${index}`} position={actor ? [position[0] - (-2.15), position[1] - 0.25, position[2]] : [0, y, 0]} scale={actorActive ? 1.08 : 1}>
+              <mesh>
+                <sphereGeometry args={[0.28 + Math.min(0.18, reactant.structure.atoms.length * 0.018), 20, 20]} />
+                <meshStandardMaterial color="#d7b56d" roughness={0.3} metalness={0.08} emissive="#8c6f38" emissiveIntensity={actorActive ? 0.42 : 0.18} />
+              </mesh>
+              <Html position={[0, 0.5, 0]} center distanceFactor={7} style={{ pointerEvents: 'none' }}>
+                <span className="whitespace-nowrap rounded-full border border-[#d7b56d]/35 bg-[#171f24]/90 px-2 py-0.5 text-[10px] font-semibold text-[#ffe0a5]">{reactant.label}</span>
+              </Html>
+            </group>
+          );
+        })}
+      </group>
+      <Line points={[[-1.15, 0, 0], [0, 0.25, 0.15], [1.05, 0, 0]]} color="#8fe8dc" transparent opacity={0.3 + Math.min(0.5, time / animation.duration)} lineWidth={2} dashed dashSize={0.18} gapSize={0.1} />
+      <group
+        position={[2.0, 0.05, 0]}
+        scale={pulse * (productActorsActive ? 1.06 : 1)}
+      >
+        <mesh>
+          <icosahedronGeometry args={[0.68, 2]} />
+          <meshStandardMaterial color="#8fe8dc" roughness={0.26} metalness={0.12} emissive="#3c918a" emissiveIntensity={productActorsActive ? 0.36 : 0.18} transparent opacity={0.82} />
+        </mesh>
+        <Html position={[0, 1.0, 0]} center distanceFactor={7} style={{ pointerEvents: 'none' }}>
+          <span className="whitespace-nowrap rounded-full border border-[#8fe8dc]/35 bg-[#101820]/90 px-2.5 py-1 text-[11px] font-semibold text-[#d6fff4]">{productLabel}</span>
+        </Html>
+      </group>
+      {activeEvent && (
+        <Html position={[0, 2.05, 0]} center distanceFactor={7} style={{ pointerEvents: 'none' }}>
+          <div className="w-max min-w-[160px] max-w-[280px] rounded-xl border border-white/15 bg-[#0d151b]/90 px-3 py-2 text-center text-[11px] text-white/80 shadow-xl">
+            <div className="whitespace-nowrap font-semibold text-[#ffe0a5]">{activeEvent.label[language]}</div>
+            {typeof phenomenon === 'string' && <div className="mt-0.5 whitespace-nowrap text-white/55">{phenomenon}</div>}
+          </div>
+        </Html>
+      )}
+    </group>
+  );
+};
+
+const IllustrativeReactionScene: React.FC<{
+  animation: ReactionAnimationSceneV2;
+  flow: NonNullable<import('../src/data/reactions/schema').CuratedReaction['reactionFlow']>;
+  time: number;
+}> = ({ animation, flow, time }) => (
+  <Canvas dpr={[1, 1.75]} camera={{ position: [0, 0.15, 7.4], fov: 42 }} gl={{ antialias: true }}>
+    <color attach="background" args={['#111b20']} />
+    <ambientLight intensity={0.65} />
+    <spotLight position={[5, 7, 7]} angle={0.34} penumbra={1} intensity={1.1} />
+    <IllustrativeReactionSceneContent animation={animation} flow={flow} time={time} />
+    <OrbitControls enablePan={false} minDistance={5.8} maxDistance={9.5} />
+    <Environment preset="city" />
+  </Canvas>
+);
+
 export interface ReactionFlowSceneProps {
   structure: MoleculeStructure;
   flow: NonNullable<import('../src/data/reactions/schema').CuratedReaction['reactionFlow']>;
@@ -858,8 +1053,12 @@ export const ReactionFlowScene: React.FC<ReactionFlowSceneProps> = ({
   );
   const [controlsEnabled, setControlsEnabled] = useState(reduced || time !== undefined);
 
-  if (animation?.environment === 'water-beaker') {
+  if (animation?.version === 1 && animation.environment === 'water-beaker') {
     return <SodiumWaterScene animation={animation} time={time ?? 0} />;
+  }
+
+  if (animation?.version === 2 && !canRenderAtomConservation(animation)) {
+    return <IllustrativeReactionScene animation={animation} flow={flow} time={time ?? 0} />;
   }
 
   return (

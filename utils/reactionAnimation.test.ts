@@ -48,6 +48,11 @@ describe('reaction animation timeline', () => {
       arrow: '=',
       products: '2NaOH + H₂↑',
     });
+    expect(getEquationParts('CH₂=CH₂ + Br₂ → CH₂Br—CH₂Br')).toEqual({
+      reactants: 'CH₂=CH₂ + Br₂',
+      arrow: '→',
+      products: 'CH₂Br—CH₂Br',
+    });
   });
 
   it('pauses playback whenever a timeline step navigation state is requested', () => {

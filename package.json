@@ -8,8 +8,13 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "DEEPSEEK_API_KEY=test-only-secret vitest run",
+    "pretest": "npm run animation:audit",
+    "prebuild": "npm run animation:audit",
+    "animation:audit": "node scripts/compile-reaction-animations.ts",
     "worker:types": "wrangler types",
     "worker:check": "wrangler types --check && wrangler deploy --dry-run",
+    "preworker:check": "npm run animation:audit",
+    "preworker:deploy": "npm run animation:audit",
     "worker:deploy": "wrangler deploy"
   },
   "dependencies": {

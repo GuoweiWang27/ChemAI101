@@ -1,8 +1,18 @@
 import type {
   CuratedReaction,
+  ReactionAnimationActor,
+  ReactionAnimationEffect,
+  ReactionAnimationEffectKind,
+  ReactionAnimationEvent,
+  ReactionAnimationEventKind,
   ReactionAnimationScene,
+  ReactionAnimationSceneV2,
   ReactionAnimationStage,
 } from '../src/data/reactions/schema';
+import {
+  getAnimationProfile,
+  type ReactionAnimationProfile,
+} from '../src/data/reactions/animationProfiles.ts';
 
 const SUPERSCRIPT_DIGITS: Record<string, string> = {
   '0': '⁰',
@@ -43,6 +53,70 @@ export interface AnimationSnapshot {
   activeEventIds: string[];
 }
 
+export function getAnimationPrimaryFamily(animation: ReactionAnimationScene) {
+  return animation.version === 1 ? animation.family : animation.primaryFamily;
+}
+
+export function getAnimationEventEffectIds(event: ReactionAnimationEvent): string[] {
+  if (!('params' in event) || !event.params || typeof event.params !== 'object') return [];
+  const refs: string[] = [];
+  if (typeof event.params.effectId === 'string') refs.push(event.params.effectId);
+  if (Array.isArray(event.params.effectIds)) {
+    refs.push(...event.params.effectIds.filter((value): value is string => typeof value === 'string'));
+  }
+  return [...new Set(refs)];
+}
+
+function applyEasing(progress: number, easing: ReactionAnimationEffect['easing']): number {
+  const p = clamp(progress, 0, 1);
+  if (easing === 'ease-in') return p * p;
+  if (easing === 'ease-out') return 1 - (1 - p) * (1 - p);
+  if (easing === 'ease-in-out') return p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+  return p;
+}
+
+export function getActiveAnimationEvents(
+  animation: ReactionAnimationScene,
+  time: number,
+): ReactionAnimationEvent[] {
+  const safeTime = clamp(Number.isFinite(time) ? time : 0, 0, animation.duration);
+  if (animation.version === 1) {
+    const stages = orderedStages(animation);
+    let stage = stages.find((candidate) => safeTime < candidate.end);
+    if (!stage) stage = stages[stages.length - 1];
+    if (!stage) return [];
+    return animation.events.filter((event) => event.stageId === stage.id);
+  }
+  return animation.events.filter((event) => {
+    const terminal = event.at + event.duration >= animation.duration && safeTime === animation.duration;
+    return safeTime >= event.at && (safeTime < event.at + event.duration || terminal);
+  });
+}
+
+export interface ActiveAnimationEffect extends ReactionAnimationEffect {
+  progress: number;
+}
+
+export function getActiveAnimationEffects(
+  animation: ReactionAnimationScene,
+  time: number,
+): ActiveAnimationEffect[] {
+  if (animation.version === 1) return [];
+  const safeTime = clamp(Number.isFinite(time) ? time : 0, 0, animation.duration);
+  const activeEventEffectIds = new Set(
+    getActiveAnimationEvents(animation, safeTime).flatMap(getAnimationEventEffectIds),
+  );
+  return animation.effects.flatMap((effect) => {
+    if (!activeEventEffectIds.has(effect.id)) return [];
+    const terminal = effect.at + effect.duration >= animation.duration && safeTime === animation.duration;
+    if (safeTime < effect.at || (safeTime >= effect.at + effect.duration && !terminal)) return [];
+    return [{
+      ...effect,
+      progress: applyEasing((safeTime - effect.at) / Math.max(0.001, effect.duration), effect.easing),
+    }];
+  });
+}
+
 /** 把任意拖动时间钳制到稳定、可复现的教学阶段。 */
 export function getAnimationSnapshot(animation: ReactionAnimationScene, time: number): AnimationSnapshot {
   const stages = orderedStages(animation);
@@ -55,9 +129,7 @@ export function getAnimationSnapshot(animation: ReactionAnimationScene, time: nu
   const stage = stages[stageIndex];
   const span = Math.max(0.001, stage.end - stage.start);
   const progress = clamp((safeTime - stage.start) / span, 0, 1);
-  const activeEventIds = animation.events
-    .filter((event) => event.stageId === stage.id)
-    .map((event) => event.id);
+  const activeEventIds = getActiveAnimationEvents(animation, safeTime).map((event) => event.id);
   return { time: safeTime, progress, stage, stageIndex, activeEventIds };
 }
 
@@ -107,14 +179,17 @@ export interface EquationParts {
 
 /** 只拆分展示层方程式，不改动数据中的原始化学计量文本。 */
 export function getEquationParts(equation: string): EquationParts {
-  const match = equation.match(/(⇌|→|=|⟶)/);
-  if (!match || match.index === undefined) {
+  const explicitArrow = equation.match(/(⇌|→|⟶)/);
+  const spacedEqualsIndex = equation.indexOf(' = ');
+  const arrow = explicitArrow?.[0] ?? (spacedEqualsIndex >= 0 ? '=' : '');
+  const arrowIndex = explicitArrow?.index ?? (spacedEqualsIndex >= 0 ? spacedEqualsIndex + 1 : -1);
+  if (!arrow || arrowIndex < 0) {
     return { reactants: equation, arrow: '', products: '' };
   }
   return {
-    reactants: equation.slice(0, match.index).trim(),
-    arrow: match[0],
-    products: equation.slice(match.index + match[0].length).trim(),
+    reactants: equation.slice(0, arrowIndex).trim(),
+    arrow,
+    products: equation.slice(arrowIndex + arrow.length).trim(),
   };
 }
 
@@ -122,19 +197,78 @@ export function getEquationParts(equation: string): EquationParts {
 export function inferReactionAnimationFamily(
   reaction: CuratedReaction,
 ): 'ionic' | 'combustion' | 'gas-evolution' | 'precipitation-color' | 'organic-bond' | 'generic' {
-  if (reaction.reactionAnimation) return reaction.reactionAnimation.family;
-  const key = `${reaction.id} ${reaction.title} ${reaction.reactants} ${reaction.products.join(' ')}`.toLowerCase();
-  if (/c2h4|esterification|ethanol|glucose|organic|乙烯|乙醇|酯|葡萄糖/.test(key)) return 'organic-bond';
-  if (/cl2-nabr|fecl2-cl2|fecl3-fe|fecl3-cu|color|变色|颜色/.test(key)) return 'precipitation-color';
-  if (/na-o2|cl2-na|cl2-fe|cl2-cu|cl2-h2|s-o2|燃烧|点燃/.test(key)) return 'combustion';
-  if (/↑|h2|h₂|co2|co₂|o2|o₂|nh3|nh₃|so2|so₂|no2|no₂|气体|气泡|氢气|氧气|二氧化碳|喷泉/.test(key)) return 'gas-evolution';
-  if (/naoh|oh|hcl|hno3|离子|盐酸|氢氧化/.test(key)) return 'ionic';
-  return 'generic';
+  if (reaction.reactionAnimation) return getAnimationPrimaryFamily(reaction.reactionAnimation);
+  return getAnimationProfile(reaction.id)?.primaryFamily ?? 'generic';
+}
+
+function eventKindForEffect(kind: ReactionAnimationEffectKind | undefined): ReactionAnimationEventKind {
+  if (kind === 'heat-glow') return 'heat';
+  if (kind === 'gas-bubbles' || kind === 'particle-smoke') return 'gas-bubble';
+  if (kind === 'precipitate-cloud') return 'precipitate';
+  if (kind === 'solution-color') return 'color-change';
+  if (kind === 'electron-path') return 'electron-transfer';
+  if (kind === 'ion-field') return 'ionize';
+  if (kind === 'bond-rewire') return 'bond-form';
+  return 'observe';
+}
+
+function buildFallbackAnimationActors(
+  flow: NonNullable<CuratedReaction['reactionFlow']>,
+  productStructure: NonNullable<CuratedReaction['productStructure']>,
+): ReactionAnimationActor[] {
+  const actors: ReactionAnimationActor[] = [];
+  flow.reactants.forEach((reactant, reactantIndex) => {
+    actors.push({
+      id: `reactant-${reactantIndex}`,
+      kind: 'species',
+      label: { zh: reactant.label, en: reactant.label },
+      position: reactant.position,
+      formula: reactant.label,
+    });
+    reactant.structure.atoms.forEach((atom) => {
+      const mapping = flow.atomMap.find((candidate) => (
+        candidate.reactant === reactantIndex && candidate.atom === atom.id
+      ));
+      const target = mapping
+        ? productStructure.atoms.find((candidate) => candidate.id === mapping.to)
+        : undefined;
+      actors.push({
+        id: `reactant-${reactantIndex}-atom-${atom.id}`,
+        kind: 'atom',
+        label: { zh: atom.element, en: atom.element },
+        position: [
+          reactant.position[0] + atom.x / 2,
+          reactant.position[1] + atom.y / 2,
+          reactant.position[2] + atom.z / 2,
+        ],
+        target: target ? [target.x / 2, target.y / 2, target.z / 2] : undefined,
+        element: atom.element,
+        charge: atom.charge,
+        color: atom.color,
+      });
+    });
+  });
+  productStructure.atoms.forEach((atom) => {
+    actors.push({
+      id: `product-atom-${atom.id}`,
+      kind: 'atom',
+      label: { zh: atom.element, en: atom.element },
+      position: [atom.x / 2, atom.y / 2, atom.z / 2],
+      element: atom.element,
+      charge: atom.charge,
+      color: atom.color,
+    });
+  });
+  return actors;
 }
 
 /** 没有专属场景时，给旧 reactionFlow 提供可控时间轴和教学状态。 */
-export function createFallbackReactionAnimation(reaction: CuratedReaction): ReactionAnimationScene | null {
+export function createFallbackReactionAnimation(
+  reaction: CuratedReaction,
+  explicitProfile?: ReactionAnimationProfile,
+): ReactionAnimationSceneV2 | null {
   if (!reaction.reactionFlow) return null;
+  const profile = explicitProfile ?? getAnimationProfile(reaction.id);
   const stageCount = Math.max(1, reaction.mechanismSteps.length);
   const stageDuration = 3;
   const labels = [
@@ -163,37 +297,75 @@ export function createFallbackReactionAnimation(reaction: CuratedReaction): Reac
     },
     equationFocus: focuses[Math.min(index, focuses.length - 1)],
   }));
-  const family = inferReactionAnimationFamily(reaction);
-  const environment = family === 'combustion'
-    ? 'flame'
-    : family === 'gas-evolution'
-      ? 'gas-jar'
-      : family === 'precipitation-color'
-        ? 'solution'
-        : family === 'organic-bond'
-          ? 'organic-vessel'
-          : 'none';
-  const eventKind = family === 'combustion'
-    ? 'heat'
-    : family === 'gas-evolution'
-      ? 'gas-bubble'
-      : family === 'precipitation-color'
-        ? 'color-change'
-        : family === 'organic-bond'
-          ? 'bond-form'
-          : 'observe';
+  const duration = stageCount * stageDuration;
+  const family = profile?.primaryFamily ?? 'generic';
+  const environment = profile?.environment ?? 'none';
+  const profileEffects = profile?.effects ?? [{ kind: 'particle-smoke' as const, params: {} }];
+  const effects: ReactionAnimationEffect[] = stages.map((stage, index) => {
+    const effect = profileEffects[index % profileEffects.length];
+    return {
+      id: `${reaction.id}-${effect.kind}-${index + 1}`,
+      kind: effect.kind,
+      at: stage.start,
+      duration: Math.max(0.1, stage.end - stage.start),
+      easing: 'ease-in-out',
+      params: effect.params,
+    };
+  });
   return {
-    version: 1,
-    family,
+    version: 2,
+    primaryFamily: family,
     environment,
-    duration: stageCount * stageDuration,
+    duration,
+    illustrativeOnly: profile?.illustrativeOnly ?? true,
+    qualityLevel: profile?.qualityLevel ?? 'L0',
+    mappingReview: profile?.mappingReview ?? { status: 'missing', note: 'No explicit animation profile' },
+    chemistrySignoff: profile?.chemistrySignoff ?? { status: 'pending' },
+    effects,
     stages,
-    actors: [],
-    events: stages.map((stage) => ({
-      id: `${stage.id}-event`,
-      kind: eventKind,
-      stageId: stage.id,
-      label: stage.label,
-    })),
+    actors: buildFallbackAnimationActors(reaction.reactionFlow, reaction.productStructure ?? {
+      atoms: [],
+      bonds: [],
+    }),
+    events: stages.map((stage, index) => {
+      const stageEffects = effects.filter((effect) => effect.at === stage.start);
+      const effect = stageEffects[0];
+      const reactantSpecies = reaction.reactionFlow?.reactants.map((_, reactantIndex) => `reactant-${reactantIndex}`) ?? [];
+      const sourceAtoms = reaction.reactionFlow?.atomMap.map((mapping) => `reactant-${mapping.reactant}-atom-${mapping.atom}`) ?? [];
+      const productAtoms = (reaction.productStructure?.atoms ?? []).map((atom) => `product-atom-${atom.id}`);
+      const actorIds = index === 0
+        ? reactantSpecies
+        : index === stages.length - 1
+          ? productAtoms
+          : sourceAtoms;
+      const effectParams = stageEffects.length > 1
+        ? { effectIds: stageEffects.map((candidate) => candidate.id) }
+        : effect
+          ? { effectId: effect.id }
+          : {};
+      return {
+        id: `${stage.id}-event`,
+        kind: eventKindForEffect(effect?.kind),
+        stageId: stage.id,
+        at: stage.start,
+        duration: stage.end - stage.start,
+        easing: 'ease-in-out',
+        params: {
+          ...effectParams,
+          stateCues: profile?.stateCues ?? [],
+          phenomena: profile?.phenomena ?? [],
+        },
+        actorIds,
+        label: stage.label,
+      };
+    }),
+    productGraphs: reaction.productStructure
+      ? [{
+          id: 'main-product',
+          label: { zh: reaction.products.join('、'), en: reaction.products.join(', ') },
+          structure: reaction.productStructure,
+        }]
+      : undefined,
+    evidence: profile?.evidence,
   };
 }

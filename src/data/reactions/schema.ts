@@ -48,6 +48,52 @@ export type ReactionAnimationEventKind =
 
 export type ReactionAnimationEquationFocus = 'reactants' | 'change' | 'products' | 'observation';
 
+export type ReactionAnimationQualityLevel = 'L0' | 'L1' | 'L2' | 'L3';
+
+export type ReactionAnimationEasing =
+  | 'linear'
+  | 'ease-in'
+  | 'ease-out'
+  | 'ease-in-out';
+
+export type ReactionAnimationEffectKind =
+  | 'heat-glow'
+  | 'gas-bubbles'
+  | 'precipitate-cloud'
+  | 'solution-color'
+  | 'ion-field'
+  | 'electron-path'
+  | 'bond-rewire'
+  | 'particle-smoke';
+
+export interface ReactionAnimationMappingReview {
+  status: 'complete' | 'incomplete' | 'missing' | 'not-applicable';
+  reviewedAt?: string;
+  reviewer?: string;
+  note?: string;
+}
+
+export interface ReactionAnimationChemistrySignoff {
+  status: 'approved' | 'pending' | 'rejected';
+  reviewedAt?: string;
+  reviewer?: string;
+  note?: string;
+}
+
+export interface ReactionAnimationEvidence {
+  id: string;
+  label: string;
+  url?: string;
+  note?: string;
+}
+
+export interface ReactionAnimationAssetRef {
+  id: string;
+  kind: 'image' | 'video' | 'model' | 'dataset';
+  path: string;
+  sha256?: string;
+}
+
 export interface ReactionAnimationStage {
   id: string;
   start: number;
@@ -83,7 +129,7 @@ export interface ReactionAnimationActor {
   radius?: number;
 }
 
-export interface ReactionAnimationEvent {
+export interface ReactionAnimationEventV1 {
   id: string;
   kind: ReactionAnimationEventKind;
   stageId: string;
@@ -93,16 +139,75 @@ export interface ReactionAnimationEvent {
   toActorId?: string;
 }
 
+export interface ReactionAnimationEventV2 extends ReactionAnimationEventV1 {
+  /** 绝对场景时间；运行时不再从组件内常量猜测。 */
+  at: number;
+  duration: number;
+  easing: ReactionAnimationEasing;
+  params: Record<string, string | number | boolean | number[] | string[]>;
+}
+
+export type ReactionAnimationEvent = ReactionAnimationEventV1 | ReactionAnimationEventV2;
+
+export interface ReactionAnimationEffect {
+  id: string;
+  kind: ReactionAnimationEffectKind;
+  at: number;
+  duration: number;
+  easing: ReactionAnimationEasing;
+  params: Record<string, string | number | boolean | number[] | string[]>;
+}
+
+export interface ReactionAnimationProductGraph {
+  id: string;
+  label: BilingualText;
+  structure: MoleculeStructure;
+  stoichiometry?: number;
+  phase?: 'solid' | 'liquid' | 'gas' | 'aqueous' | 'unknown';
+}
+
 /** 可扩展的反应动画 SSOT：时间轴只描述教学事件，具体画面由 family renderer 消费。 */
-export interface ReactionAnimationScene {
+export interface ReactionAnimationSceneV1 {
   version: 1;
   family: ReactionAnimationFamily;
   environment: ReactionAnimationEnvironment;
   duration: number;
+  /** Legacy scenes keep the same explicit gate fields as v2 for one source of truth. */
+  illustrativeOnly: boolean;
+  qualityLevel: ReactionAnimationQualityLevel;
+  mappingReview: ReactionAnimationMappingReview;
+  chemistrySignoff: ReactionAnimationChemistrySignoff;
   stages: ReactionAnimationStage[];
   actors: ReactionAnimationActor[];
-  events: ReactionAnimationEvent[];
+  events: ReactionAnimationEventV1[];
 }
+
+/**
+ * v2 把“反应族、叠加效果、事件时间、审计门”全部写进数据。
+ * productGraphs 允许未来同时呈现主产物、副产物与多计量份，而不再把单一
+ * productStructure 误当成完整反应图。
+ */
+export interface ReactionAnimationSceneV2 {
+  version: 2;
+  /** @deprecated v2 的权威字段是 primaryFamily；保留可访问性只为旧调用方渐进迁移。 */
+  family?: never;
+  primaryFamily: ReactionAnimationFamily;
+  environment: ReactionAnimationEnvironment;
+  duration: number;
+  illustrativeOnly: boolean;
+  qualityLevel: ReactionAnimationQualityLevel;
+  mappingReview: ReactionAnimationMappingReview;
+  chemistrySignoff: ReactionAnimationChemistrySignoff;
+  effects: ReactionAnimationEffect[];
+  stages: ReactionAnimationStage[];
+  actors: ReactionAnimationActor[];
+  events: ReactionAnimationEventV2[];
+  productGraphs?: ReactionAnimationProductGraph[];
+  assetRef?: ReactionAnimationAssetRef;
+  evidence?: ReactionAnimationEvidence[];
+}
+
+export type ReactionAnimationScene = ReactionAnimationSceneV1 | ReactionAnimationSceneV2;
 
 /** 策展反应条目。reviewed 字面量 true 是类型级门禁：
  *  只有任课老师签字后的条目才允许出现在正式章节数据文件里。 */

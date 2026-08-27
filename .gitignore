@@ -13,6 +13,12 @@ dist-ssr
 *.local
 .wrangler
 
+# Local visual and audit build artifacts
+output/playwright/
+output/animation-audit/
+artifacts/reaction-animation-audit.json
+.playwright-cli/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

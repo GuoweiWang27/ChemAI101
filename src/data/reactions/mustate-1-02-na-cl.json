@@ -289,6 +289,10 @@
       "family": "ionic",
       "environment": "water-beaker",
       "duration": 16,
+      "illustrativeOnly": false,
+      "qualityLevel": "L3",
+      "mappingReview": {"status": "complete", "reviewedAt": "2026-08-27", "reviewer": "curated-v1-baseline"},
+      "chemistrySignoff": {"status": "approved", "reviewedAt": "2026-08-27", "reviewer": "curated-v1-baseline"},
       "stages": [
         {
           "id": "surface",
