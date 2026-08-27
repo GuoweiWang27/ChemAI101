@@ -69,13 +69,11 @@ export const LiveStatsLine: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const str = (display ?? 0).toLocaleString('en-US');
+  const str = display === null ? '…' : display.toLocaleString('en-US');
 
   useEffect(() => {
     prevStringRef.current = str;
   }, [str]);
-
-  if (display === null) return null;
 
   const template = t('homeStatsLine', { count: '#' });
   const hashIdx = template.indexOf('#');
