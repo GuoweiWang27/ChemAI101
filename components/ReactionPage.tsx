@@ -2,6 +2,7 @@ import React from 'react';
 import { CuratedReaction } from '../src/data/reactions/schema';
 import { Molecule3DViewer } from './Molecule3DViewer';
 import { ReactionAnimationPlayer, type ReactionAnimationPlayerHandle } from './ReactionAnimationPlayer';
+import { FlagshipReactionPlayer, type FlagshipReactionPlayerHandle } from './FlagshipReactionPlayer';
 import { AtomInsightPanel } from './AtomInsightPanel';
 import { PresentationMode } from './PresentationMode';
 import { QrShare } from './QrShare';
@@ -16,6 +17,7 @@ import {
   getStageForStep,
 } from '../utils/reactionAnimation';
 import type { AnimationSnapshot } from '../utils/reactionAnimation';
+import { isFlagshipReactionScene } from '../utils/flagshipReaction';
 
 interface ReactionPageProps {
   reaction: CuratedReaction;
@@ -27,9 +29,10 @@ export const ReactionPage: React.FC<ReactionPageProps> = ({ reaction, present, o
   const { t, language } = useLanguage();
   const [selectedAtomId, setSelectedAtomId] = React.useState<number | null>(null);
   const [activeStepIdx, setActiveStepIdx] = React.useState<number | null>(null);
-  const [flowPreview, setFlowPreview] = React.useState(false);
+  const [flowPreview, setFlowPreview] = React.useState(() => isFlagshipReactionScene(reaction.reactionAnimation));
   const [flowSnapshot, setFlowSnapshot] = React.useState<AnimationSnapshot | null>(null);
   const flowPlayerRef = React.useRef<ReactionAnimationPlayerHandle>(null);
+  const flagshipPlayerRef = React.useRef<FlagshipReactionPlayerHandle>(null);
   const animation = React.useMemo(
     () => reaction.reactionAnimation ?? createFallbackReactionAnimation(reaction),
     [reaction],
@@ -41,7 +44,7 @@ export const ReactionPage: React.FC<ReactionPageProps> = ({ reaction, present, o
     trackEvent('textbook', reaction.id);
     setSelectedAtomId(null);
     setActiveStepIdx(null);
-    setFlowPreview(false);
+    setFlowPreview(isFlagshipReactionScene(reaction.reactionAnimation));
     setFlowSnapshot(null);
   }, [reaction.id]);
   if (present) {
@@ -115,7 +118,8 @@ export const ReactionPage: React.FC<ReactionPageProps> = ({ reaction, present, o
                     onClick={() => {
                       setSelectedAtomId(null);
                       if (flowPreview && animation) {
-                        flowPlayerRef.current?.seekToStep(i);
+                        if (isFlagshipReactionScene(animation)) flagshipPlayerRef.current?.seekToStep(i);
+                        else flowPlayerRef.current?.seekToStep(i);
                         setActiveStepIdx(i);
                       } else {
                         setActiveStepIdx(active ? null : i);
@@ -147,21 +151,39 @@ export const ReactionPage: React.FC<ReactionPageProps> = ({ reaction, present, o
         <div className="relative min-h-[560px] bg-white rounded-2xl shadow-lg border border-[#f0ece4] overflow-hidden">
           {reaction.productStructure && flowPreview && reaction.reactionFlow && animation ? (
             <>
-              <ReactionAnimationPlayer
-                ref={flowPlayerRef}
-                equation={reaction.equation}
-                steps={reaction.mechanismSteps}
-                structure={reaction.productStructure}
-                flow={reaction.reactionFlow}
-                animation={animation}
-                selectedAtomId={selectedAtomId}
-                onAtomSelect={setSelectedAtomId}
-                autoPlay
-                onStageChange={(snapshot) => {
-                  setFlowSnapshot(snapshot);
-                  setActiveStepIdx(snapshot.stage.stepIndex);
-                }}
-              />
+              {isFlagshipReactionScene(animation) ? (
+                <FlagshipReactionPlayer
+                  ref={flagshipPlayerRef}
+                  equation={reaction.equation}
+                  steps={reaction.mechanismSteps}
+                  structure={reaction.productStructure}
+                  flow={reaction.reactionFlow}
+                  scene={animation}
+                  selectedAtomId={selectedAtomId}
+                  onAtomSelect={setSelectedAtomId}
+                  autoPlay
+                  onStageChange={(snapshot) => {
+                    setFlowSnapshot(snapshot);
+                    setActiveStepIdx(snapshot.stage.stepIndex);
+                  }}
+                />
+              ) : (
+                <ReactionAnimationPlayer
+                  ref={flowPlayerRef}
+                  equation={reaction.equation}
+                  steps={reaction.mechanismSteps}
+                  structure={reaction.productStructure}
+                  flow={reaction.reactionFlow}
+                  animation={animation}
+                  selectedAtomId={selectedAtomId}
+                  onAtomSelect={setSelectedAtomId}
+                  autoPlay
+                  onStageChange={(snapshot) => {
+                    setFlowSnapshot(snapshot);
+                    setActiveStepIdx(snapshot.stage.stepIndex);
+                  }}
+                />
+              )}
               <button
                 onClick={() => {
                   setFlowPreview(false);

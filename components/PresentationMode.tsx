@@ -3,6 +3,7 @@ import { MoleculeStructure } from '../types';
 import { AtomInsight } from '../src/data/reactions/schema';
 import { MechanismMolecule } from './MechanismMolecule';
 import { ReactionAnimationPlayer, type ReactionAnimationPlayerHandle } from './ReactionAnimationPlayer';
+import { FlagshipReactionPlayer, type FlagshipReactionPlayerHandle } from './FlagshipReactionPlayer';
 import type { CuratedReaction } from '../src/data/reactions/schema';
 import type { ReactionAnimationScene } from '../src/data/reactions/schema';
 import { AtomInsightPanel } from './AtomInsightPanel';
@@ -10,6 +11,7 @@ import { ChevronLeft, ChevronRight, Minimize2, Play, Undo2 } from 'lucide-react'
 import { useLanguage } from '../contexts/LanguageContext';
 import { getEquationParts } from '../utils/reactionAnimation';
 import type { AnimationSnapshot } from '../utils/reactionAnimation';
+import { isFlagshipReactionScene } from '../utils/flagshipReaction';
 
 interface PresentationModeProps {
   equation: string;
@@ -46,8 +48,14 @@ export const PresentationMode: React.FC<PresentationModeProps> = ({
   const [flowPlaying, setFlowPlaying] = useState(false);
   const [flowSnapshot, setFlowSnapshot] = useState<AnimationSnapshot | null>(null);
   const flowPlayerRef = React.useRef<ReactionAnimationPlayerHandle>(null);
+  const flagshipPlayerRef = React.useRef<FlagshipReactionPlayerHandle>(null);
   const bodyRef = React.useRef<HTMLDivElement>(null);
   const equationParts = React.useMemo(() => getEquationParts(equation), [equation]);
+
+  const seekFlowStep = (next: number) => {
+    if (isFlagshipReactionScene(reactionAnimation)) flagshipPlayerRef.current?.seekToStep(next);
+    else flowPlayerRef.current?.seekToStep(next);
+  };
 
   React.useLayoutEffect(() => {
     if (flowPlaying) bodyRef.current?.scrollTo({ top: 0, behavior: 'auto' });
@@ -55,16 +63,22 @@ export const PresentationMode: React.FC<PresentationModeProps> = ({
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
+      const target = event.target as HTMLElement | null;
+      const isInteractive = Boolean(target && (
+        target.isContentEditable
+        || ['BUTTON', 'INPUT', 'SELECT', 'TEXTAREA', 'A'].includes(target.tagName)
+      ));
+      if (isInteractive && event.key !== 'Escape') return;
       if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
         setStepIndex((prev) => {
           const next = Math.min(prev + 1, steps.length - 1);
-          if (flowPlaying) flowPlayerRef.current?.seekToStep(next);
+          if (flowPlaying) seekFlowStep(next);
           return next;
         });
       } else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
         setStepIndex((prev) => {
           const next = Math.max(prev - 1, 0);
-          if (flowPlaying) flowPlayerRef.current?.seekToStep(next);
+          if (flowPlaying) seekFlowStep(next);
           return next;
         });
       } else if (event.key === 'Escape') {
@@ -115,7 +129,7 @@ export const PresentationMode: React.FC<PresentationModeProps> = ({
                 key={i}
                 onClick={() => {
                   setStepIndex(i);
-                  if (flowPlaying) flowPlayerRef.current?.seekToStep(i);
+                  if (flowPlaying) seekFlowStep(i);
                 }}
                 className={`text-left rounded-2xl px-6 py-5 transition-all duration-300 ${
                   active
@@ -137,22 +151,41 @@ export const PresentationMode: React.FC<PresentationModeProps> = ({
         {structure && (
           <div className={`relative md:w-[55%] min-h-[560px] md:min-h-0 rounded-3xl overflow-hidden bg-black/30 ${flowPlaying ? 'order-1 md:order-2' : ''}`}>
             {flowPlaying && reactionFlow && reactionAnimation ? (
-              <ReactionAnimationPlayer
-                ref={flowPlayerRef}
-                equation={equation}
-                steps={steps}
-                structure={structure}
-                flow={reactionFlow}
-                animation={reactionAnimation}
-                compact
-                selectedAtomId={selectedAtomId}
-                onAtomSelect={setSelectedAtomId}
-                autoPlay
-                onStageChange={(snapshot) => {
-                  setFlowSnapshot(snapshot);
-                  setStepIndex(snapshot.stage.stepIndex);
-                }}
-              />
+              isFlagshipReactionScene(reactionAnimation) ? (
+                <FlagshipReactionPlayer
+                  ref={flagshipPlayerRef}
+                  equation={equation}
+                  steps={steps}
+                  structure={structure}
+                  flow={reactionFlow}
+                  scene={reactionAnimation}
+                  compact
+                  selectedAtomId={selectedAtomId}
+                  onAtomSelect={setSelectedAtomId}
+                  autoPlay
+                  onStageChange={(snapshot) => {
+                    setFlowSnapshot(snapshot);
+                    setStepIndex(snapshot.stage.stepIndex);
+                  }}
+                />
+              ) : (
+                <ReactionAnimationPlayer
+                  ref={flowPlayerRef}
+                  equation={equation}
+                  steps={steps}
+                  structure={structure}
+                  flow={reactionFlow}
+                  animation={reactionAnimation}
+                  compact
+                  selectedAtomId={selectedAtomId}
+                  onAtomSelect={setSelectedAtomId}
+                  autoPlay
+                  onStageChange={(snapshot) => {
+                    setFlowSnapshot(snapshot);
+                    setStepIndex(snapshot.stage.stepIndex);
+                  }}
+                />
+              )
             ) : (
               <MechanismMolecule
                 structure={structure}
@@ -208,7 +241,7 @@ export const PresentationMode: React.FC<PresentationModeProps> = ({
         <button
           onClick={() => setStepIndex((prev) => {
             const next = Math.max(prev - 1, 0);
-            if (flowPlaying) flowPlayerRef.current?.seekToStep(next);
+            if (flowPlaying) seekFlowStep(next);
             return next;
           })}
           disabled={stepIndex === 0}
@@ -222,7 +255,7 @@ export const PresentationMode: React.FC<PresentationModeProps> = ({
         <button
           onClick={() => setStepIndex((prev) => {
             const next = Math.min(prev + 1, steps.length - 1);
-            if (flowPlaying) flowPlayerRef.current?.seekToStep(next);
+            if (flowPlaying) seekFlowStep(next);
             return next;
           })}
           disabled={stepIndex === steps.length - 1}

@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { ALL_REACTIONS, CHAPTERS } from './index';
+import type { ReactionAnimationSceneV3 } from './schema';
 
 const KNOWN_ELEMENTS = new Set([
   'H','He','Li','Be','B','C','N','O','F','Ne','Na','Mg','Al','Si','P','S','Cl','Ar',
@@ -14,7 +15,7 @@ describe('curated reactions dataset', () => {
     for (const id of ids) expect(id).toMatch(/^[a-z0-9-]{1,64}$/);
   });
 
-  it('only contains teacher-reviewed entries with complete fields', () => {
+  it('only contains published entries with complete fields', () => {
     for (const r of ALL_REACTIONS) {
       expect(r.reviewed).toBe(true);
       expect(r.chapter.length).toBeGreaterThan(0);
@@ -105,7 +106,7 @@ describe('curated reactions dataset', () => {
     for (const reaction of ALL_REACTIONS) {
       const animation = reaction.reactionAnimation;
       if (!animation) continue;
-      expect(animation.version).toBe(1);
+      expect([1, 2, 3]).toContain(animation.version);
       expect(animation.duration).toBeGreaterThan(0);
       expect(animation.stages.length).toBeGreaterThan(0);
       expect(new Set(animation.stages.map((stage) => stage.id)).size).toBe(animation.stages.length);
@@ -130,6 +131,20 @@ describe('curated reactions dataset', () => {
         for (const actorId of event.actorIds ?? []) expect(actorIds.has(actorId)).toBe(true);
         if (event.fromActorId) expect(actorIds.has(event.fromActorId)).toBe(true);
         if (event.toActorId) expect(actorIds.has(event.toActorId)).toBe(true);
+      }
+      if (animation.version === 3) {
+        const v3 = animation as ReactionAnimationSceneV3;
+        for (const event of [...v3.macroTrack, ...v3.microTrack, ...v3.equationTrack]) {
+          expect(stageIds.has(event.stageId)).toBe(true);
+          expect(event.at).toBeGreaterThanOrEqual(0);
+          expect(event.duration).toBeGreaterThan(0);
+          expect(event.at + event.duration).toBeLessThanOrEqual(animation.duration);
+        }
+        for (const moment of v3.teachingMoments) {
+          expect(stageIds.has(moment.stageId)).toBe(true);
+          expect(moment.at).toBeGreaterThanOrEqual(0);
+          expect(moment.at).toBeLessThanOrEqual(animation.duration);
+        }
       }
     }
   });

@@ -49,7 +49,7 @@ describe('declarative reaction visual dispatcher', () => {
   });
 
   it('blocks atom-conservation rendering unless the v2 quality gate is explicit', () => {
-    const illustrative = createFallbackReactionAnimation(getReaction('c2h4-br2')!)!;
+    const illustrative = createFallbackReactionAnimation(getReaction('c2h4-hydration')!)!;
     const approved = {
       ...illustrative,
       illustrativeOnly: false,

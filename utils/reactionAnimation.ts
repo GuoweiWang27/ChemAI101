@@ -7,6 +7,7 @@ import type {
   ReactionAnimationEventKind,
   ReactionAnimationScene,
   ReactionAnimationSceneV2,
+  ReactionAnimationSceneV3,
   ReactionAnimationStage,
 } from '../src/data/reactions/schema';
 import {
@@ -45,6 +46,12 @@ function orderedStages(animation: ReactionAnimationScene): ReactionAnimationStag
   return [...animation.stages].sort((a, b) => a.start - b.start || a.end - b.end);
 }
 
+function isTimedAnimationScene(
+  animation: ReactionAnimationScene,
+): animation is ReactionAnimationSceneV2 | ReactionAnimationSceneV3 {
+  return animation.version === 2 || animation.version === 3;
+}
+
 export interface AnimationSnapshot {
   time: number;
   progress: number;
@@ -80,7 +87,7 @@ export function getActiveAnimationEvents(
   time: number,
 ): ReactionAnimationEvent[] {
   const safeTime = clamp(Number.isFinite(time) ? time : 0, 0, animation.duration);
-  if (animation.version === 1) {
+  if (!isTimedAnimationScene(animation)) {
     const stages = orderedStages(animation);
     let stage = stages.find((candidate) => safeTime < candidate.end);
     if (!stage) stage = stages[stages.length - 1];
@@ -101,7 +108,7 @@ export function getActiveAnimationEffects(
   animation: ReactionAnimationScene,
   time: number,
 ): ActiveAnimationEffect[] {
-  if (animation.version === 1) return [];
+  if (!isTimedAnimationScene(animation)) return [];
   const safeTime = clamp(Number.isFinite(time) ? time : 0, 0, animation.duration);
   const activeEventEffectIds = new Set(
     getActiveAnimationEvents(animation, safeTime).flatMap(getAnimationEventEffectIds),

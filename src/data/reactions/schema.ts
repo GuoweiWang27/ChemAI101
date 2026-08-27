@@ -207,10 +207,66 @@ export interface ReactionAnimationSceneV2 {
   evidence?: ReactionAnimationEvidence[];
 }
 
-export type ReactionAnimationScene = ReactionAnimationSceneV1 | ReactionAnimationSceneV2;
+export type FlagshipMacroKind =
+  | 'metal-on-water'
+  | 'flame'
+  | 'smoke'
+  | 'solution-color'
+  | 'solid-hydration'
+  | 'heat-rise';
+
+export interface FlagshipTrackEvent {
+  id: string;
+  stageId: string;
+  at: number;
+  duration: number;
+  label: BilingualText;
+  kind: string;
+  params: Record<string, string | number | boolean | number[] | string[]>;
+}
+
+export interface FlagshipTeachingMoment {
+  id: string;
+  stageId: string;
+  at: number;
+  question: BilingualText;
+  hint: BilingualText;
+  expectedObservation: BilingualText;
+}
+
+export interface FlagshipCameraShot {
+  stageId: string;
+  target: 'macro' | 'micro' | 'split';
+  zoom: number;
+}
+
+/**
+ * v3 is the classroom-facing dual-track layer. It keeps the v2 flow/effect
+ * contract for the existing micro renderer and adds synchronized macro,
+ * mechanism, equation and teaching tracks.
+ */
+export interface ReactionAnimationSceneV3 extends Omit<ReactionAnimationSceneV2, 'version'> {
+  version: 3;
+  macroTrack: Array<FlagshipTrackEvent & { kind: FlagshipMacroKind }>;
+  microTrack: FlagshipTrackEvent[];
+  equationTrack: Array<FlagshipTrackEvent & { kind: ReactionAnimationEquationFocus }>;
+  teachingMoments: FlagshipTeachingMoment[];
+  cameraShots?: FlagshipCameraShot[];
+  evidence: ReactionAnimationEvidence[];
+  review: {
+    chemistryStatus: 'pending' | 'passed' | 'blocked';
+    teacherStatus: 'pending' | 'reviewed';
+  };
+}
+
+export type ReactionAnimationScene =
+  | ReactionAnimationSceneV1
+  | ReactionAnimationSceneV2
+  | ReactionAnimationSceneV3;
 
 /** 策展反应条目。reviewed 字面量 true 是类型级门禁：
- *  只有任课老师签字后的条目才允许出现在正式章节数据文件里。 */
+ *  表示项目内容已完成发布前整理与授权；它不等同于教师课堂复核。
+ *  旗舰 scene 的教师状态以 scene.review.teacherStatus 为准。 */
 export interface CuratedReaction {
   id: string;               // 短 slug：^[a-z0-9-]{1,64}$，全局唯一
   chapter: string;          // 如 "必修1·第二章 海水中的重要元素"

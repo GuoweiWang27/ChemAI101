@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { ALL_REACTIONS, getReaction } from '../src/data/reactions';
 import { ANIMATION_PROFILES } from '../src/data/reactions/animationProfiles';
 import type { ReactionAnimationSceneV2 } from '../src/data/reactions/schema';
+import { isFlagshipReactionScene } from './flagshipReaction';
 import {
   compileReactionAnimationAudit,
   hasBlockingReactionAnimationAuditIssues,
@@ -103,6 +104,39 @@ describe('offline reaction animation compiler and audit gate', () => {
         expect.objectContaining({ code: 'UNKNOWN_EVENT_EFFECT' }),
       ]),
     );
+  });
+
+  it('fails closed for broken flagship classroom contracts', () => {
+    const reaction = getReaction('s-o2')!;
+    const scene = reaction.reactionAnimation;
+    if (!isFlagshipReactionScene(scene)) throw new Error('s-o2 flagship scene missing');
+
+    expect(validateReactionAnimationScene({ ...scene, teachingMoments: [] }, reaction)).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ code: 'FLAGSHIP_TEACHING_MOMENTS_MISSING' }),
+      ]),
+    );
+
+    expect(validateReactionAnimationScene({
+      ...scene,
+      macroTrack: [{ ...scene.macroTrack[0], stageId: 'ghost' }, ...scene.macroTrack.slice(1)],
+    }, reaction)).toEqual(expect.arrayContaining([
+      expect.objectContaining({ code: 'FLAGSHIP_TRACK_UNKNOWN_STAGE' }),
+    ]));
+
+    expect(validateReactionAnimationScene({
+      ...scene,
+      microTrack: [{ ...scene.microTrack[0], kind: 'typo-micro-kind' }, ...scene.microTrack.slice(1)],
+    }, reaction)).toEqual(expect.arrayContaining([
+      expect.objectContaining({ code: 'FLAGSHIP_TRACK_INVALID_KIND', severity: 'error' }),
+    ]));
+
+    expect(validateReactionAnimationScene({
+      ...scene,
+      review: { ...scene.review, teacherStatus: 'reviewed' as const },
+    }, reaction)).toEqual(expect.arrayContaining([
+      expect.objectContaining({ code: 'TEACHER_REVIEW_EVIDENCE_MISSING' }),
+    ]));
   });
 
   it('fails closed when an L2 profile lacks a complete conservation proof', () => {

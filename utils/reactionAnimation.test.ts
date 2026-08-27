@@ -19,12 +19,12 @@ describe('reaction animation timeline', () => {
     expect(animation).toBeDefined();
     if (!animation) return;
 
-    expect(animation.family).toBe('ionic');
+    expect(inferReactionAnimationFamily(sodium!)).toBe('ionic');
     expect(animation.duration).toBeGreaterThan(0);
     expect(getAnimationSnapshot(animation, 0).stage.id).toBe('surface');
     expect(getAnimationSnapshot(animation, 3.1).stage.id).toBe('melt');
-    expect(getAnimationSnapshot(animation, animation.duration).stage.id).toBe('hydrogen');
-    expect(getStageForStep(animation, 3)?.id).toBe('ions');
+    expect(getAnimationSnapshot(animation, animation.duration).stage.id).toBe('ions');
+    expect(getStageForStep(animation, 3)?.id).toBe('hydrogen');
   });
 
   it('formats ion charges without turning neutral atoms into ions', () => {
@@ -41,7 +41,7 @@ describe('reaction animation timeline', () => {
     if (!animation) return;
 
     expect(getStepSeekTime(animation, 0)).toBe(0);
-    expect(getStepSeekTime(animation, 3)).toBe(9.5);
+    expect(getStepSeekTime(animation, 3)).toBe(9);
     expect(getStepSeekTime(animation, 99)).toBe(animation.duration);
     expect(getEquationParts('2Na + 2H₂O = 2NaOH + H₂↑')).toEqual({
       reactants: '2Na + 2H₂O',
@@ -60,7 +60,7 @@ describe('reaction animation timeline', () => {
     expect(animation).toBeDefined();
     if (!animation) return;
 
-    expect(getStepNavigationState(animation, 3)).toEqual({ time: 9.5, playing: false });
+    expect(getStepNavigationState(animation, 3)).toEqual({ time: 9, playing: false });
   });
 
   it('shows electron transfer at its exact stage start, but not in the prior stage', () => {
@@ -68,10 +68,10 @@ describe('reaction animation timeline', () => {
     expect(animation).toBeDefined();
     if (!animation) return;
 
-    expect(isStageActiveAt(animation, 'electron', 6.099)).toBe(false);
-    expect(isStageActiveAt(animation, 'electron', 6.1)).toBe(true);
-    expect(isStageActiveAt(animation, 'electron', 9.499)).toBe(true);
-    expect(isStageActiveAt(animation, 'electron', 9.5)).toBe(false);
+    expect(isStageActiveAt(animation, 'electron', 5.999)).toBe(false);
+    expect(isStageActiveAt(animation, 'electron', 6)).toBe(true);
+    expect(isStageActiveAt(animation, 'electron', 8.999)).toBe(true);
+    expect(isStageActiveAt(animation, 'electron', 9)).toBe(false);
   });
 
   it('classifies legacy reactions into distinct choreography families', () => {

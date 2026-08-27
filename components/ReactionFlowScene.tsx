@@ -8,6 +8,7 @@ import type {
   ReactionAnimationEventV2,
   ReactionAnimationScene,
   ReactionAnimationSceneV2,
+  ReactionAnimationSceneV3,
 } from '../src/data/reactions/schema';
 import {
   getActiveAnimationEvents,
@@ -283,7 +284,7 @@ const OrganicBondRenderer: React.FC<{ directives: ReactionVisualDirective[] }> =
 );
 
 const DeclarativeEffectDispatcher: React.FC<{
-  animation: ReactionAnimationSceneV2;
+  animation: ReactionAnimationSceneV2 | ReactionAnimationSceneV3;
   time: number;
 }> = ({ animation, time }) => {
   const directives = useMemo(() => buildReactionVisualDirectives(animation, time), [animation, time]);
@@ -591,7 +592,8 @@ const SceneContent: React.FC<SceneContentProps> = ({
 
   return (
     <group ref={groupRef}>
-      {animation?.version === 2 && <DeclarativeEffectDispatcher animation={animation} time={time ?? 0} />}
+      {(animation?.version === 2 || animation?.version === 3)
+        && <DeclarativeEffectDispatcher animation={animation} time={time ?? 0} />}
       {atoms.map((a) => (
         <mesh
           key={a.key}
@@ -1036,6 +1038,16 @@ export interface ReactionFlowSceneProps {
   onAtomSelect?: (id: number | null) => void;
 }
 
+export function shouldUseSodiumWaterScene(
+  animation: ReactionAnimationScene | undefined,
+): boolean {
+  return Boolean(
+    animation
+    && animation.environment === 'water-beaker'
+    && animation.actors.some((actor) => actor.id === 'sodium-bead'),
+  );
+}
+
 export const ReactionFlowScene: React.FC<ReactionFlowSceneProps> = ({
   structure,
   flow,
@@ -1053,7 +1065,7 @@ export const ReactionFlowScene: React.FC<ReactionFlowSceneProps> = ({
   );
   const [controlsEnabled, setControlsEnabled] = useState(reduced || time !== undefined);
 
-  if (animation?.version === 1 && animation.environment === 'water-beaker') {
+  if (shouldUseSodiumWaterScene(animation)) {
     return <SodiumWaterScene animation={animation} time={time ?? 0} />;
   }
 

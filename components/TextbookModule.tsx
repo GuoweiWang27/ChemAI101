@@ -4,6 +4,7 @@ import { BookOpen, FlaskConical, GraduationCap } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { groupChaptersByVolume, parseChapter } from '../utils/textbook';
 import { updateRouteParams } from '../utils/routeParams';
+import { isFlagshipReactionScene } from '../utils/flagshipReaction';
 
 /** 教材反应库：按人教版卷册→章节两级浏览策展反应，点击进入条目页（自学态）。 */
 export const TextbookModule: React.FC = () => {
@@ -63,6 +64,11 @@ export const TextbookModule: React.FC = () => {
                         <span className="truncate">{r.title}</span>
                       </div>
                       <div className="mt-1 font-mono text-xs text-[#6f685d] truncate">{r.equation}</div>
+                      {isFlagshipReactionScene(r.reactionAnimation) && (
+                        <div className="mt-2 inline-flex rounded-full border border-[#d8b779] bg-[#fff7df] px-2 py-0.5 text-[10px] font-bold tracking-wide text-[#8b5a17]">
+                          {language === 'zh' ? '课堂旗舰' : 'Classroom flagship'} · {r.reactionAnimation.qualityLevel}
+                        </div>
+                      )}
                     </button>
                   ))}
                 </div>

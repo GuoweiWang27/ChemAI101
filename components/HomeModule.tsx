@@ -1,11 +1,11 @@
 import React from 'react';
-import { Atom, BookOpen, ChevronRight, Database, FlaskConical } from 'lucide-react';
+import { Atom, BookOpen, ChevronRight, Database, FileText, FlaskConical } from 'lucide-react';
 import { ALL_REACTIONS } from '../src/data/reactions';
 import { LiveStatsLine } from './LiveStatsLine';
 import { useLanguage } from '../contexts/LanguageContext';
 import { FlameHeroCanvas } from './FlameHeroCanvas';
 
-export type HomeTab = 'textbook' | 'reaction' | 'builder' | 'library';
+export type HomeTab = 'textbook' | 'reaction' | 'builder' | 'library' | 'project';
 
 interface HomeModuleProps {
   onOpen: (tab: HomeTab) => void;
@@ -127,6 +127,21 @@ export const HomeModule: React.FC<HomeModuleProps> = ({ onOpen }) => {
             </button>
           ))}
         </div>
+
+        <button
+          type="button"
+          onClick={() => onOpen('project')}
+          className="group mt-4 flex w-full items-center gap-4 rounded-2xl border border-science-200 bg-[#eef3f1] p-5 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:border-science-400 hover:shadow-md sm:mt-6 sm:p-6"
+        >
+          <div className="rounded-xl bg-white p-3 text-science-600 shadow-sm">
+            <FileText className="h-6 w-6" />
+          </div>
+          <div className="min-w-0 flex-1">
+            <h3 className="font-display text-lg font-bold text-[#1a1a1a]">{t('navProject')}</h3>
+            <p className="mt-1 text-sm leading-relaxed text-[#5c5549]">{t('projectStoryIntro')}</p>
+          </div>
+          <ChevronRight className="h-5 w-5 shrink-0 text-science-500 transition-transform group-hover:translate-x-1" />
+        </button>
 
         {/* Footer note */}
         <p className="mt-8 text-center text-xs text-[#a39a89]">

@@ -7,6 +7,7 @@ import mustate103Fe from './mustate-1-03-fe.json';
 import mustate205Sn from './mustate-2-05-sn.json';
 import mustate206Energy from './mustate-2-06-energy.json';
 import mustate207Organic from './mustate-2-07-organic.json';
+import { safelyCreateFlagshipReactionAnimation } from '../../../utils/flagshipReaction';
 
 const CHAPTER_FILES: CuratedReaction[][] = [
   mustate102NaCl as unknown as CuratedReaction[],
@@ -16,7 +17,12 @@ const CHAPTER_FILES: CuratedReaction[][] = [
   mustate207Organic as unknown as CuratedReaction[],
 ];
 
-export const ALL_REACTIONS: CuratedReaction[] = CHAPTER_FILES.flat();
+const RAW_REACTIONS = CHAPTER_FILES.flat();
+
+export const ALL_REACTIONS: CuratedReaction[] = RAW_REACTIONS.map((reaction) => {
+  const flagshipScene = safelyCreateFlagshipReactionAnimation(reaction);
+  return flagshipScene ? { ...reaction, reactionAnimation: flagshipScene } : reaction;
+});
 
 const BY_SLUG = new Map(ALL_REACTIONS.map((reaction) => [reaction.id, reaction]));
 

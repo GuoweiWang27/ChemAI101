@@ -9,6 +9,7 @@ import {
   type ReactionAnimationGateInput,
 } from './reactionAnimationGate.ts';
 import { createFallbackReactionAnimation } from './reactionAnimation.ts';
+import { FLAGSHIP_MICRO_KINDS } from '../src/data/reactions/flagshipScenes.ts';
 
 export interface ReactionAnimationAuditIssue {
   code: string;
@@ -307,6 +308,12 @@ const EFFECT_KINDS = new Set([
 const ACTOR_KINDS = new Set(['species', 'atom', 'ion', 'electron', 'water-surface', 'gas', 'bubble', 'indicator', 'heat']);
 const MAPPING_STATUSES = new Set(['complete', 'incomplete', 'missing', 'not-applicable']);
 const SIGNOFF_STATUSES = new Set(['approved', 'pending', 'rejected']);
+const FLAGSHIP_MACRO_KINDS = new Set([
+  'metal-on-water', 'flame', 'smoke', 'solution-color', 'solid-hydration', 'heat-rise',
+]);
+const FLAGSHIP_MICRO_KIND_SET = new Set<string>(FLAGSHIP_MICRO_KINDS);
+const FLAGSHIP_REVIEW_CHEMISTRY_STATUSES = new Set(['pending', 'passed', 'blocked']);
+const FLAGSHIP_REVIEW_TEACHER_STATUSES = new Set(['pending', 'reviewed']);
 
 function validateParams(value: unknown, path: string, issues: ReactionAnimationAuditIssue[]): value is UnknownRecord {
   if (!isRecord(value)) {
@@ -342,6 +349,169 @@ function validateGateFields(record: UnknownRecord, issues: ReactionAnimationAudi
   }
 }
 
+function stageRange(stages: unknown[], stageId: string): { start: number; end: number } | undefined {
+  const stage = stages.find((candidate) => isRecord(candidate) && candidate.id === stageId);
+  if (!isRecord(stage) || !isFiniteNumber(stage.start) || !isFiniteNumber(stage.end)) return undefined;
+  return { start: stage.start, end: stage.end };
+}
+
+function validateFlagshipTrack(
+  scene: UnknownRecord,
+  stages: unknown[],
+  trackName: 'macroTrack' | 'microTrack' | 'equationTrack',
+  issues: ReactionAnimationAuditIssue[],
+): void {
+  const rawTrack = scene[trackName];
+  if (!Array.isArray(rawTrack)) {
+    issues.push(issue('FLAGSHIP_TRACK_MISSING', `${trackName} must be an array`));
+    return;
+  }
+  const trackStageCounts = new Map<string, number>();
+  const trackIds = new Set<string>();
+  rawTrack.forEach((rawEvent, index) => {
+    if (!isRecord(rawEvent)) {
+      issues.push(issue('FLAGSHIP_TRACK_EVENT_INVALID', `${trackName}[${index}] must be an object`));
+      return;
+    }
+    const id = rawEvent.id;
+    if (typeof id !== 'string' || id.trim().length === 0) {
+      issues.push(issue('FLAGSHIP_TRACK_EVENT_INVALID', `${trackName}[${index}] has an invalid id`));
+    } else if (trackIds.has(id)) {
+      issues.push(issue('FLAGSHIP_TRACK_DUPLICATE_ID', `Duplicate ${trackName} event ${id}`));
+    } else {
+      trackIds.add(id);
+    }
+    const stageId = rawEvent.stageId;
+    const range = typeof stageId === 'string' ? stageRange(stages, stageId) : undefined;
+    if (typeof stageId !== 'string' || !range) {
+      issues.push(issue('FLAGSHIP_TRACK_UNKNOWN_STAGE', `${trackName} event ${String(id)} refers to stage ${String(stageId)}`));
+    } else {
+      trackStageCounts.set(stageId, (trackStageCounts.get(stageId) ?? 0) + 1);
+    }
+    if (!isFiniteNumber(rawEvent.at) || !isFiniteNumber(rawEvent.duration)
+      || rawEvent.at < 0 || rawEvent.duration <= 0
+      || (isFiniteNumber(scene.duration) && rawEvent.at + rawEvent.duration > scene.duration + 0.0001)) {
+      issues.push(issue('FLAGSHIP_TRACK_INVALID_RANGE', `Invalid timing for ${trackName} event ${String(id)}`));
+    } else if (range && (rawEvent.at < range.start - 0.0001
+      || rawEvent.at + rawEvent.duration > range.end + 0.0001)) {
+      issues.push(issue('FLAGSHIP_TRACK_OUTSIDE_STAGE', `${trackName} event ${String(id)} is outside stage ${stageId}`));
+    }
+    if (!isBilingualText(rawEvent.label)) {
+      issues.push(issue('FLAGSHIP_TRACK_INVALID_LABEL', `${trackName} event ${String(id)} must have bilingual label`));
+    }
+    if (typeof rawEvent.kind !== 'string' || rawEvent.kind.trim().length === 0) {
+      issues.push(issue('FLAGSHIP_TRACK_INVALID_KIND', `${trackName} event ${String(id)} has an invalid kind`));
+    } else if (trackName === 'macroTrack' && !FLAGSHIP_MACRO_KINDS.has(rawEvent.kind)) {
+      issues.push(issue('FLAGSHIP_TRACK_INVALID_KIND', `${trackName} event ${String(id)} has an invalid macro kind`));
+    } else if (trackName === 'microTrack' && !FLAGSHIP_MICRO_KIND_SET.has(rawEvent.kind)) {
+      issues.push(issue('FLAGSHIP_TRACK_INVALID_KIND', `${trackName} event ${String(id)} has an unsupported micro kind`));
+    } else if (trackName === 'equationTrack' && !FOCI.has(rawEvent.kind)) {
+      issues.push(issue('FLAGSHIP_TRACK_INVALID_KIND', `${trackName} event ${String(id)} has an invalid equation focus`));
+    }
+    validateParams(rawEvent.params, `${trackName} event ${String(id)}.params`, issues);
+  });
+
+  for (const stage of stages) {
+    if (!isRecord(stage) || typeof stage.id !== 'string') continue;
+    if ((trackStageCounts.get(stage.id) ?? 0) === 0) {
+      issues.push(issue('FLAGSHIP_TRACK_STAGE_MISSING', `${trackName} has no event for stage ${stage.id}`));
+    }
+  }
+}
+
+function validateFlagshipRuntime(
+  scene: UnknownRecord,
+  stages: unknown[],
+  issues: ReactionAnimationAuditIssue[],
+): void {
+  if (stages.length < 4) {
+    issues.push(issue('FLAGSHIP_STAGES_MISSING', 'Version 3 scene must contain at least four stages'));
+  }
+  validateFlagshipTrack(scene, stages, 'macroTrack', issues);
+  validateFlagshipTrack(scene, stages, 'microTrack', issues);
+  validateFlagshipTrack(scene, stages, 'equationTrack', issues);
+
+  const teachingMoments = scene.teachingMoments;
+  if (!Array.isArray(teachingMoments) || teachingMoments.length < 3) {
+    issues.push(issue('FLAGSHIP_TEACHING_MOMENTS_MISSING', 'Version 3 scene must contain at least three teaching moments'));
+  }
+  if (Array.isArray(teachingMoments)) {
+    const momentIds = new Set<string>();
+    teachingMoments.forEach((rawMoment, index) => {
+      if (!isRecord(rawMoment)) {
+        issues.push(issue('FLAGSHIP_TEACHING_MOMENT_INVALID', `Teaching moment ${index} must be an object`));
+        return;
+      }
+      const id = rawMoment.id;
+      if (typeof id !== 'string' || id.trim().length === 0) {
+        issues.push(issue('FLAGSHIP_TEACHING_MOMENT_INVALID', `Teaching moment ${index} has an invalid id`));
+      } else if (momentIds.has(id)) {
+        issues.push(issue('FLAGSHIP_TEACHING_DUPLICATE_ID', `Duplicate teaching moment ${id}`));
+      } else {
+        momentIds.add(id);
+      }
+      const stageId = rawMoment.stageId;
+      const range = typeof stageId === 'string' ? stageRange(stages, stageId) : undefined;
+      if (typeof stageId !== 'string' || !range) {
+        issues.push(issue('FLAGSHIP_TEACHING_UNKNOWN_STAGE', `Teaching moment ${String(id)} refers to stage ${String(stageId)}`));
+      } else if (!isFiniteNumber(rawMoment.at) || rawMoment.at < range.start - 0.0001 || rawMoment.at > range.end + 0.0001) {
+        issues.push(issue('FLAGSHIP_TEACHING_OUTSIDE_STAGE', `Teaching moment ${String(id)} is outside stage ${stageId}`));
+      }
+      for (const key of ['question', 'hint', 'expectedObservation']) {
+        if (!isBilingualText(rawMoment[key])) {
+          issues.push(issue('FLAGSHIP_TEACHING_TEXT_INVALID', `Teaching moment ${String(id)} must have bilingual ${key}`));
+        }
+      }
+    });
+  }
+
+  const evidence = scene.evidence;
+  if (!Array.isArray(evidence) || evidence.length === 0) {
+    issues.push(issue('FLAGSHIP_EVIDENCE_MISSING', 'Version 3 scene must contain evidence records'));
+  } else {
+    evidence.forEach((rawEvidence, index) => {
+      if (!isRecord(rawEvidence)) {
+        issues.push(issue('FLAGSHIP_EVIDENCE_INVALID', `Evidence ${index} must be an object`));
+        return;
+      }
+      if (typeof rawEvidence.id !== 'string' || rawEvidence.id.trim().length === 0
+        || typeof rawEvidence.label !== 'string' || rawEvidence.label.trim().length === 0) {
+        issues.push(issue('FLAGSHIP_EVIDENCE_INVALID', `Evidence ${index} must have an id and label`));
+      }
+      if (typeof rawEvidence.url !== 'string' || rawEvidence.url.trim().length === 0) {
+        issues.push(issue('FLAGSHIP_EVIDENCE_URL_MISSING', `Evidence ${String(rawEvidence.id)} must have a URL`));
+      } else if (!rawEvidence.url.startsWith('https:')) {
+        issues.push(issue('FLAGSHIP_EVIDENCE_URL_INVALID', `Evidence ${String(rawEvidence.id)} must use https`));
+      }
+    });
+  }
+
+  const review = scene.review;
+  if (!isRecord(review)
+    || typeof review.chemistryStatus !== 'string'
+    || !FLAGSHIP_REVIEW_CHEMISTRY_STATUSES.has(review.chemistryStatus)
+    || typeof review.teacherStatus !== 'string'
+    || !FLAGSHIP_REVIEW_TEACHER_STATUSES.has(review.teacherStatus)) {
+    issues.push(issue('FLAGSHIP_REVIEW_INVALID', 'Version 3 scene review statuses are invalid'));
+    return;
+  }
+  if (review.chemistryStatus !== 'passed') {
+    issues.push(issue('FLAGSHIP_CHEMISTRY_REVIEW_INCOMPLETE', 'Version 3 scene chemistry review must be passed'));
+  }
+  if (review.teacherStatus === 'reviewed') {
+    const hasTeacherEvidence = Array.isArray(evidence) && evidence.some((rawEvidence) => (
+      isRecord(rawEvidence)
+      && typeof rawEvidence.id === 'string'
+      && rawEvidence.id.startsWith('teacher-review-')
+      && typeof rawEvidence.url === 'string'
+      && rawEvidence.url.trim().length > 0
+    ));
+    if (!hasTeacherEvidence) {
+      issues.push(issue('TEACHER_REVIEW_EVIDENCE_MISSING', 'Reviewed teacher status requires teacher-review evidence with a URL'));
+    }
+  }
+}
+
 function validateAnimationSceneRuntime(
   scene: unknown,
   reaction: CuratedReaction,
@@ -350,10 +520,11 @@ function validateAnimationSceneRuntime(
   if (!isRecord(scene)) return [issue('INVALID_SCENE_SHAPE', 'Reaction animation scene must be an object')];
 
   const version = scene.version;
-  if (version !== 1 && version !== 2) {
-    issues.push(issue('INVALID_SCENE_VERSION', 'Scene version must be 1 or 2'));
+  if (version !== 1 && version !== 2 && version !== 3) {
+    issues.push(issue('INVALID_SCENE_VERSION', 'Scene version must be 1, 2 or 3'));
   }
-  const isV2 = version === 2;
+  const isV2 = version === 2 || version === 3;
+  const isV3 = version === 3;
   const familyValue = isV2 ? scene.primaryFamily : scene.family;
   if (typeof familyValue !== 'string' || !FAMILIES.has(familyValue)) {
     issues.push(issue('INVALID_SCENE_FAMILY', 'Scene family is invalid'));
@@ -621,6 +792,7 @@ function validateAnimationSceneRuntime(
   if (isV2 && Object.prototype.hasOwnProperty.call(scene, 'family')) {
     issues.push(issue('DEPRECATED_SCENE_FAMILY', 'Version 2 scene must use primaryFamily only'));
   }
+  if (isV3 && Array.isArray(stages)) validateFlagshipRuntime(scene, stages, issues);
   return issues;
 }
 

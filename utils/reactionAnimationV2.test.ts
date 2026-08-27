@@ -13,6 +13,7 @@ import {
   getAnimationPrimaryFamily,
   inferReactionAnimationFamily,
 } from './reactionAnimation';
+import { isFlagshipReactionScene } from './flagshipReaction';
 
 describe('reaction animation schema v2 and explicit profiles', () => {
   it('covers every formal reaction exactly once with an explicit profile', () => {
@@ -59,21 +60,31 @@ describe('reaction animation schema v2 and explicit profiles', () => {
     });
   });
 
-  it('keeps sodium-water v1 compatible and compiles legacy flows to fail-closed v2 scenes', () => {
+  it('keeps the sodium v1 actors in the v3 overlay and compiles legacy flows to v2 scenes', () => {
     const sodium = getReaction('na-h2o')!;
     const sulfur = getReaction('s-o2')!;
     const sodiumScene = sodium.reactionAnimation!;
     const fallback = createFallbackReactionAnimation(sulfur);
 
-    expect(sodiumScene.version).toBe(1);
+    expect(sodiumScene.version).toBe(3);
+    expect(isFlagshipReactionScene(sodiumScene)).toBe(true);
+    expect(sodiumScene.actors.some((actor) => actor.id === 'sodium-bead')).toBe(true);
     expect(getAnimationPrimaryFamily(sodiumScene)).toBe('ionic');
     expect(fallback).toMatchObject({
       version: 2,
       primaryFamily: 'combustion',
-      illustrativeOnly: true,
-      qualityLevel: 'L1',
-      chemistrySignoff: { status: 'pending' },
+      illustrativeOnly: false,
+      qualityLevel: 'L2',
+      chemistrySignoff: { status: 'approved' },
     });
+  });
+
+  it('publishes exactly five v3 scenes while leaving non-flagship scenes on the fallback path', () => {
+    const flagshipScenes = ALL_REACTIONS.filter((reaction) => isFlagshipReactionScene(reaction.reactionAnimation));
+    expect(flagshipScenes.map((reaction) => reaction.id).sort()).toEqual([
+      'c2h4-br2', 'cao-water-exothermic', 'na-h2o', 'nh3-hcl-smoke', 's-o2',
+    ]);
+    expect(getReaction('c2h4-hydration')?.reactionAnimation).toBeUndefined();
   });
 
   it('dispatches v2 events and effects from their own timing and params', () => {

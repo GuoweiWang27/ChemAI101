@@ -1,6 +1,6 @@
 import React, { lazy, Suspense, useEffect, useState } from 'react';
 import { HomeModule } from './components/HomeModule';
-import { Atom, BookOpen, Database, FlaskConical, Home as HomeIcon, Languages } from 'lucide-react';
+import { Atom, BookOpen, Database, FileText, FlaskConical, Home as HomeIcon, Languages } from 'lucide-react';
 import { useLanguage } from './contexts/LanguageContext';
 import { parseRoute, updateRouteParams, RouteTarget } from './utils/routeParams';
 import { getReaction } from './src/data/reactions';
@@ -10,9 +10,10 @@ const BuilderModule = lazy(() => import('./components/BuilderModule').then((modu
 const LibraryModule = lazy(() => import('./components/LibraryModule').then((module) => ({ default: module.LibraryModule })));
 const TextbookModule = lazy(() => import('./components/TextbookModule').then((module) => ({ default: module.TextbookModule })));
 const ReactionPage = lazy(() => import('./components/ReactionPage').then((module) => ({ default: module.ReactionPage })));
+const ProjectStoryPage = lazy(() => import('./components/ProjectStoryPage').then((module) => ({ default: module.ProjectStoryPage })));
 
 function App() {
-  const [activeTab, setActiveTab] = useState<'home' | 'textbook' | 'reaction' | 'builder' | 'library'>('home');
+  const [activeTab, setActiveTab] = useState<'home' | 'textbook' | 'reaction' | 'builder' | 'library' | 'project'>('home');
   const [route, setRoute] = useState<RouteTarget>(() => parseRoute(window.location.search));
   const { language, setLanguage, t } = useLanguage();
 
@@ -44,6 +45,7 @@ function App() {
     { tab: 'reaction', label: t('navReaction'), mobileLabel: language === 'zh' ? '实验室' : 'Lab', Icon: FlaskConical },
     { tab: 'builder', label: t('navBuilder'), mobileLabel: language === 'zh' ? '构建器' : 'Builder', Icon: Atom },
     { tab: 'library', label: t('navLibrary'), mobileLabel: language === 'zh' ? '分子库' : 'Library', Icon: Database },
+    { tab: 'project', label: t('navProject'), mobileLabel: language === 'zh' ? '项目' : 'Project', Icon: FileText },
   ] as const;
 
   return (
@@ -60,7 +62,7 @@ function App() {
           </div>
           
           <div className="flex items-center gap-4 min-w-0">
-            <nav className="hidden sm:flex items-center gap-1 bg-[#f0ece4] p-1 rounded-xl" aria-label={language === 'zh' ? '主导航' : 'Primary navigation'}>
+            <nav className="hidden lg:flex items-center gap-1 bg-[#f0ece4] p-1 rounded-xl" aria-label={language === 'zh' ? '主导航' : 'Primary navigation'}>
               {navItems.map(({ tab, label, Icon }) => (
                 <button
                   key={tab}
@@ -91,7 +93,7 @@ function App() {
         </div>
 
         <nav
-          className="grid h-14 grid-cols-5 gap-1 border-t border-[#f0ece4] bg-white px-2 py-1 sm:hidden"
+          className="grid h-14 grid-cols-6 gap-1 border-t border-[#f0ece4] bg-white px-2 py-1 lg:hidden"
           aria-label={language === 'zh' ? '主导航' : 'Primary navigation'}
         >
           {navItems.map(({ tab, label, mobileLabel, Icon }) => (
@@ -114,7 +116,7 @@ function App() {
 
       {/* Main Content */}
       <main className="flex-1 max-w-7xl w-full mx-auto">
-        <div className="h-[calc(100dvh-120px)] overflow-y-auto sm:h-[calc(100dvh-64px)] lg:overflow-hidden">
+        <div className="h-[calc(100dvh-120px)] overflow-y-auto lg:h-[calc(100dvh-64px)] lg:overflow-hidden">
           <Suspense
             fallback={(
               <div role="status" className="grid h-full place-items-center px-6 text-sm font-semibold text-[#6f685d]">
@@ -123,7 +125,7 @@ function App() {
             )}
           >
             {reaction ? (
-              <ReactionPage reaction={reaction} present={route.present} onExit={exitReaction} />
+              <ReactionPage key={reaction.id} reaction={reaction} present={route.present} onExit={exitReaction} />
             ) : activeTab === 'home' ? (
               <HomeModule onOpen={switchTab} />
             ) : activeTab === 'reaction' ? (
@@ -132,6 +134,8 @@ function App() {
               <TextbookModule />
             ) : activeTab === 'library' ? (
               <LibraryModule />
+            ) : activeTab === 'project' ? (
+              <ProjectStoryPage />
             ) : (
               <BuilderModule />
             )}
