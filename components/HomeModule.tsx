@@ -80,7 +80,7 @@ export const HomeModule: React.FC<HomeModuleProps> = ({ onOpen }) => {
         <div className="relative mb-8 sm:mb-10 rounded-3xl overflow-hidden bg-gradient-to-br from-[#fbf9f4] via-[#f6f1e7] to-[#efe7d8] border border-[#e8d5b8] shadow-lg">
           <div className="flex flex-col sm:flex-row items-stretch">
             {/* 左：标语（暖纸底、深色字） */}
-            <div className="flex-1 p-6 sm:p-10 flex flex-col justify-center min-h-[240px] sm:min-h-[340px]">
+            <div className="flex-1 p-5 sm:p-10 flex flex-col justify-center min-h-[220px] sm:min-h-[340px]">
               <p className="text-xs font-bold uppercase tracking-widest text-science-500 mb-4">ChemAI101 · 焰色反应</p>
               <h2 className="text-3xl sm:text-5xl font-bold font-display leading-tight tracking-tight text-[#1a1a1a]">
                 {t('homeTaglineMain')}
@@ -92,9 +92,9 @@ export const HomeModule: React.FC<HomeModuleProps> = ({ onOpen }) => {
               <p className="mt-3 text-xs sm:text-sm text-[#6f685d] tracking-[0.15em]">{t('homeCapabilities')}</p>
             </div>
             {/* 右：炉膛窗口（唯一深色区，像壁炉口） */}
-            <div className="sm:w-[44%] p-4 sm:p-5 flex">
+            <div className="sm:w-[44%] p-3 sm:p-5 flex">
               <div
-                className="relative flex-1 min-h-[280px] sm:min-h-0 rounded-2xl overflow-hidden border border-[#3a2a1c]/70 shadow-inner"
+                className="relative flex-1 min-h-[260px] sm:min-h-0 rounded-2xl overflow-hidden border border-[#3a2a1c]/70 shadow-inner"
                 style={{ background: 'radial-gradient(120% 110% at 50% 100%, #2b1a10 0%, #150c07 65%, #0e0806 100%)' }}
               >
                 <FlameHeroCanvas />

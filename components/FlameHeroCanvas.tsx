@@ -1,16 +1,36 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { Pause, Play } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
-/**
- * 元素之火 · Canvas 2D 版（增强）：
- * 经典反馈缓冲火焰算法——低分辨率离屏帧逐帧上移、向黑衰减，再经模糊放大合成柔软火苗。
- * 增强点：
- *  - 湍流：整帧上移改为 12 竖条各自带相位偏移，火舌会舔动、分裂，不再是一团上飘的果冻
- *  - 三层温度结构：本生灯蓝色内焰 + 白热核心 + 元素色外层（真实焰色反应里底焰保持微蓝）
- *  - 交互：鼠标移动 = 风力（火焰倾斜），按住 = 扇风加氧（火势变旺、火星爆发）
- *  - 换元素 = 「蘸盐入焰」：先白热闪光 + 火花飞溅，再渐变为新焰色
- *  - 读数：展示当前元素特征发射谱线（真实物理数据）
- */
+export type FlameMotionStage = 'flash' | 'color' | 'readout';
+
+export const getFlameMotionStage = (elapsedMs: number, reduced: boolean): FlameMotionStage => {
+  if (reduced) return 'readout';
+  if (elapsedMs < 200) return 'flash';
+  if (elapsedMs < 800) return 'color';
+  return 'readout';
+};
+
+export const shouldAdvanceFlameCycle = (
+  hasInteracted: boolean,
+  motionAvailable: boolean,
+  reduced: boolean,
+) => !hasInteracted && motionAvailable && !reduced;
+
+export const getCanvasBackingSize = (
+  cssWidth: number,
+  cssHeight: number,
+  devicePixelRatio: number,
+) => {
+  const dpr = Math.min(1.5, Math.max(1, devicePixelRatio || 1));
+  const renderScale = 0.9;
+  return {
+    width: Math.max(1, Math.round(cssWidth * dpr * renderScale)),
+    height: Math.max(1, Math.round(cssHeight * dpr * renderScale)),
+  };
+};
+
+/** 元素之火：短闪 → 稳定变色 → 代表谱线解读。 */
 
 export interface FlameElement {
   key: string;
@@ -18,18 +38,19 @@ export interface FlameElement {
   name: { zh: string; en: string };
   color: string;
   hot: string;
+  observation: { zh: string; en: string };
   /** 特征发射谱线波长（nm） */
   line: number;
 }
 
 export const FLAME_ELEMENTS: FlameElement[] = [
-  { key: 'na', symbol: 'Na', name: { zh: '钠', en: 'Sodium' }, color: '#ffb43a', hot: '#fff6cf', line: 589 },
-  { key: 'cu', symbol: 'Cu', name: { zh: '铜', en: 'Copper' }, color: '#2ee6d6', hot: '#d8fffa', line: 515 },
-  { key: 'sr', symbol: 'Sr', name: { zh: '锶', en: 'Strontium' }, color: '#ff4d78', hot: '#ffd9e2', line: 606 },
-  { key: 'k', symbol: 'K', name: { zh: '钾', en: 'Potassium' }, color: '#b57bff', hot: '#f0e4ff', line: 766 },
-  { key: 'li', symbol: 'Li', name: { zh: '锂', en: 'Lithium' }, color: '#ff5560', hot: '#ffdcd0', line: 671 },
-  { key: 'ca', symbol: 'Ca', name: { zh: '钙', en: 'Calcium' }, color: '#ff7a45', hot: '#ffd9b8', line: 622 },
-  { key: 'ba', symbol: 'Ba', name: { zh: '钡', en: 'Barium' }, color: '#b0ea55', hot: '#f2ffcf', line: 554 },
+  { key: 'na', symbol: 'Na', name: { zh: '钠', en: 'Sodium' }, color: '#ffb43a', hot: '#fff6cf', observation: { zh: '明亮黄色火焰', en: 'bright yellow flame' }, line: 589 },
+  { key: 'cu', symbol: 'Cu', name: { zh: '铜', en: 'Copper' }, color: '#2ee6d6', hot: '#d8fffa', observation: { zh: '蓝绿色火焰', en: 'blue-green flame' }, line: 515 },
+  { key: 'sr', symbol: 'Sr', name: { zh: '锶', en: 'Strontium' }, color: '#ff4d78', hot: '#ffd9e2', observation: { zh: '绯红色火焰', en: 'crimson flame' }, line: 606 },
+  { key: 'k', symbol: 'K', name: { zh: '钾', en: 'Potassium' }, color: '#b57bff', hot: '#f0e4ff', observation: { zh: '淡紫色火焰', en: 'pale violet flame' }, line: 766 },
+  { key: 'li', symbol: 'Li', name: { zh: '锂', en: 'Lithium' }, color: '#ff5560', hot: '#ffdcd0', observation: { zh: '胭脂红火焰', en: 'carmine flame' }, line: 671 },
+  { key: 'ca', symbol: 'Ca', name: { zh: '钙', en: 'Calcium' }, color: '#ff7a45', hot: '#ffd9b8', observation: { zh: '砖红色火焰', en: 'brick-red flame' }, line: 622 },
+  { key: 'ba', symbol: 'Ba', name: { zh: '钡', en: 'Barium' }, color: '#b0ea55', hot: '#f2ffcf', observation: { zh: '黄绿色火焰', en: 'yellow-green flame' }, line: 554 },
 ];
 
 interface RGB {
@@ -66,54 +87,165 @@ const lerpPalette = (a: Palette, b: Palette, k: number): Palette => ({
 const rgba = (c: RGB, alpha: number) => `rgba(${c.r | 0},${c.g | 0},${c.b | 0},${alpha})`;
 
 const CYCLE_MS = 6000;
-/** 手动选择后闲置这么久恢复自动轮播 */
-const RESUME_MS = 15000;
-// 离屏缓冲分辨率（低分辨率 + 模糊 = 柔软火舌）；横幅比例匹配窗口
-const W = 170;
-const H = 140;
-// 焰心水平位置（右侧让位给元素按钮）
-const FLAME_CX = W * 0.6;
-// 湍流竖条数
 const STRIPS = 12;
-const STRIP_W = W / STRIPS;
+const FRAME_MS = 1000 / 30;
+
+const drawStaticFlame = (ctx: CanvasRenderingContext2D, width: number, height: number, pal: Palette) => {
+  const baseX = width * 0.58;
+  ctx.globalCompositeOperation = 'source-over';
+  ctx.fillStyle = '#0d0705';
+  ctx.fillRect(0, 0, width, height);
+  ctx.globalCompositeOperation = 'lighter';
+
+  const outer = ctx.createRadialGradient(baseX, height * 0.9, 0, baseX, height * 0.9, height * 0.48);
+  outer.addColorStop(0, rgba(pal.hot, 0.92));
+  outer.addColorStop(0.28, rgba(pal.main, 0.72));
+  outer.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = outer;
+  ctx.fillRect(0, height * 0.38, width, height * 0.62);
+
+  const plume = ctx.createLinearGradient(0, height, 0, height * 0.2);
+  plume.addColorStop(0, rgba(pal.hot, 0.92));
+  plume.addColorStop(0.42, rgba(pal.main, 0.66));
+  plume.addColorStop(1, rgba(pal.main, 0));
+  ctx.fillStyle = plume;
+  ctx.beginPath();
+  ctx.moveTo(baseX - height * 0.14, height);
+  ctx.bezierCurveTo(
+    baseX - height * 0.2,
+    height * 0.78,
+    baseX - height * 0.08,
+    height * 0.52,
+    baseX - height * 0.015,
+    height * 0.22,
+  );
+  ctx.bezierCurveTo(
+    baseX + height * 0.1,
+    height * 0.5,
+    baseX + height * 0.22,
+    height * 0.76,
+    baseX + height * 0.14,
+    height,
+  );
+  ctx.closePath();
+  ctx.fill();
+
+  ctx.globalAlpha = 0.62;
+  ctx.beginPath();
+  ctx.moveTo(baseX - height * 0.07, height);
+  ctx.bezierCurveTo(baseX - height * 0.11, height * 0.82, baseX, height * 0.64, baseX + height * 0.035, height * 0.43);
+  ctx.bezierCurveTo(baseX + height * 0.11, height * 0.68, baseX + height * 0.12, height * 0.84, baseX + height * 0.07, height);
+  ctx.closePath();
+  ctx.fill();
+  ctx.globalAlpha = 1;
+
+  const inner = ctx.createRadialGradient(baseX, height * 0.97, 0, baseX, height * 0.97, height * 0.2);
+  inner.addColorStop(0, 'rgba(220,238,255,0.95)');
+  inner.addColorStop(0.35, 'rgba(64,120,255,0.58)');
+  inner.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = inner;
+  ctx.fillRect(baseX - height * 0.25, height * 0.55, height * 0.5, height * 0.45);
+};
 
 export const FlameHeroCanvas: React.FC = () => {
   const { language } = useLanguage();
   const [index, setIndex] = useState(0);
-  const [interacted, setInteracted] = useState(false);
-  const lastTouchAt = useRef(0);
+  const [hasInteracted, setHasInteracted] = useState(false);
+  const [stage, setStage] = useState<FlameMotionStage>('flash');
+  const [reduced, setReduced] = useState(() => Boolean(
+    typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches,
+  ));
+  const [inView, setInView] = useState(true);
+  const [pageVisible, setPageVisible] = useState(() =>
+    typeof document === 'undefined' ? true : !document.hidden,
+  );
+  const [userPaused, setUserPaused] = useState(false);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const surfaceRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const paletteRef = useRef<Palette>(paletteOf(FLAME_ELEMENTS[0]));
   const targetRef = useRef<Palette>(paletteOf(FLAME_ELEMENTS[0]));
-  // 交互物理量（ref 驱动，不进 React 渲染循环）
-  const burstRef = useRef(0); // 换元素时的白热爆发 0..1
-  const leanRef = useRef(0); // 当前倾斜（风）-1..1
+  const burstRef = useRef(0);
+  const leanRef = useRef(0);
   const leanTargetRef = useRef(0);
-  const fanRef = useRef(0); // 扇风加氧强度 0..1
+  const fanRef = useRef(0);
   const fanTargetRef = useRef(0);
 
   useEffect(() => {
+    const query = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const sync = () => setReduced(query.matches);
+    sync();
+    query.addEventListener('change', sync);
+    return () => query.removeEventListener('change', sync);
+  }, []);
+
+  useEffect(() => {
+    const sync = () => setPageVisible(!document.hidden);
+    document.addEventListener('visibilitychange', sync);
+    return () => document.removeEventListener('visibilitychange', sync);
+  }, []);
+
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root || typeof IntersectionObserver === 'undefined') return;
+    const observer = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting), { threshold: 0.05 });
+    observer.observe(root);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const surface = surfaceRef.current;
+    const canvas = canvasRef.current;
+    if (!surface || !canvas || typeof ResizeObserver === 'undefined') return;
+    const resize = () => {
+      const rect = surface.getBoundingClientRect();
+      const size = getCanvasBackingSize(rect.width, rect.height, window.devicePixelRatio);
+      if (canvas.width === size.width && canvas.height === size.height) return;
+      canvas.width = size.width;
+      canvas.height = size.height;
+      const ctx = canvas.getContext('2d');
+      if (ctx) drawStaticFlame(ctx, size.width, size.height, paletteRef.current);
+    };
+    const observer = new ResizeObserver(resize);
+    observer.observe(surface);
+    resize();
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
     targetRef.current = paletteOf(FLAME_ELEMENTS[index]);
-    // 「蘸盐入焰」：换元素瞬间白热爆发
-    burstRef.current = 1;
-  }, [index]);
+    burstRef.current = reduced ? 0 : 1;
+    setStage(getFlameMotionStage(0, reduced));
+    if (reduced) return;
+    const colorTimer = window.setTimeout(() => setStage(getFlameMotionStage(200, false)), 200);
+    const readoutTimer = window.setTimeout(() => setStage(getFlameMotionStage(800, false)), 800);
+    return () => {
+      window.clearTimeout(colorTimer);
+      window.clearTimeout(readoutTimer);
+    };
+  }, [index, reduced]);
 
   useEffect(() => {
     const id = setInterval(() => {
-      const idle = performance.now() - lastTouchAt.current;
-      if (idle > RESUME_MS) setIndex((i) => (i + 1) % FLAME_ELEMENTS.length);
+      const motionAvailable = inView && pageVisible && !userPaused;
+      if (shouldAdvanceFlameCycle(hasInteracted, motionAvailable, reduced)) {
+        setIndex((i) => (i + 1) % FLAME_ELEMENTS.length);
+      }
     }, CYCLE_MS);
     return () => clearInterval(id);
-  }, []);
+  }, [hasInteracted, inView, pageVisible, reduced, userPaused]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    canvas.width = W;
-    canvas.height = H;
     const ctx = canvas.getContext('2d')!;
-    ctx.fillStyle = '#000';
-    ctx.fillRect(0, 0, W, H);
+    const motionEnabled = inView && pageVisible && !reduced && !userPaused;
+    if (!motionEnabled) {
+      if (reduced || userPaused) drawStaticFlame(ctx, canvas.width, canvas.height, targetRef.current);
+      return;
+    }
+
+    drawStaticFlame(ctx, canvas.width, canvas.height, paletteRef.current);
 
     interface Spark {
       x: number;
@@ -129,14 +261,14 @@ export const FlameHeroCanvas: React.FC = () => {
     let last = performance.now();
     let t = 0;
 
-    const spawnSparks = (n: number, fan: number) => {
+    const spawnSparks = (n: number, fan: number, width: number, height: number, flameX: number) => {
       for (let i = 0; i < n; i++) {
         sparks.push({
-          x: FLAME_CX + (Math.random() - 0.5) * W * 0.3,
-          y: H * (0.4 + Math.random() * 0.35),
-          vy: 12 + Math.random() * 18 + fan * 22,
-          vx: (Math.random() - 0.5) * 6,
-          size: 0.7 + Math.random() * 1.4,
+          x: flameX + (Math.random() - 0.5) * width * 0.3,
+          y: height * (0.4 + Math.random() * 0.35),
+          vy: height * (0.09 + Math.random() * 0.13 + fan * 0.16),
+          vx: (Math.random() - 0.5) * width * 0.035,
+          size: height * (0.005 + Math.random() * 0.01),
           life: 1,
           seed: Math.random() * 40,
         });
@@ -145,87 +277,82 @@ export const FlameHeroCanvas: React.FC = () => {
 
     const loop = (now: number) => {
       raf = requestAnimationFrame(loop);
-      if (document.hidden) {
-        last = now;
-        return;
-      }
+      if (now - last < FRAME_MS) return;
       const dt = Math.min(0.05, (now - last) / 1000);
       last = now;
       t += dt;
+      const width = canvas.width;
+      const height = canvas.height;
+      const flameX = width * 0.58;
+      const stripWidth = width / STRIPS;
 
-      // ---- 物理量更新 ----
       paletteRef.current = lerpPalette(paletteRef.current, targetRef.current, 1 - Math.exp(-dt * 6));
       const pal = paletteRef.current;
-      burstRef.current *= Math.exp(-dt * 2.4);
+      burstRef.current *= Math.exp(-dt * 5.2);
       const burst = burstRef.current;
       leanRef.current += (leanTargetRef.current - leanRef.current) * (1 - Math.exp(-dt * 5));
       const lean = leanRef.current;
       fanRef.current += (fanTargetRef.current - fanRef.current) * (1 - Math.exp(-dt * 4));
       const fan = fanRef.current;
-      // 强度脉动（两列正弦相乘，接近真实火焰的闪烁节奏）
       const flick = 0.78 + 0.22 * Math.sin(t * 11.3) * Math.sin(t * 4.7 + 1.3);
-      const inten = (1 + fan * 0.9 + burst * 1.8) * flick;
+      const inten = (1 + fan * 0.62 + burst * 0.75) * flick;
 
-      // ---- 1) 反馈：分竖条上移，各带相位偏移 → 火舌舔动 ----
       ctx.globalCompositeOperation = 'source-over';
       for (let i = 0; i < STRIPS; i++) {
-        const sx = i * STRIP_W;
+        const sx = i * stripWidth;
         const mid = (i + 0.5) / STRIPS;
-        const converge = (0.6 - mid) * 4.2; // 向焰心收缩，烧出锥形
+        const converge = (0.58 - mid) * width * 0.026;
         const sway =
-          Math.sin(t * 5.2 + i * 1.9) * 1.4 +
-          Math.sin(t * 9.1 + i * 3.7) * 0.7;
-        const dx = converge + sway * (0.8 + fan * 0.8) + lean * 6;
-        const dy = -(3.1 + Math.sin(t * 6.3 + i * 2.6) * 0.9 + fan * 1.3 + burst * 0.8);
-        ctx.drawImage(canvas, sx, 0, STRIP_W + 0.6, H, sx + dx, dy, STRIP_W + 0.6, H);
+          Math.sin(t * 5.2 + i * 1.9) * width * 0.008 +
+          Math.sin(t * 9.1 + i * 3.7) * width * 0.004;
+        const dx = converge + sway * (0.8 + fan * 0.7) + lean * width * 0.035;
+        const dy = -height * (0.022 + Math.sin(t * 6.3 + i * 2.6) * 0.006 + fan * 0.009 + burst * 0.004);
+        ctx.drawImage(canvas, sx, 0, stripWidth + 1, height, sx + dx, dy, stripWidth + 1, height);
       }
 
-      // ---- 2) 向黑衰减（火苗冷却），衰减量轻微呼吸 ----
       ctx.fillStyle = `rgba(10,4,2,${0.105 + 0.018 * Math.sin(t * 3.1) - fan * 0.02})`;
-      ctx.fillRect(0, 0, W, H);
+      ctx.fillRect(0, 0, width, height);
 
-      // ---- 3) 底部生成新火团（加色混合）----
       ctx.globalCompositeOperation = 'lighter';
-      const baseX = FLAME_CX + lean * 7;
+      const baseX = flameX + lean * width * 0.04;
 
-      // 3a) 本生灯蓝色内焰（真实焰色反应里底焰保持微蓝）
       {
-        const r = 15 + fan * 4;
-        const g = ctx.createRadialGradient(baseX, H - 1, 0, baseX, H - 1, r);
+        const r = height * (0.11 + fan * 0.025);
+        const g = ctx.createRadialGradient(baseX, height - 1, 0, baseX, height - 1, r);
         g.addColorStop(0, `rgba(72,124,255,${0.34 * inten})`);
         g.addColorStop(0.5, `rgba(58,96,220,${0.16 * inten})`);
         g.addColorStop(1, 'rgba(0,0,0,0)');
         ctx.fillStyle = g;
         ctx.beginPath();
-        ctx.arc(baseX, H - 1, r, 0, Math.PI * 2);
+        ctx.arc(baseX, height - 1, r, 0, Math.PI * 2);
         ctx.fill();
       }
-      // 3b) 白热核心（爆发时趋近纯白）
+
       {
-        const wMix = Math.min(1, burst * 1.5);
+        const wMix = Math.min(0.72, burst);
         const core: RGB = {
           r: pal.hot.r + (255 - pal.hot.r) * wMix,
           g: pal.hot.g + (255 - pal.hot.g) * wMix,
           b: pal.hot.b + (255 - pal.hot.b) * wMix,
         };
-        const r = 9 + fan * 3 + burst * 6;
-        const g = ctx.createRadialGradient(baseX, H - 3, 0, baseX, H - 3, r);
-        g.addColorStop(0, rgba(core, Math.min(1, 0.9 * inten)));
+        const r = height * (0.064 + fan * 0.018 + burst * 0.025);
+        const g = ctx.createRadialGradient(baseX, height - 3, 0, baseX, height - 3, r);
+        g.addColorStop(0, rgba(core, Math.min(1, 0.82 * inten)));
         g.addColorStop(1, 'rgba(0,0,0,0)');
         ctx.fillStyle = g;
         ctx.beginPath();
-        ctx.arc(baseX, H - 3, r, 0, Math.PI * 2);
+        ctx.arc(baseX, height - 3, r, 0, Math.PI * 2);
         ctx.fill();
       }
-      // 3c) 元素色主火团
+
       const blobN = 4 + (fan > 0.4 ? 1 : 0);
       for (let i = 0; i < blobN; i++) {
-        const x = baseX + (Math.random() - 0.5) * W * 0.36;
-        const y = H - 4 - Math.random() * 9;
-        const r = (10 + Math.random() * 14) * (0.9 + 0.25 * inten);
+        const x = baseX + (Math.random() - 0.5) * width * 0.34;
+        const y = height - 4 - Math.random() * height * 0.065;
+        const r = height * (0.07 + Math.random() * 0.1) * (0.9 + 0.18 * inten);
         const g = ctx.createRadialGradient(x, y, 0, x, y, r);
-        g.addColorStop(0, rgba(pal.hot, 0.8 * inten));
-        g.addColorStop(0.45, rgba(pal.main, 0.5 * inten));
+        g.addColorStop(0, rgba(pal.hot, Math.min(1, 0.72 * inten)));
+        g.addColorStop(0.42, rgba(pal.main, Math.min(1, 0.62 * inten)));
         g.addColorStop(1, 'rgba(0,0,0,0)');
         ctx.fillStyle = g;
         ctx.beginPath();
@@ -233,9 +360,8 @@ export const FlameHeroCanvas: React.FC = () => {
         ctx.fill();
       }
 
-      // ---- 4) 火星（爆发/扇风时大量飞溅，带光晕、随风漂移）----
-      const spawnP = 0.26 + fan * 0.5 + burst * 2.2;
-      if (Math.random() < spawnP) spawnSparks(burst > 0.3 ? 2 : 1, fan);
+      const spawnP = 0.18 + fan * 0.38 + burst * 0.9;
+      if (Math.random() < spawnP) spawnSparks(burst > 0.3 ? 2 : 1, fan, width, height, flameX);
       for (let i = sparks.length - 1; i >= 0; i--) {
         const s = sparks[i];
         s.y -= s.vy * dt;
@@ -245,7 +371,6 @@ export const FlameHeroCanvas: React.FC = () => {
           sparks.splice(i, 1);
           continue;
         }
-        // 闪烁
         const tw = 0.7 + 0.3 * Math.sin(t * 30 + s.seed);
         ctx.fillStyle = rgba(pal.hot, 0.25 * s.life * tw);
         ctx.fillRect(s.x - s.size * 0.5, s.y - s.size * 0.5, s.size * 2, s.size * 2);
@@ -253,68 +378,129 @@ export const FlameHeroCanvas: React.FC = () => {
         ctx.fillRect(s.x - s.size * 0.5, s.y - s.size * 0.5, s.size, s.size);
       }
 
-      // ---- 5) 爆发白闪（蘸盐入焰的高光瞬间）----
       if (burst > 0.02) {
-        const r = W * 0.45 * burst + 20;
-        const g = ctx.createRadialGradient(baseX, H - 10, 0, baseX, H - 10, r);
-        g.addColorStop(0, `rgba(255,255,255,${0.4 * burst})`);
+        const r = height * (0.12 + 0.2 * burst);
+        const g = ctx.createRadialGradient(baseX, height - height * 0.05, 0, baseX, height - height * 0.05, r);
+        g.addColorStop(0, `rgba(255,255,255,${0.22 * burst})`);
         g.addColorStop(1, 'rgba(0,0,0,0)');
         ctx.fillStyle = g;
         ctx.beginPath();
-        ctx.arc(baseX, H - 10, r, 0, Math.PI * 2);
+        ctx.arc(baseX, height - height * 0.05, r, 0, Math.PI * 2);
         ctx.fill();
       }
     };
     raf = requestAnimationFrame(loop);
     return () => cancelAnimationFrame(raf);
-  }, []);
+  }, [inView, pageVisible, reduced, userPaused]);
 
-  /** 指针位置 → 风力目标 */
   const handlePointer = (e: React.PointerEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
     const rx = (e.clientX - rect.left) / rect.width;
-    leanTargetRef.current = Math.max(-1, Math.min(1, (rx - 0.6) * 1.8));
-    if (!interacted) setInteracted(true);
+    leanTargetRef.current = Math.max(-1, Math.min(1, (rx - 0.58) * 1.8));
+    setHasInteracted(true);
   };
 
   const current = FLAME_ELEMENTS[index];
   const isZh = language === 'zh';
+  const stageText = stage === 'flash'
+    ? (isZh ? '样品入焰' : 'sample enters flame')
+    : stage === 'color'
+      ? (isZh ? '焰色稳定中' : 'color stabilizing')
+      : `${isZh ? current.observation.zh : current.observation.en} · ${isZh ? '代表谱线' : 'representative line'} ${current.line} nm`;
+  const motionPaused = reduced || userPaused;
 
   return (
-    <div
-      className="absolute inset-0 cursor-crosshair touch-none"
-      onPointerMove={handlePointer}
-      onPointerDown={(e) => {
-        handlePointer(e);
-        fanTargetRef.current = 1;
-      }}
-      onPointerUp={() => {
-        fanTargetRef.current = 0;
-      }}
-      onPointerLeave={() => {
-        fanTargetRef.current = 0;
-        leanTargetRef.current = 0;
-      }}
-    >
-      <canvas
-        ref={canvasRef}
-        className="w-full h-full"
-        style={{ filter: 'blur(6px) saturate(1.4) contrast(1.15) brightness(1.05)', transform: 'scale(1.07)' }}
-      />
+    <div ref={rootRef} className="absolute inset-0 flex flex-col">
+      <div
+        ref={surfaceRef}
+        className="relative min-h-0 flex-1 cursor-crosshair touch-pan-y overflow-hidden"
+        onPointerMove={handlePointer}
+        onPointerDown={(e) => {
+          handlePointer(e);
+          fanTargetRef.current = 1;
+        }}
+        onPointerUp={() => {
+          fanTargetRef.current = 0;
+        }}
+        onPointerCancel={() => {
+          fanTargetRef.current = 0;
+          leanTargetRef.current = 0;
+        }}
+        onPointerLeave={() => {
+          fanTargetRef.current = 0;
+          leanTargetRef.current = 0;
+        }}
+      >
+        <canvas ref={canvasRef} aria-hidden="true" className="flame-canvas absolute inset-0 h-full w-full" />
 
-      {/* 元素切换 */}
-      <div className="absolute left-2 top-1/2 -translate-y-1/2 flex flex-col items-start gap-1">
+        <button
+          type="button"
+          aria-pressed={motionPaused}
+          aria-label={reduced
+            ? (isZh ? '系统已减弱火焰动画' : 'Flame animation reduced by system setting')
+            : motionPaused
+              ? (isZh ? '播放火焰动画' : 'Play flame animation')
+              : (isZh ? '暂停火焰动画' : 'Pause flame animation')}
+          disabled={reduced}
+          onPointerDown={(e) => e.stopPropagation()}
+          onClick={(e) => {
+            e.stopPropagation();
+            setHasInteracted(true);
+            setUserPaused((paused) => !paused);
+          }}
+          className="absolute right-2 top-2 z-20 grid min-h-11 min-w-11 place-items-center rounded-full border border-white/20 bg-black/40 text-white/80 backdrop-blur-sm transition hover:border-white/45 hover:text-white disabled:cursor-default disabled:opacity-45 sm:min-h-8 sm:min-w-8"
+        >
+          {motionPaused ? <Play className="h-4 w-4" /> : <Pause className="h-4 w-4" />}
+        </button>
+
+        <div
+          className={`pointer-events-none absolute left-2 top-2 z-10 max-w-[calc(100%-3.5rem)] rounded-full border border-white/10 bg-black/30 px-2.5 py-1 text-[10px] text-white/70 backdrop-blur-sm transition-opacity duration-500 ${
+            hasInteracted ? 'opacity-0' : 'opacity-100'
+          }`}
+        >
+          {reduced ? (
+            isZh ? '已按系统设置减弱动态效果' : 'Motion reduced by system setting'
+          ) : (
+            <>
+              <span className="sm:hidden">{isZh ? '拖动火焰 · 长按增强' : 'Drag · hold to stoke'}</span>
+              <span className="hidden sm:inline">{isZh ? '移动鼠标扇风 · 按住加氧' : 'Move to fan · hold to stoke'}</span>
+            </>
+          )}
+        </div>
+
+        <div
+          key={`${index}-${stage}`}
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+          className="flame-readout pointer-events-none absolute bottom-2 left-1/2 z-10 flex max-w-[92%] -translate-x-1/2 items-center gap-2 rounded-full border border-white/15 bg-black/45 px-3 py-1.5 text-center backdrop-blur-sm"
+        >
+          <span className="font-mono text-sm font-bold" style={{ color: current.color, textShadow: `0 0 8px ${current.color}` }}>
+            {current.symbol}
+          </span>
+          <span className="truncate text-[11px] text-white/90">{stageText}</span>
+        </div>
+      </div>
+
+      <div
+        role="group"
+        aria-label={isZh ? '选择焰色反应元素' : 'Choose a flame-test element'}
+        className="relative z-20 flex h-[58px] shrink-0 items-center gap-2 overflow-x-auto border-t border-white/10 bg-black/35 px-2 py-1.5 backdrop-blur-sm sm:absolute sm:left-2 sm:top-1/2 sm:h-auto sm:-translate-y-1/2 sm:flex-col sm:items-start sm:gap-1 sm:overflow-visible sm:border-0 sm:bg-transparent sm:p-0"
+      >
         {FLAME_ELEMENTS.map((el, i) => (
           <button
+            type="button"
             key={el.key}
+            aria-pressed={i === index}
+            aria-label={`${isZh ? el.name.zh : el.name.en}, ${isZh ? '代表谱线' : 'representative line'} ${el.line} nm`}
             onClick={() => {
-              lastTouchAt.current = performance.now();
+              setHasInteracted(true);
               setIndex(i);
             }}
-            className={`flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-medium backdrop-blur-sm border whitespace-nowrap transition-all ${
+            className={`flex min-h-11 min-w-[58px] shrink-0 items-center justify-center gap-1.5 rounded-xl border px-3 py-2 text-xs font-semibold backdrop-blur-sm transition-all sm:min-h-7 sm:min-w-0 sm:justify-start sm:rounded-full sm:px-2 sm:py-1 sm:text-[10px] ${
               i === index
-                ? 'bg-white/20 border-white/60 text-white scale-105'
-                : 'bg-black/20 border-white/15 text-white/55 hover:text-white/90 hover:border-white/40 hover:scale-105'
+                ? 'scale-[1.02] border-white/60 bg-white/20 text-white'
+                : 'border-white/15 bg-black/25 text-white/65 hover:border-white/40 hover:text-white'
             }`}
           >
             <span
@@ -323,30 +509,9 @@ export const FlameHeroCanvas: React.FC = () => {
             />
             <span className="font-mono">{el.symbol}</span>
             {isZh && <span>{el.name.zh}</span>}
-            {i === index && <span className="font-mono text-white/70">{el.line}nm</span>}
+            {i === index && <span className="hidden font-mono text-white/75 sm:inline">{el.line}nm</span>}
           </button>
         ))}
-      </div>
-
-      {/* 底部读数：元素 + 特征谱线（随切换做入场动画） */}
-      <div
-        key={index}
-        className="absolute bottom-2 left-1/2 -translate-x-1/2 flex items-baseline gap-1.5 px-2.5 py-1 rounded-full bg-black/35 backdrop-blur-sm border border-white/15 whitespace-nowrap pointer-events-none flame-readout"
-      >
-        <span className="font-mono font-bold text-sm" style={{ color: current.color, textShadow: `0 0 8px ${current.color}` }}>
-          {current.symbol}
-        </span>
-        <span className="text-[11px] text-white/85">{isZh ? current.name.zh : current.name.en}</span>
-        <span className="font-mono text-[10px] text-white/50">λ {current.line} nm</span>
-      </div>
-
-      {/* 操作提示（首次交互后淡出） */}
-      <div
-        className={`absolute top-2 right-2 px-2 py-1 rounded-full bg-black/30 backdrop-blur-sm border border-white/10 text-[10px] text-white/60 pointer-events-none transition-opacity duration-700 ${
-          interacted ? 'opacity-0' : 'opacity-100'
-        }`}
-      >
-        {isZh ? '移动鼠标扇风 · 按住加氧' : 'Move to fan · Hold to stoke'}
       </div>
 
       <style>{`
@@ -354,7 +519,17 @@ export const FlameHeroCanvas: React.FC = () => {
           from { opacity: 0; transform: translate(-50%, 6px); }
           to { opacity: 1; transform: translate(-50%, 0); }
         }
+        .flame-canvas {
+          filter: blur(2px) saturate(1.35) contrast(1.12) brightness(1.03);
+          transform: scale(1.035);
+        }
         .flame-readout { animation: flame-readout-in 0.45s cubic-bezier(0.22, 1, 0.36, 1); }
+        @media (min-width: 640px) {
+          .flame-canvas { filter: blur(3px) saturate(1.35) contrast(1.12) brightness(1.03); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .flame-readout { animation: none; }
+        }
       `}</style>
     </div>
   );

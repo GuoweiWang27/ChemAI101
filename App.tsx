@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { ReactionLab } from './components/ReactionLab';
-import { BuilderModule } from './components/BuilderModule';
-import { LibraryModule } from './components/LibraryModule';
-import { TextbookModule } from './components/TextbookModule';
+import React, { lazy, Suspense, useEffect, useState } from 'react';
 import { HomeModule } from './components/HomeModule';
-import { ReactionPage } from './components/ReactionPage';
 import { Atom, BookOpen, Database, FlaskConical, Home as HomeIcon, Languages } from 'lucide-react';
 import { useLanguage } from './contexts/LanguageContext';
 import { parseRoute, updateRouteParams, RouteTarget } from './utils/routeParams';
 import { getReaction } from './src/data/reactions';
+
+const ReactionLab = lazy(() => import('./components/ReactionLab').then((module) => ({ default: module.ReactionLab })));
+const BuilderModule = lazy(() => import('./components/BuilderModule').then((module) => ({ default: module.BuilderModule })));
+const LibraryModule = lazy(() => import('./components/LibraryModule').then((module) => ({ default: module.LibraryModule })));
+const TextbookModule = lazy(() => import('./components/TextbookModule').then((module) => ({ default: module.TextbookModule })));
+const ReactionPage = lazy(() => import('./components/ReactionPage').then((module) => ({ default: module.ReactionPage })));
 
 function App() {
   const [activeTab, setActiveTab] = useState<'home' | 'textbook' | 'reaction' | 'builder' | 'library'>('home');
@@ -37,6 +38,14 @@ function App() {
     setLanguage(language === 'en' ? 'zh' : 'en');
   };
 
+  const navItems = [
+    { tab: 'home', label: t('navHome'), mobileLabel: language === 'zh' ? '首页' : 'Home', Icon: HomeIcon },
+    { tab: 'textbook', label: t('navLibraryCurated'), mobileLabel: language === 'zh' ? '教材库' : 'Textbook', Icon: BookOpen },
+    { tab: 'reaction', label: t('navReaction'), mobileLabel: language === 'zh' ? '实验室' : 'Lab', Icon: FlaskConical },
+    { tab: 'builder', label: t('navBuilder'), mobileLabel: language === 'zh' ? '构建器' : 'Builder', Icon: Atom },
+    { tab: 'library', label: t('navLibrary'), mobileLabel: language === 'zh' ? '分子库' : 'Library', Icon: Database },
+  ] as const;
+
   return (
     <div className="min-h-screen bg-[#faf8f5] flex flex-col font-sans">
       {/* Header */}
@@ -50,58 +59,22 @@ function App() {
             </h1>
           </div>
           
-          <div className="flex items-center gap-2 sm:gap-4 min-w-0">
-            <nav className="flex items-center gap-1 bg-[#f0ece4] p-1 rounded-xl overflow-x-auto max-w-full">
-               <button
-                 onClick={() => switchTab('home')}
-                 className={`px-3 sm:px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 whitespace-nowrap shrink-0
-                   ${activeTab === 'home'
-                     ? 'bg-white text-science-700 shadow-sm'
-                     : 'text-[#6f685d] hover:text-[#1a1a1a] hover:bg-white'}`}
-               >
-                 <HomeIcon className="w-4 h-4" />
-                 <span className="hidden sm:inline">{t('navHome')}</span>
-               </button>
-               <button
-                 onClick={() => switchTab('textbook')}
-                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2
-                   ${activeTab === 'textbook'
-                     ? 'bg-white text-science-700 shadow-sm'
-                     : 'text-[#6f685d] hover:text-[#1a1a1a] hover:bg-white'}`}
-               >
-                 <BookOpen className="w-4 h-4" />
-                 <span className="hidden sm:inline">{t('navLibraryCurated')}</span>
-               </button>
-               <button
-                 onClick={() => switchTab('reaction')}
-                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2
-                   ${activeTab === 'reaction' 
-                     ? 'bg-white text-science-700 shadow-sm' 
-                     : 'text-[#6f685d] hover:text-[#1a1a1a] hover:bg-white'}`}
-               >
-                 <FlaskConical className="w-4 h-4" />
-                 <span className="hidden sm:inline">{t('navReaction')}</span>
-               </button>
-               <button
-                 onClick={() => switchTab('builder')}
-                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2
-                   ${activeTab === 'builder' 
-                     ? 'bg-white text-science-700 shadow-sm' 
-                     : 'text-[#6f685d] hover:text-[#1a1a1a] hover:bg-white'}`}
-               >
-                 <Atom className="w-4 h-4" />
-                 <span className="hidden sm:inline">{t('navBuilder')}</span>
-               </button>
-               <button
-                 onClick={() => switchTab('library')}
-                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2
-                   ${activeTab === 'library'
-                     ? 'bg-white text-science-700 shadow-sm'
-                     : 'text-[#6f685d] hover:text-[#1a1a1a] hover:bg-white'}`}
-               >
-                 <Database className="w-4 h-4" />
-                 <span className="hidden sm:inline">{t('navLibrary')}</span>
-               </button>
+          <div className="flex items-center gap-4 min-w-0">
+            <nav className="hidden sm:flex items-center gap-1 bg-[#f0ece4] p-1 rounded-xl" aria-label={language === 'zh' ? '主导航' : 'Primary navigation'}>
+              {navItems.map(({ tab, label, Icon }) => (
+                <button
+                  key={tab}
+                  onClick={() => switchTab(tab)}
+                  aria-current={activeTab === tab ? 'page' : undefined}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 whitespace-nowrap
+                    ${activeTab === tab
+                      ? 'bg-white text-science-700 shadow-sm'
+                      : 'text-[#6f685d] hover:text-[#1a1a1a] hover:bg-white'}`}
+                >
+                  <Icon className="w-4 h-4" />
+                  <span>{label}</span>
+                </button>
+              ))}
             </nav>
 
             <button
@@ -116,24 +89,53 @@ function App() {
             </button>
           </div>
         </div>
+
+        <nav
+          className="grid h-14 grid-cols-5 gap-1 border-t border-[#f0ece4] bg-white px-2 py-1 sm:hidden"
+          aria-label={language === 'zh' ? '主导航' : 'Primary navigation'}
+        >
+          {navItems.map(({ tab, label, mobileLabel, Icon }) => (
+            <button
+              key={tab}
+              onClick={() => switchTab(tab)}
+              aria-current={activeTab === tab ? 'page' : undefined}
+              aria-label={label}
+              className={`flex min-w-0 flex-col items-center justify-center gap-0.5 rounded-lg px-1 text-[10px] font-semibold leading-tight transition-colors
+                ${activeTab === tab
+                  ? 'bg-[#f0ece4] text-science-700'
+                  : 'text-[#6f685d] active:bg-[#f0ece4]'}`}
+            >
+              <Icon className="h-4 w-4 shrink-0" />
+              <span className="w-full truncate text-center">{mobileLabel}</span>
+            </button>
+          ))}
+        </nav>
       </header>
 
       {/* Main Content */}
       <main className="flex-1 max-w-7xl w-full mx-auto">
-        <div className="h-[calc(100dvh-64px)] overflow-y-auto lg:overflow-hidden">
-           {reaction ? (
-             <ReactionPage reaction={reaction} present={route.present} onExit={exitReaction} />
-           ) : activeTab === 'home' ? (
-             <HomeModule onOpen={switchTab} />
-           ) : activeTab === 'reaction' ? (
-             <ReactionLab />
-           ) : activeTab === 'textbook' ? (
-             <TextbookModule />
-           ) : activeTab === 'library' ? (
-             <LibraryModule />
-           ) : (
-             <BuilderModule />
-           )}
+        <div className="h-[calc(100dvh-120px)] overflow-y-auto sm:h-[calc(100dvh-64px)] lg:overflow-hidden">
+          <Suspense
+            fallback={(
+              <div role="status" className="grid h-full place-items-center px-6 text-sm font-semibold text-[#6f685d]">
+                {language === 'zh' ? '正在准备实验模块…' : 'Preparing the lab module…'}
+              </div>
+            )}
+          >
+            {reaction ? (
+              <ReactionPage reaction={reaction} present={route.present} onExit={exitReaction} />
+            ) : activeTab === 'home' ? (
+              <HomeModule onOpen={switchTab} />
+            ) : activeTab === 'reaction' ? (
+              <ReactionLab />
+            ) : activeTab === 'textbook' ? (
+              <TextbookModule />
+            ) : activeTab === 'library' ? (
+              <LibraryModule />
+            ) : (
+              <BuilderModule />
+            )}
+          </Suspense>
         </div>
       </main>
     </div>
