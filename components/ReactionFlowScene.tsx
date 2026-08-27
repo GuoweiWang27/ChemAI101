@@ -706,7 +706,7 @@ const ActorLabel: React.FC<{
   return (
     <Html position={position} center distanceFactor={7} style={{ pointerEvents: 'none' }}>
       <span
-        className="whitespace-nowrap rounded-full border border-white/20 bg-[#101820]/85 px-2 py-0.5 text-[11px] font-semibold tracking-wide text-white shadow-lg backdrop-blur-sm"
+        className="whitespace-nowrap rounded-md border border-white/20 bg-[#101820]/88 px-2 py-1 font-sans text-[12px] font-medium leading-none text-white shadow-lg backdrop-blur-sm"
         style={{ opacity }}
       >
         {actor.label[language]}
@@ -719,7 +719,8 @@ const IonNode: React.FC<{
   actor: ReactionAnimationActor;
   position: [number, number, number];
   opacity: number;
-}> = ({ actor, position, opacity }) => {
+  showLabel?: boolean;
+}> = ({ actor, position, opacity, showLabel = true }) => {
   const radius = actor.radius ?? 0.32;
   const color = actor.color ?? ELEMENT_COLORS[actor.element ?? ''] ?? '#d8d2c5';
   const isHydroxide = actor.formula === 'OH';
@@ -745,7 +746,7 @@ const IonNode: React.FC<{
         <torusGeometry args={[radius * 1.2, 0.018, 8, 28]} />
         <meshBasicMaterial color={actor.charge && actor.charge > 0 ? '#d8a8ff' : '#ff8f83'} transparent opacity={opacity * 0.75} />
       </mesh>
-      <ActorLabel actor={actor} position={[0, radius + 0.23, 0]} opacity={opacity} />
+      {showLabel && <ActorLabel actor={actor} position={[0, radius + 0.23, 0]} opacity={opacity} />}
     </group>
   );
 };
@@ -781,6 +782,9 @@ const SodiumWaterSceneContent: React.FC<{
   const hydrogenVisible = clamp01((time - (electronStart + 0.7)) / 1.2);
   const heatVisible = snapshot.stage.id === 'melt';
   const ionVisible = clamp01((time - (ionsStart - 0.55)) / 1.15);
+  const showWaterLabel = snapshot.stage.id === 'surface';
+  const showSodiumLabel = ['surface', 'melt', 'electron'].includes(snapshot.stage.id);
+  const showIndicator = snapshot.stage.id === 'ions';
 
   const sodiumPosition = sodium
     ? actorPoint(sodium, meltP)
@@ -818,7 +822,7 @@ const SodiumWaterSceneContent: React.FC<{
         <mesh position={[2.68, -1.08, 0]}><boxGeometry args={[0.06, 1.45, 1.35]} /><meshBasicMaterial color="#dce9e7" transparent opacity={0.46} /></mesh>
         <mesh position={[0, -1.72, 0]}><boxGeometry args={[5.4, 0.06, 1.35]} /><meshBasicMaterial color="#dce9e7" transparent opacity={0.46} /></mesh>
       </group>
-      {water && <ActorLabel actor={water} position={[-2.0, -0.25, 0.6]} />}
+      {water && showWaterLabel && <ActorLabel actor={water} position={[-2.0, -0.25, 0.6]} />}
 
       {/* 钠浮起、熔化、变小；结束后由 Na⁺ 取代而不是凭空消失。 */}
       {sodium && sodiumFade > 0.01 && (
@@ -827,7 +831,7 @@ const SodiumWaterSceneContent: React.FC<{
             <sphereGeometry args={[sodium.radius ?? 0.58, 28, 22]} />
             <meshStandardMaterial color={sodium.color ?? '#b47be8'} roughness={0.16} metalness={0.56} transparent opacity={sodiumFade} emissive="#8c4cc1" emissiveIntensity={0.22 + meltP * 0.26} />
           </mesh>
-          <ActorLabel actor={sodium} position={[0, (sodium.radius ?? 0.58) + 0.25, 0]} opacity={sodiumFade} />
+          {showSodiumLabel && <ActorLabel actor={sodium} position={[0, (sodium.radius ?? 0.58) + 0.25, 0]} opacity={sodiumFade} />}
         </group>
       )}
       {heatVisible && (
@@ -837,9 +841,6 @@ const SodiumWaterSceneContent: React.FC<{
             <torusGeometry args={[0.82 + meltP * 0.14, 0.025, 8, 36]} />
             <meshBasicMaterial color="#ffae47" transparent opacity={0.68} />
           </mesh>
-          <Html position={[0, 0.93, 0]} center distanceFactor={7} style={{ pointerEvents: 'none' }}>
-            <span className="rounded-full bg-[#f59e0b]/90 px-2 py-0.5 text-[10px] font-bold text-[#2b1a0a] shadow-lg">放热 · exothermic</span>
-          </Html>
         </group>
       )}
 
@@ -858,7 +859,7 @@ const SodiumWaterSceneContent: React.FC<{
                   <sphereGeometry args={[actor.radius ?? 0.11, 16, 16]} />
                   <meshBasicMaterial color={actor.color ?? '#f4c95d'} transparent opacity={0.98} />
                 </mesh>
-                <ActorLabel actor={actor} position={[0, 0.2, 0]} />
+                {index === 0 && <ActorLabel actor={actor} position={[0, 0.2, 0]} />}
               </group>
             );
           })}
@@ -866,10 +867,10 @@ const SodiumWaterSceneContent: React.FC<{
       )}
 
       {/* 溶液中的离子有各自的标签和环，不用 Na--O 球棍连接。 */}
-      {naOne && <IonNode actor={naOne} position={ionPosition(naOne)} opacity={ionVisible} />}
-      {naTwo && <IonNode actor={naTwo} position={ionPosition(naTwo)} opacity={ionVisible} />}
-      {ohOne && <IonNode actor={ohOne} position={ionPosition(ohOne)} opacity={ionVisible} />}
-      {ohTwo && <IonNode actor={ohTwo} position={ionPosition(ohTwo)} opacity={ionVisible} />}
+      {ionVisible > 0.02 && naOne && <IonNode actor={naOne} position={ionPosition(naOne)} opacity={ionVisible} />}
+      {ionVisible > 0.02 && naTwo && <IonNode actor={naTwo} position={ionPosition(naTwo)} opacity={ionVisible} showLabel={false} />}
+      {ionVisible > 0.02 && ohOne && <IonNode actor={ohOne} position={ionPosition(ohOne)} opacity={ionVisible} />}
+      {ionVisible > 0.02 && ohTwo && <IonNode actor={ohTwo} position={ionPosition(ohTwo)} opacity={ionVisible} showLabel={false} />}
 
       {/* H₂ 先由氢原子聚合，再作为气泡上升；最终状态仍保留完整分子。 */}
       {h2 && hydrogenVisible > 0 && (
@@ -900,13 +901,13 @@ const SodiumWaterSceneContent: React.FC<{
         );
       })}
 
-      {indicator && (
+      {indicator && showIndicator && (
         <group position={indicator.position}>
           <mesh>
             <sphereGeometry args={[indicator.radius ?? 0.22, 18, 18]} />
             <meshStandardMaterial color={time >= ionsStart ? '#ff597b' : '#f1d5d8'} transparent opacity={0.95} emissive="#ff597b" emissiveIntensity={time >= ionsStart ? 0.25 : 0.03} />
           </mesh>
-          <ActorLabel actor={indicator} position={[0, 0.4, 0]} />
+          <ActorLabel actor={indicator} position={[-0.65, 0.48, 0]} />
         </group>
       )}
 

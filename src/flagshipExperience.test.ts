@@ -71,9 +71,46 @@ describe('flagship classroom experience', () => {
 
     expect(html).toContain('宏观现象');
     expect(html).toContain('微观机理');
-    expect(html).not.toContain(scene.teachingMoments[0].question.zh);
+    expect(html).toContain(scene.teachingMoments[0].question.zh);
     expect(html).toContain(reaction.equation);
     expect(html).not.toContain('提交答案');
+    expect(html).toContain('data-layout="fitted-grid"');
+    expect(html).toContain('data-target-size="24"');
+    expect(html).not.toContain('overflow-x-auto');
+  });
+
+  it('keeps macro cards free of duplicated engineering annotations', () => {
+    const scene = getReaction('na-h2o')?.reactionAnimation;
+    if (!isFlagshipReactionScene(scene)) throw new Error('na-h2o flagship scene missing');
+    const heatEvent = scene.macroTrack.find((event) => event.kind === 'heat-rise')!;
+    const html = renderToStaticMarkup(
+      React.createElement(
+        LanguageProvider,
+        null,
+        React.createElement(MacroPhenomenonStage, {
+          event: heatEvent,
+          progress: 0.7,
+          reducedMotion: false,
+        }),
+      ),
+    );
+    expect(html).toContain('温度上升');
+    expect(html).not.toContain('energy cue · educational abstraction');
+
+    const solutionEvent = scene.macroTrack.find((event) => event.kind === 'solution-color')!;
+    const solutionHtml = renderToStaticMarkup(
+      React.createElement(
+        LanguageProvider,
+        null,
+        React.createElement(MacroPhenomenonStage, {
+          event: solutionEvent,
+          progress: 1,
+          reducedMotion: false,
+        }),
+      ),
+    );
+    expect(solutionHtml).toContain('酚酞变红');
+    expect(solutionHtml).not.toContain('>pink<');
   });
 
   it('drives the V3 micro scene from the active micro-track kind', () => {

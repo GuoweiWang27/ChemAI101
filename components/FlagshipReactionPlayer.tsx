@@ -284,7 +284,7 @@ export const FlagshipReactionPlayer = forwardRef<FlagshipReactionPlayerHandle, F
     const microPanel = (
       <div className="relative flex min-h-[220px] min-w-0 flex-1 flex-col overflow-hidden rounded-2xl border border-[#284148] bg-[#111b20]">
         <div className="flex items-center justify-between gap-2 border-b border-white/10 px-3 py-2">
-          <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#8fe8dc]">微观机理 · Micro</span>
+          <span className="text-[11px] font-semibold text-[#8fe8dc]">{language === 'zh' ? '微观机理' : 'Microscopic view'}</span>
           <span className="truncate text-xs text-white/60">{activeMicro?.label[language]}</span>
         </div>
         <div className="relative min-h-[190px] flex-1">
@@ -321,7 +321,7 @@ export const FlagshipReactionPlayer = forwardRef<FlagshipReactionPlayerHandle, F
 
     return (
       <section
-        className={`flex min-h-0 flex-col overflow-hidden rounded-[1.45rem] border border-[#284148] bg-[#101820] text-white shadow-[0_24px_65px_rgba(16,24,32,0.22)] lg:h-full ${compact ? 'min-h-0' : 'min-h-[600px]'}`}
+        className={`flex min-h-0 flex-col overflow-hidden rounded-[1.45rem] border border-[#284148] bg-[#101820] font-sans text-white shadow-[0_24px_65px_rgba(16,24,32,0.22)] lg:h-full ${compact ? 'min-h-0' : 'min-h-[600px]'}`}
         aria-label={language === 'zh' ? '旗舰反应课堂演示' : 'Flagship reaction classroom demonstration'}
         tabIndex={0}
         onKeyDown={handleKeyDown}
@@ -376,19 +376,24 @@ export const FlagshipReactionPlayer = forwardRef<FlagshipReactionPlayerHandle, F
         </div>
 
         <div className="border-t border-white/10 bg-[#0d151b] px-4 pb-4 pt-3 sm:px-5">
-          <div className="mb-3 flex items-center gap-2 overflow-x-auto pb-1" aria-label={language === 'zh' ? '阶段时间轴' : 'Stage timeline'}>
+          <div
+            data-layout="fitted-grid"
+            className="mb-3 grid gap-1"
+            style={{ gridTemplateColumns: `repeat(${scene.stages.length}, minmax(0, 1fr))` }}
+            aria-label={language === 'zh' ? '阶段时间轴' : 'Stage timeline'}
+          >
             {scene.stages.map((stage, index) => {
               const active = stage.id === snapshot.stage.id;
               const completed = time >= stage.end;
               const moment = scene.teachingMoments.find((candidate) => candidate.stageId === stage.id);
               return (
-                <div key={stage.id} className="flex min-w-[112px] flex-1 items-stretch gap-1">
+                <div key={stage.id} className="relative min-w-0">
                   <button
                     type="button"
                     onClick={() => activateStage(index)}
                     aria-current={active ? 'step' : undefined}
                     aria-label={`${index + 1}. ${stage.label[language]}`}
-                    className={`relative min-w-0 flex-1 rounded-lg border px-2 py-2 text-left transition-colors ${active ? 'border-[#ffbf69]/70 bg-[#ffbf69]/12 text-[#ffe0a5]' : completed ? 'border-[#8fe8dc]/25 bg-[#8fe8dc]/[0.06] text-[#c5eee7]' : 'border-white/10 bg-white/[0.025] text-white/45 hover:border-white/25 hover:text-white/80'}`}
+                    className={`relative w-full min-w-0 rounded-lg border px-2 py-2 text-left transition-colors ${active ? 'border-[#ffbf69]/70 bg-[#ffbf69]/12 text-[#ffe0a5]' : completed ? 'border-[#8fe8dc]/25 bg-[#8fe8dc]/[0.06] text-[#c5eee7]' : 'border-white/10 bg-white/[0.025] text-white/45 hover:border-white/25 hover:text-white/80'}`}
                   >
                     <span className="block font-mono text-[9px] uppercase tracking-[0.15em] opacity-70">{String(index + 1).padStart(2, '0')}</span>
                     <span className="mt-1 block truncate text-[11px] font-semibold">{stage.label[language]}</span>
@@ -398,8 +403,11 @@ export const FlagshipReactionPlayer = forwardRef<FlagshipReactionPlayerHandle, F
                       type="button"
                       onClick={() => seek(moment.at, false)}
                       aria-label={language === 'zh' ? `${stage.label.zh}课堂暂停点` : `${stage.label.en} classroom pause point`}
-                      className="mt-1 h-2.5 w-2.5 shrink-0 rounded-full border border-[#ffbf69] bg-[#ffbf69]/70"
-                    />
+                      data-target-size="24"
+                      className="absolute right-0 top-0 z-10 grid h-6 w-6 place-items-center rounded-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#ffbf69]"
+                    >
+                      <span className="h-2 w-2 rounded-full border border-[#ffbf69] bg-[#ffbf69]/70" aria-hidden="true" />
+                    </button>
                   )}
                 </div>
               );

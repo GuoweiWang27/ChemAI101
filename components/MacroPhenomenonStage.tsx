@@ -73,6 +73,7 @@ const layerStyle = (reducedMotion: boolean, progress: number, extra: CSSProperti
 });
 
 const MetalOnWater: React.FC<MacroPhenomenonStageProps> = ({ event, progress, reducedMotion }) => {
+  const { language } = useLanguage();
   const mayIgnite = paramBoolean(event, 'mayIgnite');
   const beadLeft = reducedMotion ? '49%' : `${29 + progress * 38}%`;
   return (
@@ -110,10 +111,9 @@ const MetalOnWater: React.FC<MacroPhenomenonStageProps> = ({ event, progress, re
       )}
       {mayIgnite && (
         <span className="absolute right-3 top-3 max-w-[170px] rounded-full border border-amber-200/35 bg-slate-950/60 px-2.5 py-1 text-center text-[9px] font-semibold leading-relaxed text-amber-100">
-          特定条件下可能出现黄色火焰 · may ignite
+          {language === 'zh' ? '特定条件下可能出现黄色火焰' : 'A yellow flame may appear under specific conditions'}
         </span>
       )}
-      <span className="absolute bottom-2 left-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-cyan-50/80">water surface · Na(s)</span>
     </div>
   );
 };
@@ -133,12 +133,12 @@ const Flame: React.FC<MacroPhenomenonStageProps> = ({ event, progress, reducedMo
       >
         <div className="absolute inset-x-6 bottom-4 h-20 rounded-[55%_45%_65%_35%] bg-white/75" />
       </div>
-      <span className="absolute bottom-3 left-3 text-[10px] font-semibold uppercase tracking-[0.14em] text-blue-50/80">blue / blue-violet flame</span>
     </div>
   );
 };
 
 const Smoke: React.FC<MacroPhenomenonStageProps> = ({ event, progress, reducedMotion }) => {
+  const { language } = useLanguage();
   const color = paramString(event, 'color', '#f4f1ea');
   const mode = paramString(event, 'mode', 'white-particles');
   const showParticles = mode !== 'opposing-gases';
@@ -162,18 +162,30 @@ const Smoke: React.FC<MacroPhenomenonStageProps> = ({ event, progress, reducedMo
         );
       })}
       {showParticles && <div className="absolute left-1/2 top-1/2 h-16 w-24 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/20 blur-xl" style={{ opacity: reducedMotion ? 0.25 + progress * 0.4 : progress * 0.65 }} />}
-      <span className="absolute bottom-3 left-3 text-[10px] font-semibold uppercase tracking-[0.14em] text-white/75">{showParticles ? 'diffusion → visible particles' : 'colorless gases · no smoke yet'}</span>
+      {!showParticles && (
+        <span
+          aria-label="no smoke yet"
+          className="absolute bottom-3 left-1/2 -translate-x-1/2 rounded-md border border-white/15 bg-black/20 px-2 py-1 text-[11px] font-medium text-white/65"
+        >
+          {language === 'zh' ? '尚未形成白烟' : 'No visible white smoke yet'}
+        </span>
+      )}
     </div>
   );
 };
 
 const SolutionColor: React.FC<MacroPhenomenonStageProps> = ({ event, progress, reducedMotion }) => {
+  const { language } = useLanguage();
   const from = paramString(event, 'from', '#9f3e2e');
   const to = paramString(event, 'to', '#e8e8df');
   const fromLabel = paramString(event, 'fromLabel', from);
   const toLabel = paramString(event, 'toLabel', to);
   const visualProgress = getMacroVisualProgress(event, progress);
   const fill = interpolateColor(from, to, visualProgress);
+  const currentLabel = visualProgress < 0.5 ? fromLabel : toLabel;
+  const localizedLabel = language === 'zh'
+    ? ({ clear: '无色', pink: '酚酞变红' }[currentLabel] ?? currentLabel)
+    : currentLabel;
   return (
     <div className="absolute inset-3 flex flex-col items-center justify-center overflow-hidden rounded-2xl border border-white/20 bg-slate-950/15">
       <div className="relative h-32 w-40 rounded-b-[2rem] border-x-4 border-b-4 border-white/50 bg-white/10 p-2">
@@ -181,7 +193,7 @@ const SolutionColor: React.FC<MacroPhenomenonStageProps> = ({ event, progress, r
         <div className="absolute left-1/2 top-1 h-2 w-20 -translate-x-1/2 rounded-full bg-white/50" />
       </div>
       <div className="mt-3 rounded-full border border-white/20 bg-black/20 px-3 py-1 text-xs font-semibold text-white/85" aria-live="polite">
-        {visualProgress < 0.5 ? fromLabel : toLabel}
+        {localizedLabel}
       </div>
       {event.params.conditionNote && typeof event.params.conditionNote === 'string' && (
         <p className="mt-2 max-w-[250px] text-center text-[10px] leading-relaxed text-white/65">{event.params.conditionNote}</p>
@@ -201,7 +213,6 @@ const SolidHydration: React.FC<MacroPhenomenonStageProps> = ({ event, progress, 
       <div className="absolute left-[37%] top-[38%] h-6 w-8 -rotate-12 rounded-md" style={{ backgroundColor: fragmentColor, opacity: 0.8 }} />
       <div className="absolute right-[28%] top-[28%] h-8 w-6 rotate-45 rounded-md" style={{ backgroundColor: productColor, opacity: 0.78 + progress * 0.2, transform: `scale(${expansion}) rotate(45deg)` }} />
       <div className="absolute bottom-[21%] left-1/2 h-12 w-32 -translate-x-1/2 rounded-full border border-white/20 bg-white/15" style={{ opacity: 0.22 + progress * 0.5 }} />
-      <span className="absolute bottom-3 left-3 text-[10px] font-semibold uppercase tracking-[0.14em] text-amber-50/80">solid + water → hydrated product</span>
     </div>
   );
 };
@@ -215,12 +226,11 @@ const HeatRise: React.FC<MacroPhenomenonStageProps> = ({ event, progress, reduce
         <div className="absolute bottom-1 left-1 right-1 rounded-full bg-orange-300/85 transition-[height] duration-200" style={{ height: `${20 + progress * 66}%` }} />
         <div className="absolute -bottom-3 left-1/2 h-5 w-5 -translate-x-1/2 rounded-full bg-orange-300/85" />
       </div>
-      <div className="ml-8 flex flex-col gap-1 text-center">
-        <span className="text-lg font-bold text-orange-100">{measured === undefined ? '温度上升' : `${measured}°C`}</span>
+      <div className="ml-5 flex min-w-0 flex-col gap-1 text-center">
+        <span className="whitespace-nowrap text-base font-bold text-orange-100">{measured === undefined ? '温度上升' : `${measured}°C`}</span>
         <span className="text-xs text-white/65">{cue}</span>
       </div>
       <div className="pointer-events-none absolute inset-y-8 right-10 w-12 rounded-full border-l-2 border-orange-200/30" style={{ opacity: reducedMotion ? 0.35 : 0.2 + progress * 0.5 }} />
-      <span className="absolute bottom-3 left-3 text-[10px] font-semibold uppercase tracking-[0.14em] text-orange-50/80">energy cue · educational abstraction</span>
     </div>
   );
 };
@@ -259,7 +269,7 @@ export const MacroPhenomenonStage: React.FC<MacroPhenomenonStageProps> = (props)
       aria-label={label}
     >
       <header className="relative z-10 flex items-center justify-between gap-2 border-b border-white/10 px-3 py-2">
-        <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#8fe8dc]">宏观现象 · Macro</span>
+        <span className="text-[11px] font-semibold text-[#8fe8dc]">{language === 'zh' ? '宏观现象' : 'Macroscopic view'}</span>
         <span className="min-w-0 truncate text-xs font-semibold text-white/80">{label}</span>
       </header>
       <div className="relative min-h-0 flex-1">{content}</div>

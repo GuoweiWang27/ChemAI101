@@ -237,7 +237,10 @@ function buildTeachingMoments(
 ): ReactionAnimationSceneV3['teachingMoments'] {
   const stageIndexes = [1, 2, stages.length - 1];
   return blueprint.teachingMoments.map((moment, index) => {
-    const stage = stages[stageIndexes[index] ?? stages.length - 1];
+    const configuredStageId = blueprint.teachingStageIds?.[index];
+    const stage = (configuredStageId
+      ? stages.find((candidate) => candidate.id === configuredStageId)
+      : undefined) ?? stages[stageIndexes[index] ?? stages.length - 1];
     return {
       ...moment,
       stageId: stage.id,

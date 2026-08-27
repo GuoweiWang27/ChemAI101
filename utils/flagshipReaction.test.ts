@@ -80,5 +80,21 @@ describe('flagship reaction scene v3', () => {
       'hydrogen',
       'ions',
     ]);
+    expect(sodiumScene.teachingMoments.map((moment) => moment.stageId)).toEqual([
+      'surface',
+      'hydrogen',
+      'ions',
+    ]);
+  });
+
+  it.each([
+    ['s-o2', ['sulfur-heating', 'sulfur-oxygen-bonding', 'sulfur-ignition']],
+    ['nh3-hcl-smoke', ['ammonium-chloride-particles', 'diffusion-meeting', 'proton-transfer']],
+    ['c2h4-br2', ['bromine-color-loss', 'bond-rearrangement', 'addition-product']],
+    ['cao-water-exothermic', ['heat-release', 'hydroxide-formation', 'slaked-lime-formation']],
+  ] as const)('%s binds each teaching prompt to its semantic stage', (reactionId, stageIds) => {
+    const scene = getReaction(reactionId)?.reactionAnimation;
+    if (!isFlagshipReactionScene(scene)) throw new Error(`${reactionId} flagship scene missing`);
+    expect(scene.teachingMoments.map((moment) => moment.stageId)).toEqual(stageIds);
   });
 });

@@ -59,6 +59,7 @@ export interface FlagshipBlueprint {
   macroKinds: FlagshipMacroKind[];
   microKinds: FlagshipMicroKind[];
   teachingMoments: Omit<FlagshipTeachingMoment, 'stageId' | 'at'>[];
+  teachingStageIds?: string[];
   evidence: ReactionAnimationEvidence[];
   cameraShots?: FlagshipCameraShot[];
 }
@@ -148,6 +149,7 @@ export const FLAGSHIP_BLUEPRINTS: Record<FlagshipReactionId, FlagshipBlueprint> 
         expectedObservation: text('反应前后 Na、O、H 原子数相等，2Na + 2H₂O → 2NaOH + H₂ 才满足守恒。', 'Na, O and H counts match across the equation, so 2Na + 2H₂O → 2NaOH + H₂ satisfies conservation.'),
       },
     ],
+    teachingStageIds: ['surface', 'hydrogen', 'ions'],
     evidence: [
       evidence('na-h2o-rsc', 'RSC alkali-metal reactivity demonstration', EVIDENCE['na-h2o'], '用于核对浮水面、熔化、放气与条件性燃烧等教材现象。'),
     ],
@@ -216,6 +218,7 @@ export const FLAGSHIP_BLUEPRINTS: Record<FlagshipReactionId, FlagshipBlueprint> 
         expectedObservation: text('蓝色火焰是宏观现象；硫氧键形成和 SO₂ 生成是微观解释。', 'The blue flame is macroscopic evidence; sulfur–oxygen bonding and SO₂ formation are the microscopic explanation.'),
       },
     ],
+    teachingStageIds: ['sulfur-heating', 'sulfur-oxygen-bonding', 'sulfur-ignition'],
     evidence: [
       evidence('s-o2-rsc', 'RSC reactions with oxygen demonstration', EVIDENCE['s-o2'], '用于核对硫在氧气中燃烧的火焰颜色与 SO₂ 生成描述。'),
       evidence('s-o2-libretexts', 'Chemistry LibreTexts sulfur chemistry reference', 'https://chem.libretexts.org/Bookshelves/Inorganic_Chemistry/Inorganic_Chemistry_%28LibreTexts%29/08%253A_Chemistry_of_the_Main_Group_Elements/8.11%253A_The_Oxygen_Family_%28The_Chalcogens%29/8.11.03%253A_Chemistry_of_Sulfur_%28Z16%29', '直接核对 S + O₂ → SO₂ 与蓝色火焰描述。'),
@@ -284,6 +287,7 @@ export const FLAGSHIP_BLUEPRINTS: Record<FlagshipReactionId, FlagshipBlueprint> 
         expectedObservation: text('NH₄⁺ 的 +1 与 Cl⁻ 的 −1 相抵，氯化铵整体电中性。', 'The +1 charge of NH₄⁺ balances the −1 charge of Cl⁻, leaving neutral ammonium chloride overall.'),
       },
     ],
+    teachingStageIds: ['ammonium-chloride-particles', 'diffusion-meeting', 'proton-transfer'],
     evidence: [
       evidence('nh3-hcl-smoke-rsc', 'RSC ammonia preparation and testing', EVIDENCE['nh3-hcl-smoke'], '用于核对氨与氯化氢相遇形成白烟的现象边界。'),
     ],
@@ -359,6 +363,7 @@ export const FLAGSHIP_BLUEPRINTS: Record<FlagshipReactionId, FlagshipBlueprint> 
         expectedObservation: text('原子总数不变，CH₂=CH₂ 与 Br₂ 的原子全部进入 CH₂Br—CH₂Br。', 'The total atom count is unchanged; all atoms from CH₂=CH₂ and Br₂ enter CH₂Br—CH₂Br.'),
       },
     ],
+    teachingStageIds: ['bromine-color-loss', 'bond-rearrangement', 'addition-product'],
     evidence: [
       evidence('c2h4-br2-openstax', 'OpenStax alkene halogenation reference', EVIDENCE['c2h4-br2'], '模型为教材化非水加成模型；含水体系可能形成卤代醇。'),
       evidence('c2h4-br2-water-caveat', 'OpenStax halohydrin reference', 'https://openstax.org/books/organic-chemistry/pages/8-3-halohydrins-from-alkenes-addition-of-ho-x', '直接核对水存在时可能由水进攻溴鎓离子并形成卤代醇的条件边界。'),
@@ -435,6 +440,7 @@ export const FLAGSHIP_BLUEPRINTS: Record<FlagshipReactionId, FlagshipBlueprint> 
         expectedObservation: text('CaO 是生石灰，和水反应生成 Ca(OH)₂，Ca(OH)₂ 的俗名是熟石灰。', 'CaO is quicklime; reacting it with water gives Ca(OH)₂, whose common name is slaked lime.'),
       },
     ],
+    teachingStageIds: ['heat-release', 'hydroxide-formation', 'slaked-lime-formation'],
     evidence: [
       evidence('cao-water-rsc', 'RSC cool-drinking problem-based activity', EVIDENCE['cao-water-exothermic'], '用于核对氧化钙与水反应的放热现象；不将示意画面当作具体温度测量。'),
     ],
