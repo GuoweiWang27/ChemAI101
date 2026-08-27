@@ -4,6 +4,8 @@ export interface Atom3D {
   y: number;
   z: number;
   color?: string;
+  /** 离子电荷；未提供表示中性原子/分子片段。 */
+  charge?: number;
   id: number;
 }
 

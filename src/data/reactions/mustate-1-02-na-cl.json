@@ -22,34 +22,82 @@
         {
           "id": 1,
           "element": "Na",
-          "x": 3.403,
-          "y": 0.25,
-          "z": 0
+          "x": -1.5,
+          "y": 0.3,
+          "z": 0.1,
+          "charge": 1
         },
         {
           "id": 2,
           "element": "O",
-          "x": 2.5369,
-          "y": -0.25,
-          "z": 0
+          "x": -0.72,
+          "y": 0,
+          "z": 0,
+          "charge": -1
         },
         {
           "id": 3,
           "element": "H",
-          "x": 2,
-          "y": 0.06,
-          "z": 0
+          "x": -0.12,
+          "y": 0.08,
+          "z": 0,
+          "charge": 0
+        },
+        {
+          "id": 4,
+          "element": "Na",
+          "x": 1.5,
+          "y": 0.3,
+          "z": 0.1,
+          "charge": 1
+        },
+        {
+          "id": 5,
+          "element": "O",
+          "x": 0.72,
+          "y": 0,
+          "z": 0,
+          "charge": -1
+        },
+        {
+          "id": 6,
+          "element": "H",
+          "x": 0.12,
+          "y": 0.08,
+          "z": 0,
+          "charge": 0
+        },
+        {
+          "id": 7,
+          "element": "H",
+          "x": -0.34,
+          "y": -1.1,
+          "z": 0.32,
+          "charge": 0
+        },
+        {
+          "id": 8,
+          "element": "H",
+          "x": 0.34,
+          "y": -1.1,
+          "z": 0.32,
+          "charge": 0
         }
       ],
       "bonds": [
         {
-          "source": 1,
-          "target": 2,
-          "order": 3
-        },
-        {
           "source": 2,
           "target": 3,
+          "order": 1
+        },
+        {
+          "source": 5,
+          "target": 6,
+          "order": 1
+        },
+        {
+          "source": 7,
+          "target": 8,
           "order": 1
         }
       ]
@@ -58,12 +106,12 @@
     "atomInsights": {
       "1": {
         "role": {
-          "zh": "被氧化失去电子的钠原子",
-          "en": "The sodium atom that loses an electron and is oxidized"
+          "zh": "被氧化、失去电子的钠离子来源",
+          "en": "The sodium source that is oxidized and loses an electron"
         },
         "detail": {
-          "zh": "钠原子的最外层只有 1 个电子，反应时它把这枚电子交出去，变成带 1 个单位正电荷的 Na⁺。这枚电子被水分子中的氢原子得到，使氢被还原成氢气逸出。失去电子后的 Na⁺ 与氢氧根 OH⁻ 结合，进入生成的 NaOH 中，对应实验中钠块不断变小直至消失。",
-          "en": "Sodium has only one electron in its outermost shell, and it gives this electron away during the reaction, turning into a Na⁺ ion with a single positive charge. That electron is taken by a hydrogen atom of water, which is reduced and escapes as hydrogen gas. After losing its electron the Na⁺ pairs with the hydroxide ion OH⁻ and ends up in the NaOH produced, which is why the piece of sodium keeps shrinking and finally disappears."
+          "zh": "钠原子的最外层只有 1 个电子，反应时它把这枚电子交出去，变成带 1 个单位正电荷的 Na⁺。这枚电子被水分子中的氢得到，使部分氢被还原并组成 H₂。失去电子后的 Na⁺ 以溶液中的独立离子存在，与 OH⁻ 通过静电作用共存形成 NaOH 溶液；这里不画 Na—O 共价键。",
+          "en": "Sodium has one outer electron and gives it away, becoming Na⁺. Water hydrogen receives the electron and part of it is reduced into H₂. The resulting Na⁺ remains a separate dissolved ion and coexists electrostatically with OH⁻ in the NaOH solution; no Na–O covalent bond is drawn."
         }
       },
       "2": {
@@ -78,36 +126,92 @@
       },
       "3": {
         "role": {
-          "zh": "得到电子被还原、生成氢气的氢原子",
-          "en": "The hydrogen atom that gains an electron and is reduced to form hydrogen gas"
+          "zh": "留在氢氧根里的氢原子",
+          "en": "The hydrogen atom retained in hydroxide"
         },
         "detail": {
-          "zh": "水分子中的这个氢相当于 +1 价，反应时从钠原子处得到一个电子，被还原为氢原子。两个这样的氢原子两两结合成 H₂ 分子，以气泡形式逸出，正是实验中嘶嘶作响、推动小球来回游动的气体。它离开后，水分子剩下的部分就是留在溶液里的 OH⁻。",
-          "en": "This hydrogen of water is effectively +1; during the reaction it gains one electron from the sodium atom and is reduced to atomic hydrogen. Two such hydrogen atoms pair up into an H₂ molecule that escapes as bubbles, which is precisely the hissing gas that pushes the little ball around. Once it leaves, the rest of the molecule is the OH⁻ that stays dissolved."
+          "zh": "这个氢没有进入 H₂，而是仍与水分子中的氧相连，和 O 共同构成溶液里的 OH⁻。另一部分水中的氢得到电子并组成 H₂ 气泡；因此动画把留在 OH⁻ 的氢与逸出的氢明确分开。",
+          "en": "This hydrogen does not enter H₂; it stays bonded to oxygen as part of the OH⁻ ion in solution. Hydrogen from another part of the water receives electrons and forms H₂ bubbles, so the animation keeps retained hydroxide hydrogen distinct from escaping hydrogen."
+        }
+      },
+      "4": {
+        "role": {
+          "zh": "第二个被氧化的钠离子来源",
+          "en": "The second sodium source undergoing oxidation"
+        },
+        "detail": {
+          "zh": "第二个 Na 原子经历与 1 号钠相同的失电子过程，最终成为第二个独立的 Na⁺。它与第一个 Na⁺ 分散在水溶液中，不与氧画成共价分子。",
+          "en": "The second Na atom undergoes the same electron-loss process as sodium 1 and becomes a separate Na⁺ ion. It disperses in solution with the first Na⁺ rather than forming a covalent molecule with oxygen."
+        }
+      },
+      "5": {
+        "role": {
+          "zh": "第二个氢氧根中的氧原子",
+          "en": "The oxygen atom in the second hydroxide ion"
+        },
+        "detail": {
+          "zh": "它保留在第二个 OH⁻ 中，和氢以共价键相连；负电荷属于整个氢氧根离子，而不是把 Na⁺ 与 O 直接连成 Na—O 键。",
+          "en": "It remains in the second OH⁻ and is covalently bonded to hydrogen. The negative charge belongs to the hydroxide ion as a whole; Na⁺ is not drawn directly bonded to O."
+        }
+      },
+      "6": {
+        "role": {
+          "zh": "第二个氢氧根里的氢原子",
+          "en": "The hydrogen atom retained in the second hydroxide"
+        },
+        "detail": {
+          "zh": "它和 5 号氧共同保留为 OH⁻ 的内部 O—H 共价键，体现生成 NaOH 溶液时氢氧根的结构。",
+          "en": "It remains with oxygen 5 as the internal O–H covalent bond of OH⁻, representing the hydroxide structure in the NaOH solution."
+        }
+      },
+      "7": {
+        "role": {
+          "zh": "被还原并逸出的氢气氢原子",
+          "en": "A reduced hydrogen atom that escapes as H₂"
+        },
+        "detail": {
+          "zh": "它从水的氢得到电子后与 8 号氢结合，形成 H₂ 分子并以气泡逸出；动画中的 H—H 键对应氢气产物。",
+          "en": "After receiving an electron from water hydrogen, it pairs with hydrogen 8 to form H₂ and escapes as a bubble; the H–H bond represents the hydrogen product."
+        }
+      },
+      "8": {
+        "role": {
+          "zh": "与 7 号氢组成氢气的氢原子",
+          "en": "The hydrogen atom paired with hydrogen 7 in H₂"
+        },
+        "detail": {
+          "zh": "它与 7 号氢共享电子形成 H₂。完整的氢气分子被单独表现为气泡，不会把未映射的氢直接淡出。",
+          "en": "It shares electrons with hydrogen 7 to form H₂. The complete hydrogen molecule is shown as its own bubble, so no unmapped hydrogen simply fades away."
         }
       }
     },
     "stepAtomIds": [
       [],
       [
-        1
+        1,
+        4
       ],
       [
-        3
+        7,
+        8
       ],
       [
         1,
         2,
-        3
+        3,
+        4,
+        5,
+        6
       ],
       [
-        3
+        7,
+        8
       ]
     ],
     "reactionFlow": {
       "reactants": [
         {
-          "label": "Na",
+          "label": "Na₁",
           "structure": {
             "atoms": [
               {
@@ -120,74 +224,138 @@
             ],
             "bonds": []
           },
-          "position": [
-            -3.0,
-            0.5,
-            0
-          ]
+          "position": [-3.2, 0.5, 0]
         },
         {
-          "label": "H₂O",
+          "label": "Na₂",
           "structure": {
             "atoms": [
               {
                 "id": 1,
-                "element": "O",
+                "element": "Na",
                 "x": 0,
                 "y": 0,
                 "z": 0
-              },
-              {
-                "id": 2,
-                "element": "H",
-                "x": 0.712,
-                "y": 0,
-                "z": 0.551
-              },
-              {
-                "id": 3,
-                "element": "H",
-                "x": -0.712,
-                "y": 0,
-                "z": 0.551
               }
             ],
+            "bonds": []
+          },
+          "position": [-3.2, 1.2, 0.2]
+        },
+        {
+          "label": "H₂O₁",
+          "structure": {
+            "atoms": [
+              {"id": 1, "element": "O", "x": 0, "y": 0, "z": 0},
+              {"id": 2, "element": "H", "x": 0.712, "y": 0, "z": 0.551},
+              {"id": 3, "element": "H", "x": -0.712, "y": 0, "z": 0.551}
+            ],
             "bonds": [
-              {
-                "source": 1,
-                "target": 2,
-                "order": 1
-              },
-              {
-                "source": 1,
-                "target": 3,
-                "order": 1
-              }
+              {"source": 1, "target": 2, "order": 1},
+              {"source": 1, "target": 3, "order": 1}
             ]
           },
-          "position": [
-            -1.7,
-            -0.6,
-            0
-          ]
+          "position": [-1.9, -0.55, 0]
+        },
+        {
+          "label": "H₂O₂",
+          "structure": {
+            "atoms": [
+              {"id": 1, "element": "O", "x": 0, "y": 0, "z": 0},
+              {"id": 2, "element": "H", "x": 0.712, "y": 0, "z": 0.551},
+              {"id": 3, "element": "H", "x": -0.712, "y": 0, "z": 0.551}
+            ],
+            "bonds": [
+              {"source": 1, "target": 2, "order": 1},
+              {"source": 1, "target": 3, "order": 1}
+            ]
+          },
+          "position": [-1.9, -1.1, 0.2]
         }
       ],
       "atomMap": [
+        {"reactant": 0, "atom": 1, "to": 1},
+        {"reactant": 1, "atom": 1, "to": 4},
+        {"reactant": 2, "atom": 1, "to": 2},
+        {"reactant": 2, "atom": 2, "to": 3},
+        {"reactant": 2, "atom": 3, "to": 7},
+        {"reactant": 3, "atom": 1, "to": 5},
+        {"reactant": 3, "atom": 2, "to": 6},
+        {"reactant": 3, "atom": 3, "to": 8}
+      ]
+    },
+    "reactionAnimation": {
+      "version": 1,
+      "family": "ionic",
+      "environment": "water-beaker",
+      "duration": 16,
+      "stages": [
         {
-          "reactant": 0,
-          "atom": 1,
-          "to": 1
+          "id": "surface",
+          "start": 0,
+          "end": 2.8,
+          "stepIndex": 0,
+          "label": {"zh": "钠浮在水面", "en": "Sodium floats on water"},
+          "status": {"zh": "钠的密度比水小，先停在水面上。", "en": "Sodium is less dense than water, so it rests at the surface."},
+          "equationFocus": "reactants"
         },
         {
-          "reactant": 1,
-          "atom": 1,
-          "to": 2
+          "id": "melt",
+          "start": 2.8,
+          "end": 6.1,
+          "stepIndex": 1,
+          "label": {"zh": "放热，钠熔成小球", "en": "Heat melts sodium into a bead"},
+          "status": {"zh": "反应放热，低熔点的钠熔成闪亮小球。", "en": "The exothermic reaction melts low-melting sodium into a bright bead."},
+          "equationFocus": "change"
         },
         {
-          "reactant": 1,
-          "atom": 3,
-          "to": 3
+          "id": "electron",
+          "start": 6.1,
+          "end": 9.5,
+          "stepIndex": 2,
+          "label": {"zh": "电子从 Na 迁移到水中氢", "en": "Electrons move from Na to hydrogen in water"},
+          "status": {"zh": "钠失去电子；水中的氢得到电子，开始组成 H₂。", "en": "Sodium gives up electrons; hydrogen in water receives them and begins forming H₂."},
+          "equationFocus": "change"
+        },
+        {
+          "id": "ions",
+          "start": 9.5,
+          "end": 12.8,
+          "stepIndex": 3,
+          "label": {"zh": "Na⁺ 与 OH⁻ 留在溶液", "en": "Na⁺ and OH⁻ remain in solution"},
+          "status": {"zh": "Na⁺ 和 OH⁻ 分开分散；酚酞遇碱变红。", "en": "Na⁺ and OH⁻ disperse as separate ions; phenolphthalein turns pink in the base."},
+          "equationFocus": "products"
+        },
+        {
+          "id": "hydrogen",
+          "start": 12.8,
+          "end": 16,
+          "stepIndex": 4,
+          "label": {"zh": "H₂ 气泡逸出，产物完整呈现", "en": "H₂ bubbles escape; products are complete"},
+          "status": {"zh": "两份 Na⁺、两份 OH⁻ 与 H₂ 全部保留在产物画面中。", "en": "Both Na⁺ ions, both OH⁻ ions, and H₂ remain visible in the complete product scene."},
+          "equationFocus": "products"
         }
+      ],
+      "actors": [
+        {"id": "water", "kind": "water-surface", "label": {"zh": "水面", "en": "Water surface"}, "position": [0, -1.1, 0], "color": "#2d9fc4", "radius": 2.5},
+        {"id": "sodium-bead", "kind": "species", "label": {"zh": "Na(s)", "en": "Na(s)"}, "position": [-0.6, -0.25, 0.2], "target": [0.05, -0.55, 0.2], "element": "Na", "color": "#b47be8", "radius": 0.58},
+        {"id": "na-plus-1", "kind": "ion", "label": {"zh": "Na⁺", "en": "Na⁺"}, "position": [-1.1, -0.55, 0.1], "target": [-1.45, -0.9, 0.2], "element": "Na", "charge": 1, "color": "#b47be8", "radius": 0.38},
+        {"id": "na-plus-2", "kind": "ion", "label": {"zh": "Na⁺", "en": "Na⁺"}, "position": [1.15, -0.55, 0.1], "target": [1.45, -1.1, 0.2], "element": "Na", "charge": 1, "color": "#b47be8", "radius": 0.38},
+        {"id": "oh-minus-1", "kind": "ion", "label": {"zh": "OH⁻", "en": "OH⁻"}, "position": [-0.45, -0.7, 0.2], "target": [-0.65, -1.45, 0.3], "formula": "OH", "charge": -1, "color": "#ff655d", "radius": 0.3},
+        {"id": "oh-minus-2", "kind": "ion", "label": {"zh": "OH⁻", "en": "OH⁻"}, "position": [0.45, -0.72, 0.25], "target": [0.65, -1.42, 0.2], "formula": "OH", "charge": -1, "color": "#ff655d", "radius": 0.3},
+        {"id": "electron-1", "kind": "electron", "label": {"zh": "e⁻", "en": "e⁻"}, "position": [-0.15, 0.15, 0.35], "target": [-0.55, -0.55, 0.35], "color": "#f4c95d", "radius": 0.11},
+        {"id": "electron-2", "kind": "electron", "label": {"zh": "e⁻", "en": "e⁻"}, "position": [0.1, 0.18, 0.4], "target": [0.55, -0.55, 0.35], "color": "#f4c95d", "radius": 0.11},
+        {"id": "h2-gas", "kind": "gas", "label": {"zh": "H₂↑", "en": "H₂↑"}, "position": [0, -0.55, 0.4], "target": [0.35, 1.55, 0.3], "element": "H", "formula": "H₂", "color": "#f4f1ea", "radius": 0.2},
+        {"id": "phenolphthalein", "kind": "indicator", "label": {"zh": "酚酞：碱性变红", "en": "Phenolphthalein: pink in base"}, "position": [2.15, -0.95, 0.2], "color": "#ff597b", "radius": 0.22}
+      ],
+      "events": [
+        {"id": "surface-observation", "kind": "observe", "stageId": "surface", "label": {"zh": "观察浮在水面的钠", "en": "Observe sodium floating at the surface"}, "actorIds": ["water", "sodium-bead"]},
+        {"id": "sodium-melts", "kind": "heat", "stageId": "melt", "label": {"zh": "放热使钠熔化", "en": "Heat melts the sodium"}, "actorIds": ["sodium-bead"]},
+        {"id": "electron-transfer", "kind": "electron-transfer", "stageId": "electron", "label": {"zh": "电子从钠迁移到水中氢", "en": "Electrons migrate from sodium to hydrogen"}, "actorIds": ["electron-1", "electron-2"], "fromActorId": "sodium-bead", "toActorId": "h2-gas"},
+        {"id": "ions-disperse", "kind": "ionize", "stageId": "ions", "label": {"zh": "Na⁺ 与 OH⁻ 分散", "en": "Na⁺ and OH⁻ disperse"}, "actorIds": ["na-plus-1", "na-plus-2", "oh-minus-1", "oh-minus-2"]},
+        {"id": "phenolphthalein-color", "kind": "color-change", "stageId": "ions", "label": {"zh": "酚酞遇碱变红", "en": "Phenolphthalein turns pink in base"}, "actorIds": ["phenolphthalein"]},
+        {"id": "hydrogen-bubbles", "kind": "gas-bubble", "stageId": "hydrogen", "label": {"zh": "H₂ 气泡逸出", "en": "H₂ bubbles escape"}, "actorIds": ["h2-gas"]},
+        {"id": "complete-products", "kind": "product", "stageId": "hydrogen", "label": {"zh": "完整产物：2Na⁺ + 2OH⁻ + H₂↑", "en": "Complete products: 2Na⁺ + 2OH⁻ + H₂↑"}, "actorIds": ["na-plus-1", "na-plus-2", "oh-minus-1", "oh-minus-2", "h2-gas"]}
       ]
     }
   },

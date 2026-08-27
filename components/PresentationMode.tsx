@@ -2,11 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { MoleculeStructure } from '../types';
 import { AtomInsight } from '../src/data/reactions/schema';
 import { MechanismMolecule } from './MechanismMolecule';
-import { ReactionFlowScene } from './ReactionFlowScene';
+import { ReactionAnimationPlayer, type ReactionAnimationPlayerHandle } from './ReactionAnimationPlayer';
 import type { CuratedReaction } from '../src/data/reactions/schema';
+import type { ReactionAnimationScene } from '../src/data/reactions/schema';
 import { AtomInsightPanel } from './AtomInsightPanel';
-import { ChevronLeft, ChevronRight, Minimize2, Play, RotateCcw, Undo2 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Minimize2, Play, Undo2 } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { getEquationParts } from '../utils/reactionAnimation';
+import type { AnimationSnapshot } from '../utils/reactionAnimation';
 
 interface PresentationModeProps {
   equation: string;
@@ -20,6 +23,8 @@ interface PresentationModeProps {
   atomInsights?: Record<string, AtomInsight>;
   /** 全程反应动画数据（精选反应才有） */
   reactionFlow?: CuratedReaction['reactionFlow'];
+  /** 分段教学时间轴；旧条目缺省时仍保留原有机理编舞。 */
+  reactionAnimation?: ReactionAnimationScene;
   onClose: () => void;
 }
 
@@ -32,20 +37,36 @@ export const PresentationMode: React.FC<PresentationModeProps> = ({
   highlightSteps,
   atomInsights,
   reactionFlow,
+  reactionAnimation,
   onClose,
 }) => {
   const { t } = useLanguage();
   const [stepIndex, setStepIndex] = useState(0);
   const [selectedAtomId, setSelectedAtomId] = useState<number | null>(null);
   const [flowPlaying, setFlowPlaying] = useState(false);
-  const [flowPlayKey, setFlowPlayKey] = useState(0);
+  const [flowSnapshot, setFlowSnapshot] = useState<AnimationSnapshot | null>(null);
+  const flowPlayerRef = React.useRef<ReactionAnimationPlayerHandle>(null);
+  const bodyRef = React.useRef<HTMLDivElement>(null);
+  const equationParts = React.useMemo(() => getEquationParts(equation), [equation]);
+
+  React.useLayoutEffect(() => {
+    if (flowPlaying) bodyRef.current?.scrollTo({ top: 0, behavior: 'auto' });
+  }, [flowPlaying]);
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
       if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
-        setStepIndex((prev) => Math.min(prev + 1, steps.length - 1));
+        setStepIndex((prev) => {
+          const next = Math.min(prev + 1, steps.length - 1);
+          if (flowPlaying) flowPlayerRef.current?.seekToStep(next);
+          return next;
+        });
       } else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
-        setStepIndex((prev) => Math.max(prev - 1, 0));
+        setStepIndex((prev) => {
+          const next = Math.max(prev - 1, 0);
+          if (flowPlaying) flowPlayerRef.current?.seekToStep(next);
+          return next;
+        });
       } else if (event.key === 'Escape') {
         onClose();
       } else if (event.key === 'f' || event.key === 'F') {
@@ -55,16 +76,19 @@ export const PresentationMode: React.FC<PresentationModeProps> = ({
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [steps.length, onClose]);
+  }, [flowPlaying, steps.length, onClose]);
+
+  const equationFocus = flowSnapshot?.stage.equationFocus;
 
   return (
     <div className="fixed inset-0 z-[100] bg-[#101418] text-white flex flex-col select-none">
-      <style>{'@keyframes chemai-pulse{0%{transform:scale(1)}40%{transform:scale(1.045)}100%{transform:scale(1)}}.chemai-pulse{animation:chemai-pulse 550ms ease}'}</style>
       {/* Top bar */}
       <header className="flex items-start justify-between gap-4 px-8 pt-6 pb-4">
         <div className="min-w-0">
           <div className="font-mono text-3xl md:text-5xl font-bold tracking-tight break-words">
-            {equation}
+            <span className={equationFocus === 'reactants' ? 'rounded-md bg-[#ffbf69]/20 px-2 py-1 text-[#ffe0a5]' : 'text-white/85'}>{equationParts.reactants}</span>
+            {equationParts.arrow && <span className={equationFocus === 'change' ? 'mx-2 rounded-md bg-[#ffbf69]/25 px-2 py-1 text-[#ffd28f]' : 'mx-2 text-white/45'}>{equationParts.arrow}</span>}
+            {equationParts.products && <span className={equationFocus === 'products' ? 'rounded-md bg-[#8fe8dc]/15 px-2 py-1 text-[#d4fff6]' : 'text-white/85'}>{equationParts.products}</span>}
           </div>
           <div className="mt-2 text-base md:text-xl text-white/60">
             {title}
@@ -81,15 +105,18 @@ export const PresentationMode: React.FC<PresentationModeProps> = ({
       </header>
 
       {/* Body */}
-      <div className="flex-1 min-h-0 flex flex-col md:flex-row gap-6 px-8 pb-8 overflow-y-auto md:overflow-hidden">
+      <div ref={bodyRef} className="flex-1 min-h-0 flex flex-col md:flex-row gap-6 px-8 pb-8 overflow-y-auto md:overflow-hidden">
         {/* Mechanism steps */}
-        <div className="md:w-[45%] flex flex-col justify-center gap-4 min-w-0">
+        <div className={`md:w-[45%] flex flex-col justify-center gap-4 min-w-0 ${flowPlaying ? 'order-2 md:order-1' : ''}`}>
           {steps.map((step, i) => {
             const active = i === stepIndex;
             return (
               <button
                 key={i}
-                onClick={() => setStepIndex(i)}
+                onClick={() => {
+                  setStepIndex(i);
+                  if (flowPlaying) flowPlayerRef.current?.seekToStep(i);
+                }}
                 className={`text-left rounded-2xl px-6 py-5 transition-all duration-300 ${
                   active
                     ? 'bg-white/15 scale-[1.03] shadow-xl'
@@ -108,14 +135,23 @@ export const PresentationMode: React.FC<PresentationModeProps> = ({
 
         {/* Structure：机理编舞场景 */}
         {structure && (
-          <div className="relative md:w-[55%] min-h-[240px] md:min-h-0 rounded-3xl overflow-hidden bg-black/30">
-            {flowPlaying && reactionFlow ? (
-              <ReactionFlowScene
+          <div className={`relative md:w-[55%] min-h-[560px] md:min-h-0 rounded-3xl overflow-hidden bg-black/30 ${flowPlaying ? 'order-1 md:order-2' : ''}`}>
+            {flowPlaying && reactionFlow && reactionAnimation ? (
+              <ReactionAnimationPlayer
+                ref={flowPlayerRef}
+                equation={equation}
+                steps={steps}
                 structure={structure}
                 flow={reactionFlow}
-                playKey={flowPlayKey}
+                animation={reactionAnimation}
+                compact
                 selectedAtomId={selectedAtomId}
                 onAtomSelect={setSelectedAtomId}
+                autoPlay
+                onStageChange={(snapshot) => {
+                  setFlowSnapshot(snapshot);
+                  setStepIndex(snapshot.stage.stepIndex);
+                }}
               />
             ) : (
               <MechanismMolecule
@@ -126,42 +162,31 @@ export const PresentationMode: React.FC<PresentationModeProps> = ({
                 onAtomSelect={setSelectedAtomId}
               />
             )}
-            {reactionFlow && (
-              <div className="absolute top-3 right-3 z-20 flex gap-2">
-                {!flowPlaying ? (
-                  <button
-                    onClick={() => {
-                      setSelectedAtomId(null);
-                      setFlowPlayKey((k) => k + 1);
-                      setFlowPlaying(true);
-                    }}
-                    className="flex items-center gap-2 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-white text-sm font-bold px-5 py-2.5 rounded-xl shadow-lg shadow-amber-500/40 transition-all hover:scale-105"
-                  >
-                    <Play className="w-4 h-4" /> {t('flowPlayBtn')}
-                  </button>
-                ) : (
-                  <>
-                    <button
-                      onClick={() => {
-                        setSelectedAtomId(null);
-                        setFlowPlayKey((k) => k + 1);
-                      }}
-                      className="flex items-center gap-1.5 bg-white/10 hover:bg-white/25 backdrop-blur-sm text-white text-xs px-3 py-1.5 rounded-lg transition-colors"
-                    >
-                      <RotateCcw className="w-3 h-3" /> {t('flowReplayBtn')}
-                    </button>
-                    <button
-                      onClick={() => {
-                        setSelectedAtomId(null);
-                        setFlowPlaying(false);
-                      }}
-                      className="flex items-center gap-1.5 bg-white/10 hover:bg-white/25 backdrop-blur-sm text-white text-xs px-3 py-1.5 rounded-lg transition-colors"
-                    >
-                      <Undo2 className="w-3 h-3" /> {t('flowBackBtn')}
-                    </button>
-                  </>
-                )}
+            {reactionFlow && reactionAnimation && !flowPlaying && (
+              <div className="absolute right-3 top-3 z-20 flex gap-2">
+                <button
+                  onClick={() => {
+                    setSelectedAtomId(null);
+                    setFlowSnapshot(null);
+                    setFlowPlaying(true);
+                  }}
+                  className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-amber-500/40 transition-all hover:scale-105 hover:from-amber-400 hover:to-orange-400"
+                >
+                  <Play className="h-4 w-4" /> {t('flowPlayBtn')}
+                </button>
               </div>
+            )}
+            {reactionFlow && reactionAnimation && flowPlaying && (
+              <button
+                onClick={() => {
+                  setSelectedAtomId(null);
+                  setFlowSnapshot(null);
+                  setFlowPlaying(false);
+                }}
+                className="absolute right-3 top-3 z-30 flex items-center gap-1.5 rounded-lg border border-white/15 bg-[#101820]/80 px-3 py-1.5 text-xs text-white shadow-md backdrop-blur-sm transition-colors hover:bg-[#101820]"
+              >
+                <Undo2 className="h-3 w-3" /> {t('flowBackBtn')}
+              </button>
             )}
             {selectedAtomId !== null && (() => {
               const atom = structure.atoms.find((a) => a.id === selectedAtomId);
@@ -181,7 +206,11 @@ export const PresentationMode: React.FC<PresentationModeProps> = ({
       {/* Footer controls */}
       <footer className="flex items-center justify-between px-8 pb-6 pt-2 text-white/70">
         <button
-          onClick={() => setStepIndex((prev) => Math.max(prev - 1, 0))}
+          onClick={() => setStepIndex((prev) => {
+            const next = Math.max(prev - 1, 0);
+            if (flowPlaying) flowPlayerRef.current?.seekToStep(next);
+            return next;
+          })}
           disabled={stepIndex === 0}
           className="p-3 rounded-xl bg-white/10 hover:bg-white/20 disabled:opacity-30"
         >
@@ -191,7 +220,11 @@ export const PresentationMode: React.FC<PresentationModeProps> = ({
           {stepIndex + 1} / {steps.length}
         </div>
         <button
-          onClick={() => setStepIndex((prev) => Math.min(prev + 1, steps.length - 1))}
+          onClick={() => setStepIndex((prev) => {
+            const next = Math.min(prev + 1, steps.length - 1);
+            if (flowPlaying) flowPlayerRef.current?.seekToStep(next);
+            return next;
+          })}
           disabled={stepIndex === steps.length - 1}
           className="p-3 rounded-xl bg-white/10 hover:bg-white/20 disabled:opacity-30"
         >

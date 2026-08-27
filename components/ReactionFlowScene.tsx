@@ -1,8 +1,14 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { OrbitControls, Environment } from '@react-three/drei';
+import { Html, Line, OrbitControls, Environment } from '@react-three/drei';
 import * as THREE from 'three';
 import { MoleculeStructure, ELEMENT_COLORS, ELEMENT_RADII } from '../types';
+import type {
+  ReactionAnimationActor,
+  ReactionAnimationScene,
+} from '../src/data/reactions/schema';
+import { getAnimationSnapshot, isStageActiveAt } from '../utils/reactionAnimation';
+import { useLanguage } from '../contexts/LanguageContext';
 
 /**
  * 全程反应动画 · 电影版：
@@ -68,6 +74,8 @@ interface SceneProps {
   structure: MoleculeStructure;
   flow: NonNullable<import('../src/data/reactions/schema').CuratedReaction['reactionFlow']>;
   playKey: number;
+  time?: number;
+  animation?: ReactionAnimationScene;
   reduced: boolean;
   selectedAtomId: number | null;
   onAtomSelect?: (id: number | null) => void;
@@ -129,10 +137,69 @@ interface SceneContentProps extends SceneProps {
   onControlsReady: (enabled: boolean) => void;
 }
 
+/** 旧条目的轻量族提示：保留兼容飞行引擎，同时让燃烧/放气/变色/离子/有机键有不同视觉语法。 */
+const FamilyCue: React.FC<{ animation: ReactionAnimationScene; time: number }> = ({ animation, time }) => {
+  const p = Math.min(1, Math.max(0, time / Math.max(0.001, animation.duration)));
+  if (animation.family === 'combustion') {
+    return (
+      <>
+        <pointLight position={[0, -0.8, 0.4]} color="#ffae47" intensity={0.55 + p * 0.8} distance={4} />
+        <mesh position={[0, -1.2, -0.4]} scale={[0.75 + p * 0.2, 0.7 + p * 0.4, 0.75 + p * 0.2]}>
+          <coneGeometry args={[0.48, 1.1, 20]} />
+          <meshBasicMaterial color="#ff9f43" transparent opacity={0.13 + p * 0.18} />
+        </mesh>
+      </>
+    );
+  }
+  if (animation.family === 'gas-evolution') {
+    return (
+      <group>
+        {Array.from({ length: 8 }, (_, index) => {
+          const x = (index % 4) * 0.42 - 0.63;
+          const y = -0.8 + ((index * 0.23 + p * 1.7) % 2.1);
+          return (
+            <mesh key={index} position={[x, y, -0.45]}>
+              <sphereGeometry args={[0.07 + (index % 3) * 0.018, 10, 10]} />
+              <meshBasicMaterial color="#9ae8ed" transparent opacity={0.15 + p * 0.17} />
+            </mesh>
+          );
+        })}
+      </group>
+    );
+  }
+  if (animation.family === 'precipitation-color') {
+    return (
+      <mesh position={[0, -0.9, -0.5]} scale={[1.5, 0.5 + p * 0.8, 0.7]}>
+        <sphereGeometry args={[1, 18, 12]} />
+        <meshBasicMaterial color="#df8eae" transparent opacity={0.06 + p * 0.12} />
+      </mesh>
+    );
+  }
+  if (animation.family === 'ionic') {
+    return (
+      <mesh rotation={[Math.PI / 2, 0, 0]} position={[0, 0, -0.6]}>
+        <torusGeometry args={[1.2, 0.028, 8, 48]} />
+        <meshBasicMaterial color="#9fe6df" transparent opacity={0.08 + p * 0.14} />
+      </mesh>
+    );
+  }
+  if (animation.family === 'organic-bond') {
+    return (
+      <mesh rotation={[Math.PI / 2, 0, 0]} position={[0, 0, -0.6]}>
+        <torusGeometry args={[1.1, 0.045, 8, 48]} />
+        <meshBasicMaterial color="#b6d58a" transparent opacity={0.08 + p * 0.14} />
+      </mesh>
+    );
+  }
+  return null;
+};
+
 const SceneContent: React.FC<SceneContentProps> = ({
   structure,
   flow,
   playKey,
+  time,
+  animation,
   reduced,
   selectedAtomId,
   onAtomSelect,
@@ -256,7 +323,7 @@ const SceneContent: React.FC<SceneContentProps> = ({
       });
       pool.length = 0;
     });
-    if (!reduced) onControlsReady(false);
+    if (!reduced && time === undefined) onControlsReady(false);
   }, [playKey, reduced, onControlsReady]);
 
   const spawnBurst = (at: THREE.Vector3, now: number, count: number, speed: number) => {
@@ -288,8 +355,8 @@ const SceneContent: React.FC<SceneContentProps> = ({
 
   useFrame(({ clock }, rawDelta) => {
     const dt = Math.min(rawDelta, 0.05);
-    if (startRef.current === null) startRef.current = clock.elapsedTime;
-    const t = clock.elapsedTime - startRef.current;
+    if (time === undefined && startRef.current === null) startRef.current = clock.elapsedTime;
+    const t = time ?? (clock.elapsedTime - (startRef.current ?? clock.elapsedTime));
     const now = performance.now();
 
     // 原子
@@ -420,6 +487,7 @@ const SceneContent: React.FC<SceneContentProps> = ({
 
   return (
     <group ref={groupRef}>
+      {animation && <FamilyCue animation={animation} time={time ?? 0} />}
       {atoms.map((a) => (
         <mesh
           key={a.key}
@@ -499,15 +567,276 @@ const SceneContent: React.FC<SceneContentProps> = ({
       ))}
       <group ref={sparkGroupRef} />
       <group ref={ghostGroupRef} />
-      <CameraRig startRef={startRef} reduced={reduced} onRelease={() => onControlsReady(true)} />
+      {time === undefined && (
+        <CameraRig startRef={startRef} reduced={reduced} onRelease={() => onControlsReady(true)} />
+      )}
     </group>
   );
 };
 
+const clamp01 = (value: number) => Math.min(1, Math.max(0, value));
+
+function stageProgress(animation: ReactionAnimationScene, stageId: string, time: number): number {
+  const stage = animation.stages.find((candidate) => candidate.id === stageId);
+  if (!stage) return 0;
+  return clamp01((time - stage.start) / Math.max(0.001, stage.end - stage.start));
+}
+
+function actorPoint(actor: ReactionAnimationActor, progress: number): [number, number, number] {
+  const target = actor.target ?? actor.position;
+  return [
+    actor.position[0] + (target[0] - actor.position[0]) * progress,
+    actor.position[1] + (target[1] - actor.position[1]) * progress,
+    actor.position[2] + (target[2] - actor.position[2]) * progress,
+  ];
+}
+
+const ActorLabel: React.FC<{
+  actor: ReactionAnimationActor;
+  position: [number, number, number];
+  opacity?: number;
+}> = ({ actor, position, opacity = 1 }) => {
+  const { language } = useLanguage();
+  return (
+    <Html position={position} center distanceFactor={7} style={{ pointerEvents: 'none' }}>
+      <span
+        className="whitespace-nowrap rounded-full border border-white/20 bg-[#101820]/85 px-2 py-0.5 text-[11px] font-semibold tracking-wide text-white shadow-lg backdrop-blur-sm"
+        style={{ opacity }}
+      >
+        {actor.label[language]}
+      </span>
+    </Html>
+  );
+};
+
+const IonNode: React.FC<{
+  actor: ReactionAnimationActor;
+  position: [number, number, number];
+  opacity: number;
+}> = ({ actor, position, opacity }) => {
+  const radius = actor.radius ?? 0.32;
+  const color = actor.color ?? ELEMENT_COLORS[actor.element ?? ''] ?? '#d8d2c5';
+  const isHydroxide = actor.formula === 'OH';
+  return (
+    <group position={position}>
+      <mesh>
+        <sphereGeometry args={[radius, 20, 20]} />
+        <meshStandardMaterial color={color} roughness={0.25} metalness={0.1} transparent opacity={opacity} emissive={color} emissiveIntensity={0.12} />
+      </mesh>
+      {isHydroxide && (
+        <>
+          <mesh position={[radius * 0.8, 0.04, 0]} rotation={[0, 0, Math.PI / 2]}>
+            <cylinderGeometry args={[0.035, 0.035, radius * 1.15, 10]} />
+            <meshStandardMaterial color="#bfb7a7" transparent opacity={opacity * 0.9} />
+          </mesh>
+          <mesh position={[radius * 1.45, 0.08, 0]}>
+            <sphereGeometry args={[radius * 0.55, 16, 16]} />
+            <meshStandardMaterial color={ELEMENT_COLORS.H} roughness={0.3} transparent opacity={opacity} />
+          </mesh>
+        </>
+      )}
+      <mesh rotation={[Math.PI / 2, 0, 0]}>
+        <torusGeometry args={[radius * 1.2, 0.018, 8, 28]} />
+        <meshBasicMaterial color={actor.charge && actor.charge > 0 ? '#d8a8ff' : '#ff8f83'} transparent opacity={opacity * 0.75} />
+      </mesh>
+      <ActorLabel actor={actor} position={[0, radius + 0.23, 0]} opacity={opacity} />
+    </group>
+  );
+};
+
+const SodiumWaterSceneContent: React.FC<{
+  animation: ReactionAnimationScene;
+  time: number;
+}> = ({ animation, time }) => {
+  const actorById = useMemo(
+    () => new Map(animation.actors.map((actor) => [actor.id, actor])),
+    [animation.actors],
+  );
+  const snapshot = getAnimationSnapshot(animation, time);
+  const water = actorById.get('water');
+  const sodium = actorById.get('sodium-bead');
+  const naOne = actorById.get('na-plus-1');
+  const naTwo = actorById.get('na-plus-2');
+  const ohOne = actorById.get('oh-minus-1');
+  const ohTwo = actorById.get('oh-minus-2');
+  const h2 = actorById.get('h2-gas');
+  const indicator = actorById.get('phenolphthalein');
+  const electronOne = actorById.get('electron-1');
+  const electronTwo = actorById.get('electron-2');
+
+  const meltP = stageProgress(animation, 'melt', time);
+  const electronP = stageProgress(animation, 'electron', time);
+  const ionP = stageProgress(animation, 'ions', time);
+  const hydrogenP = stageProgress(animation, 'hydrogen', time);
+  const ionsStart = animation.stages.find((stage) => stage.id === 'ions')?.start ?? 9.5;
+  const electronStart = animation.stages.find((stage) => stage.id === 'electron')?.start ?? 6.1;
+  const electronVisible = isStageActiveAt(animation, 'electron', time);
+  const sodiumFade = 1 - clamp01((time - ionsStart) / 1.1);
+  const hydrogenVisible = clamp01((time - (electronStart + 0.7)) / 1.2);
+  const heatVisible = snapshot.stage.id === 'melt';
+  const ionVisible = clamp01((time - (ionsStart - 0.55)) / 1.15);
+
+  const sodiumPosition = sodium
+    ? actorPoint(sodium, meltP)
+    : [0, -0.55, 0.2] as [number, number, number];
+  const ionPosition = (actor: ReactionAnimationActor | undefined) =>
+    actor ? actorPoint(actor, ionP) : [0, -1, 0] as [number, number, number];
+  const h2Position = h2
+    ? actorPoint(h2, clamp01((time - electronStart) / Math.max(0.001, (animation.duration - electronStart))))
+    : [0, 0, 0] as [number, number, number];
+
+  const bubblePoints = useMemo(
+    () => Array.from({ length: 13 }, (_, index) => ({
+      x: -2.1 + ((index * 0.71) % 4.2),
+      y: 0.18 + ((index * 0.19) % 0.5),
+      z: 0.35 + ((index % 3) * 0.12),
+      radius: 0.045 + (index % 4) * 0.014,
+      phase: (index * 0.17) % 1,
+    })),
+    [],
+  );
+
+  return (
+    <group>
+      {/* 实验情境：水槽/水面始终存在，粒子解释层在其上展开。 */}
+      <mesh position={[0, -1.08, 0]}>
+        <boxGeometry args={[5.35, 1.25, 1.25]} />
+        <meshStandardMaterial color={water?.color ?? '#2d9fc4'} transparent opacity={0.67} roughness={0.18} metalness={0.05} />
+      </mesh>
+      <mesh position={[0, -0.46, 0.02]}>
+        <planeGeometry args={[5.25, 1.15]} />
+        <meshStandardMaterial color="#6dd6e7" transparent opacity={0.18} emissive="#257d99" emissiveIntensity={0.2} />
+      </mesh>
+      <group>
+        <mesh position={[-2.68, -1.08, 0]}><boxGeometry args={[0.06, 1.45, 1.35]} /><meshBasicMaterial color="#dce9e7" transparent opacity={0.46} /></mesh>
+        <mesh position={[2.68, -1.08, 0]}><boxGeometry args={[0.06, 1.45, 1.35]} /><meshBasicMaterial color="#dce9e7" transparent opacity={0.46} /></mesh>
+        <mesh position={[0, -1.72, 0]}><boxGeometry args={[5.4, 0.06, 1.35]} /><meshBasicMaterial color="#dce9e7" transparent opacity={0.46} /></mesh>
+      </group>
+      {water && <ActorLabel actor={water} position={[-2.0, -0.25, 0.6]} />}
+
+      {/* 钠浮起、熔化、变小；结束后由 Na⁺ 取代而不是凭空消失。 */}
+      {sodium && sodiumFade > 0.01 && (
+        <group position={sodiumPosition} scale={[1.08 + meltP * 0.08, 1 - meltP * 0.22, 1.08 + meltP * 0.08]}>
+          <mesh>
+            <sphereGeometry args={[sodium.radius ?? 0.58, 28, 22]} />
+            <meshStandardMaterial color={sodium.color ?? '#b47be8'} roughness={0.16} metalness={0.56} transparent opacity={sodiumFade} emissive="#8c4cc1" emissiveIntensity={0.22 + meltP * 0.26} />
+          </mesh>
+          <ActorLabel actor={sodium} position={[0, (sodium.radius ?? 0.58) + 0.25, 0]} opacity={sodiumFade} />
+        </group>
+      )}
+      {heatVisible && (
+        <group position={sodiumPosition}>
+          <pointLight color="#ff9d3f" intensity={1.4} distance={3.2} />
+          <mesh rotation={[Math.PI / 2, 0, 0]}>
+            <torusGeometry args={[0.82 + meltP * 0.14, 0.025, 8, 36]} />
+            <meshBasicMaterial color="#ffae47" transparent opacity={0.68} />
+          </mesh>
+          <Html position={[0, 0.93, 0]} center distanceFactor={7} style={{ pointerEvents: 'none' }}>
+            <span className="rounded-full bg-[#f59e0b]/90 px-2 py-0.5 text-[10px] font-bold text-[#2b1a0a] shadow-lg">放热 · exothermic</span>
+          </Html>
+        </group>
+      )}
+
+      {/* 电子迁移路径：用显式 e⁻ 粒子表示，不把还原氢淡出。 */}
+      {electronOne && electronTwo && electronVisible && (
+        <>
+          <Line points={[electronOne.position, [0, -0.15, 0.4], electronOne.target ?? electronOne.position]} color="#f4c95d" transparent opacity={0.55} lineWidth={1.6} dashed dashSize={0.08} gapSize={0.08} />
+          <Line points={[electronTwo.position, [0.28, -0.12, 0.44], electronTwo.target ?? electronTwo.position]} color="#f4c95d" transparent opacity={0.55} lineWidth={1.6} dashed dashSize={0.08} gapSize={0.08} />
+          {[electronOne, electronTwo].map((actor, index) => {
+            const p = actorPoint(actor, electronP);
+            p[0] += Math.sin(electronP * Math.PI + index) * 0.16;
+            p[1] += Math.sin(electronP * Math.PI) * 0.13;
+            return (
+              <group key={actor.id} position={p}>
+                <mesh>
+                  <sphereGeometry args={[actor.radius ?? 0.11, 16, 16]} />
+                  <meshBasicMaterial color={actor.color ?? '#f4c95d'} transparent opacity={0.98} />
+                </mesh>
+                <ActorLabel actor={actor} position={[0, 0.2, 0]} />
+              </group>
+            );
+          })}
+        </>
+      )}
+
+      {/* 溶液中的离子有各自的标签和环，不用 Na--O 球棍连接。 */}
+      {naOne && <IonNode actor={naOne} position={ionPosition(naOne)} opacity={ionVisible} />}
+      {naTwo && <IonNode actor={naTwo} position={ionPosition(naTwo)} opacity={ionVisible} />}
+      {ohOne && <IonNode actor={ohOne} position={ionPosition(ohOne)} opacity={ionVisible} />}
+      {ohTwo && <IonNode actor={ohTwo} position={ionPosition(ohTwo)} opacity={ionVisible} />}
+
+      {/* H₂ 先由氢原子聚合，再作为气泡上升；最终状态仍保留完整分子。 */}
+      {h2 && hydrogenVisible > 0 && (
+        <group position={h2Position} scale={0.94 + hydrogenP * 0.08}>
+          <mesh position={[-0.18, 0, 0]}>
+            <sphereGeometry args={[h2.radius ?? 0.2, 20, 20]} />
+            <meshStandardMaterial color={h2.color ?? '#f4f1ea'} roughness={0.24} transparent opacity={0.98} emissive="#ffffff" emissiveIntensity={0.18} />
+          </mesh>
+          <mesh position={[0.18, 0, 0]}>
+            <sphereGeometry args={[h2.radius ?? 0.2, 20, 20]} />
+            <meshStandardMaterial color={h2.color ?? '#f4f1ea'} roughness={0.24} transparent opacity={0.98} emissive="#ffffff" emissiveIntensity={0.18} />
+          </mesh>
+          <mesh position={[0, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
+            <cylinderGeometry args={[0.035, 0.035, 0.36, 10]} />
+            <meshStandardMaterial color="#c9c0b2" transparent opacity={0.92} />
+          </mesh>
+          <ActorLabel actor={h2} position={[0, 0.45, 0]} />
+        </group>
+      )}
+      {bubblePoints.map((bubble) => {
+        const cycle = (time * 0.28 + bubble.phase) % 1;
+        const visible = time >= electronStart + 0.4;
+        return (
+          <mesh key={`${bubble.x}-${bubble.phase}`} position={[bubble.x, bubble.y + cycle * 1.65, bubble.z]} visible={visible}>
+            <sphereGeometry args={[bubble.radius, 12, 12]} />
+            <meshBasicMaterial color="#a5eff5" transparent opacity={visible ? 0.34 : 0} />
+          </mesh>
+        );
+      })}
+
+      {indicator && (
+        <group position={indicator.position}>
+          <mesh>
+            <sphereGeometry args={[indicator.radius ?? 0.22, 18, 18]} />
+            <meshStandardMaterial color={time >= ionsStart ? '#ff597b' : '#f1d5d8'} transparent opacity={0.95} emissive="#ff597b" emissiveIntensity={time >= ionsStart ? 0.25 : 0.03} />
+          </mesh>
+          <ActorLabel actor={indicator} position={[0, 0.4, 0]} />
+        </group>
+      )}
+
+      {time >= animation.duration && (
+        <Html position={[0, 2.45, 0.2]} center distanceFactor={7} style={{ pointerEvents: 'none' }}>
+          <div className="whitespace-nowrap rounded-xl border border-[#8fe8dc]/35 bg-[#0d2526]/90 px-3 py-1.5 text-xs font-semibold text-[#d6fff4] shadow-xl">
+            2Na⁺ + 2OH⁻ + H₂↑
+          </div>
+        </Html>
+      )}
+    </group>
+  );
+};
+
+const SodiumWaterScene: React.FC<{
+  animation: ReactionAnimationScene;
+  time: number;
+}> = ({ animation, time }) => (
+  <Canvas dpr={[1, 1.75]} camera={{ position: [0, 0.1, 7.3], fov: 42 }} gl={{ antialias: true }}>
+    <color attach="background" args={['#111b20']} />
+    <ambientLight intensity={0.68} />
+    <spotLight position={[5, 7, 7]} angle={0.34} penumbra={1} intensity={1.2} />
+    <pointLight position={[-5, -3, 4]} color="#66c9df" intensity={0.55} />
+    <SodiumWaterSceneContent animation={animation} time={time} />
+    <OrbitControls enablePan={false} minDistance={5.4} maxDistance={9.5} />
+    <Environment preset="city" />
+  </Canvas>
+);
+
 export interface ReactionFlowSceneProps {
   structure: MoleculeStructure;
   flow: NonNullable<import('../src/data/reactions/schema').CuratedReaction['reactionFlow']>;
-  playKey: number;
+  playKey?: number;
+  /** 由外部播放器控制的时间（秒）；未传入时兼容旧版 Canvas 自己播放。 */
+  time?: number;
+  animation?: ReactionAnimationScene;
   selectedAtomId?: number | null;
   onAtomSelect?: (id: number | null) => void;
 }
@@ -515,7 +844,9 @@ export interface ReactionFlowSceneProps {
 export const ReactionFlowScene: React.FC<ReactionFlowSceneProps> = ({
   structure,
   flow,
-  playKey,
+  playKey = 0,
+  time,
+  animation,
   selectedAtomId = null,
   onAtomSelect,
 }) => {
@@ -525,7 +856,11 @@ export const ReactionFlowScene: React.FC<ReactionFlowSceneProps> = ({
       Boolean(window.matchMedia?.('(prefers-reduced-motion: reduce)').matches),
     [],
   );
-  const [controlsEnabled, setControlsEnabled] = useState(reduced);
+  const [controlsEnabled, setControlsEnabled] = useState(reduced || time !== undefined);
+
+  if (animation?.environment === 'water-beaker') {
+    return <SodiumWaterScene animation={animation} time={time ?? 0} />;
+  }
 
   return (
     <Canvas dpr={[1, 1.75]} camera={{ position: [2.8, 0.7, 4.6], fov: 42 }} gl={{ antialias: true }}>
@@ -536,6 +871,8 @@ export const ReactionFlowScene: React.FC<ReactionFlowSceneProps> = ({
         structure={structure}
         flow={flow}
         playKey={playKey}
+        time={time}
+        animation={animation}
         reduced={reduced}
         selectedAtomId={selectedAtomId}
         onAtomSelect={onAtomSelect}

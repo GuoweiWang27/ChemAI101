@@ -101,6 +101,39 @@ describe('curated reactions dataset', () => {
     }
   });
 
+  it('validates staged animation scenes and their event references', () => {
+    for (const reaction of ALL_REACTIONS) {
+      const animation = reaction.reactionAnimation;
+      if (!animation) continue;
+      expect(animation.version).toBe(1);
+      expect(animation.duration).toBeGreaterThan(0);
+      expect(animation.stages.length).toBeGreaterThan(0);
+      expect(new Set(animation.stages.map((stage) => stage.id)).size).toBe(animation.stages.length);
+      expect(new Set(animation.actors.map((actor) => actor.id)).size).toBe(animation.actors.length);
+      expect(new Set(animation.events.map((event) => event.id)).size).toBe(animation.events.length);
+      for (const [index, stage] of animation.stages.entries()) {
+        expect(stage.start).toBeGreaterThanOrEqual(0);
+        expect(stage.end).toBeGreaterThan(stage.start);
+        expect(stage.end).toBeLessThanOrEqual(animation.duration);
+        expect(stage.stepIndex).toBeGreaterThanOrEqual(0);
+        expect(stage.stepIndex).toBeLessThan(reaction.mechanismSteps.length);
+        if (index > 0) expect(stage.start).toBeGreaterThanOrEqual(animation.stages[index - 1].end);
+        expect(stage.label.zh.trim().length).toBeGreaterThan(0);
+        expect(stage.label.en.trim().length).toBeGreaterThan(0);
+        expect(stage.status.zh.trim().length).toBeGreaterThan(0);
+        expect(stage.status.en.trim().length).toBeGreaterThan(0);
+      }
+      const stageIds = new Set(animation.stages.map((stage) => stage.id));
+      const actorIds = new Set(animation.actors.map((actor) => actor.id));
+      for (const event of animation.events) {
+        expect(stageIds.has(event.stageId)).toBe(true);
+        for (const actorId of event.actorIds ?? []) expect(actorIds.has(actorId)).toBe(true);
+        if (event.fromActorId) expect(actorIds.has(event.fromActorId)).toBe(true);
+        if (event.toActorId) expect(actorIds.has(event.toActorId)).toBe(true);
+      }
+    }
+  });
+
   it('keeps chapters ordered and non-empty once content lands', () => {
     expect(CHAPTERS.every((c) => c.length > 0)).toBe(true);
     // 发布门槛（Task 7 门禁复核）：签核条目 >= 10

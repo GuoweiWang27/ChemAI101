@@ -1,15 +1,21 @@
 import React from 'react';
 import { CuratedReaction } from '../src/data/reactions/schema';
 import { Molecule3DViewer } from './Molecule3DViewer';
-import { ReactionFlowScene } from './ReactionFlowScene';
+import { ReactionAnimationPlayer, type ReactionAnimationPlayerHandle } from './ReactionAnimationPlayer';
 import { AtomInsightPanel } from './AtomInsightPanel';
 import { PresentationMode } from './PresentationMode';
 import { QrShare } from './QrShare';
 import { updateRouteParams } from '../utils/routeParams';
 import { trackEvent } from '../services/geminiService';
-import { ArrowLeft, Presentation as PresentationIcon, GraduationCap, Play, RotateCcw, X } from 'lucide-react';
+import { ArrowLeft, Presentation as PresentationIcon, GraduationCap, Play, X } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { parseChapter } from '../utils/textbook';
+import {
+  createFallbackReactionAnimation,
+  getEquationParts,
+  getStageForStep,
+} from '../utils/reactionAnimation';
+import type { AnimationSnapshot } from '../utils/reactionAnimation';
 
 interface ReactionPageProps {
   reaction: CuratedReaction;
@@ -22,12 +28,21 @@ export const ReactionPage: React.FC<ReactionPageProps> = ({ reaction, present, o
   const [selectedAtomId, setSelectedAtomId] = React.useState<number | null>(null);
   const [activeStepIdx, setActiveStepIdx] = React.useState<number | null>(null);
   const [flowPreview, setFlowPreview] = React.useState(false);
-  const [flowKey, setFlowKey] = React.useState(0);
+  const [flowSnapshot, setFlowSnapshot] = React.useState<AnimationSnapshot | null>(null);
+  const flowPlayerRef = React.useRef<ReactionAnimationPlayerHandle>(null);
+  const animation = React.useMemo(
+    () => reaction.reactionAnimation ?? createFallbackReactionAnimation(reaction),
+    [reaction],
+  );
+  const equationParts = React.useMemo(() => getEquationParts(reaction.equation), [reaction.equation]);
+  const equationFocus = flowSnapshot?.stage.equationFocus
+    ?? (activeStepIdx !== null && animation ? getStageForStep(animation, activeStepIdx)?.equationFocus : undefined);
   React.useEffect(() => {
     trackEvent('textbook', reaction.id);
     setSelectedAtomId(null);
     setActiveStepIdx(null);
     setFlowPreview(false);
+    setFlowSnapshot(null);
   }, [reaction.id]);
   if (present) {
     return (
@@ -40,6 +55,7 @@ export const ReactionPage: React.FC<ReactionPageProps> = ({ reaction, present, o
         highlightSteps={reaction.stepAtomIds}
         atomInsights={reaction.atomInsights}
         reactionFlow={reaction.reactionFlow}
+        reactionAnimation={animation ?? undefined}
         onClose={() => updateRouteParams({ mode: null })}
       />
     );
@@ -66,8 +82,11 @@ export const ReactionPage: React.FC<ReactionPageProps> = ({ reaction, present, o
           </div>
         </div>
         <h2 className="text-xl sm:text-2xl font-bold font-display text-[#1a1a1a] mb-3">{reaction.title}</h2>
-        <div className="p-4 bg-science-50 rounded-xl border border-science-200 font-mono text-base sm:text-lg text-science-800 break-words mb-3">
-          {reaction.equation}
+        <div className="p-4 bg-science-50 rounded-xl border border-science-200 font-mono text-base sm:text-lg text-science-800 break-words mb-3" aria-label={reaction.equation}>
+          <span className={equationFocus === 'reactants' ? 'rounded-md bg-[#f0c66e]/35 px-1.5 py-0.5 transition-colors' : 'transition-colors'}>{equationParts.reactants}</span>
+          {equationParts.arrow && <span className={equationFocus === 'change' ? 'mx-2 rounded-md bg-[#f0c66e]/35 px-1.5 py-0.5 text-[#8b5a17] transition-colors' : 'mx-2 text-science-500'}>{equationParts.arrow}</span>}
+          {equationParts.products && <span className={equationFocus === 'products' ? 'rounded-md bg-[#7edbd1]/35 px-1.5 py-0.5 transition-colors' : 'transition-colors'}>{equationParts.products}</span>}
+          {equationFocus === 'observation' && <span className="ml-2 rounded-md border border-[#d4a76a] px-1.5 py-0.5 font-sans text-xs text-[#866027]">{language === 'zh' ? '实验现象' : 'observation'}</span>}
         </div>
         <p className="text-sm text-[#5c5549] mb-4">
           <span className="font-semibold">{t('conditionsLabel')}:</span> {reaction.conditions || '—'}
@@ -95,7 +114,12 @@ export const ReactionPage: React.FC<ReactionPageProps> = ({ reaction, present, o
                   <button
                     onClick={() => {
                       setSelectedAtomId(null);
-                      setActiveStepIdx(active ? null : i);
+                      if (flowPreview && animation) {
+                        flowPlayerRef.current?.seekToStep(i);
+                        setActiveStepIdx(i);
+                      } else {
+                        setActiveStepIdx(active ? null : i);
+                      }
                     }}
                     className={`w-full text-left rounded-lg px-3 py-2 border-l-4 transition-colors ${
                       active
@@ -120,30 +144,34 @@ export const ReactionPage: React.FC<ReactionPageProps> = ({ reaction, present, o
             ))}
           </div>
         </div>
-        <div className="relative min-h-[360px] bg-white rounded-2xl shadow-lg border border-[#f0ece4] overflow-hidden">
-          {reaction.productStructure && flowPreview && reaction.reactionFlow ? (
+        <div className="relative min-h-[560px] bg-white rounded-2xl shadow-lg border border-[#f0ece4] overflow-hidden">
+          {reaction.productStructure && flowPreview && reaction.reactionFlow && animation ? (
             <>
-              <ReactionFlowScene
+              <ReactionAnimationPlayer
+                ref={flowPlayerRef}
+                equation={reaction.equation}
+                steps={reaction.mechanismSteps}
                 structure={reaction.productStructure}
                 flow={reaction.reactionFlow}
-                playKey={flowKey}
+                animation={animation}
                 selectedAtomId={selectedAtomId}
                 onAtomSelect={setSelectedAtomId}
+                autoPlay
+                onStageChange={(snapshot) => {
+                  setFlowSnapshot(snapshot);
+                  setActiveStepIdx(snapshot.stage.stepIndex);
+                }}
               />
-              <div className="absolute top-3 right-3 z-20 flex gap-2">
-                <button
-                  onClick={() => setFlowKey((k) => k + 1)}
-                  className="flex items-center gap-1.5 bg-science-600 hover:bg-science-700 text-white text-xs font-semibold px-3 py-1.5 rounded-lg shadow-md transition-colors"
-                >
-                  <RotateCcw className="w-3 h-3" /> {t('flowReplayBtn')}
-                </button>
-                <button
-                  onClick={() => setFlowPreview(false)}
-                  className="flex items-center gap-1.5 bg-white/90 hover:bg-white text-[#5c5549] text-xs font-semibold px-3 py-1.5 rounded-lg shadow-md border border-[#e8d5b8] transition-colors"
-                >
-                  <X className="w-3 h-3" /> {t('flowExitPreviewBtn')}
-                </button>
-              </div>
+              <button
+                onClick={() => {
+                  setFlowPreview(false);
+                  setFlowSnapshot(null);
+                  setActiveStepIdx(null);
+                }}
+                className="absolute right-3 top-3 z-30 flex items-center gap-1.5 rounded-lg border border-white/15 bg-[#101820]/80 px-3 py-1.5 text-xs font-semibold text-white shadow-md backdrop-blur-sm transition-colors hover:bg-[#101820]"
+              >
+                <X className="h-3 w-3" /> {t('flowExitPreviewBtn')}
+              </button>
             </>
           ) : reaction.productStructure ? (
             <>
@@ -163,7 +191,7 @@ export const ReactionPage: React.FC<ReactionPageProps> = ({ reaction, present, o
                 <button
                   onClick={() => {
                     setSelectedAtomId(null);
-                    setFlowKey((k) => k + 1);
+                    setFlowSnapshot(null);
                     setFlowPreview(true);
                   }}
                   className="absolute bottom-4 right-4 z-20 flex items-center gap-2 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-white text-sm font-bold px-5 py-2.5 rounded-xl shadow-lg shadow-amber-500/40 transition-all hover:scale-105"

@@ -1,9 +1,10 @@
 import React, { useRef, useMemo, useState, useEffect, useCallback } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { OrbitControls, Environment, Float } from '@react-three/drei';
+import { Html, OrbitControls, Environment, Float } from '@react-three/drei';
 import * as THREE from 'three';
 import { MoleculeStructure, ELEMENT_RADII, ELEMENT_COLORS, ELEMENT_NAMES } from '../types';
 import { useLanguage } from '../contexts/LanguageContext';
+import { formatCharge } from '../utils/reactionAnimation';
 
 // Augment JSX.IntrinsicElements to include Three.js elements to fix type errors
 declare global {
@@ -42,6 +43,7 @@ const AtomMesh: React.FC<{
   position: [number, number, number];
   color: string;
   element: string;
+  charge?: number;
   atomId: number;
   highlighted?: boolean;
   selected?: boolean;
@@ -49,7 +51,7 @@ const AtomMesh: React.FC<{
   interactive: boolean;
   onHover: (atomId: number | null, ev?: React.PointerEvent) => void;
   onSelect: (atomId: number) => void;
-}> = ({ position, color, element, atomId, highlighted, selected, hovered, interactive, onHover, onSelect }) => {
+}> = ({ position, color, element, charge, atomId, highlighted, selected, hovered, interactive, onHover, onSelect }) => {
   const radius = ELEMENT_RADII[element] || ELEMENT_RADII.default;
   const scale = highlighted ? 1.35 : selected ? 1.25 : hovered ? 1.15 : 1;
   return (
@@ -74,6 +76,13 @@ const AtomMesh: React.FC<{
           <sphereGeometry args={[radius * 0.4, 24, 24]} />
           <meshBasicMaterial color="#ffffff" transparent opacity={0.85} side={THREE.BackSide} />
         </mesh>
+      )}
+      {charge !== undefined && (
+        <Html position={[0, radius * 0.54, 0]} center distanceFactor={8} style={{ pointerEvents: 'none' }}>
+          <span className="rounded-full border border-white/25 bg-black/65 px-1.5 py-0.5 font-mono text-[10px] font-bold text-white shadow-lg">
+            {element}{formatCharge(charge)}
+          </span>
+        </Html>
       )}
     </mesh>
   );
@@ -174,6 +183,7 @@ const SceneContent: React.FC<{
           <AtomMesh
             key={atom.id}
             atomId={atom.id}
+            charge={atom.charge}
             position={[atom.x, atom.y, atom.z]}
             element={atom.element}
             color={atom.color || ELEMENT_COLORS[atom.element] || '#cccccc'}
@@ -290,4 +300,3 @@ export const Molecule3DViewer: React.FC<Molecule3DViewerProps> = ({
     </div>
   );
 };
-
