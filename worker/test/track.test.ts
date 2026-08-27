@@ -1,6 +1,6 @@
 import { env } from 'cloudflare:test';
-import { describe, expect, it } from 'vitest';
-import { handleRequest } from '../src/index';
+import { beforeEach, describe, expect, it } from 'vitest';
+import { handleRequest, migrateLegacyCounters } from '../src/index';
 
 const allowedOrigin = 'https://chemai101.guoweiwang.com';
 
@@ -19,10 +19,26 @@ function statsRequest(origin = allowedOrigin): Request {
   });
 }
 
+beforeEach(async () => {
+  await env.USAGE_DB.prepare(
+    'CREATE TABLE IF NOT EXISTS usage_counts (event TEXT NOT NULL, day TEXT NOT NULL, count INTEGER NOT NULL CHECK (count >= 0), PRIMARY KEY (event, day))',
+  ).run();
+  await env.USAGE_DB.prepare(
+    'CREATE TABLE IF NOT EXISTS usage_legacy_counts (event TEXT NOT NULL, day TEXT NOT NULL, count INTEGER NOT NULL CHECK (count >= 0), PRIMARY KEY (event, day))',
+  ).run();
+  await env.USAGE_DB.prepare(
+    "CREATE TABLE IF NOT EXISTS usage_migrations (name TEXT PRIMARY KEY, applied_at TEXT NOT NULL, details TEXT NOT NULL DEFAULT '{}')",
+  ).run();
+  await env.USAGE_DB.prepare('DELETE FROM usage_counts').run();
+  await env.USAGE_DB.prepare('DELETE FROM usage_legacy_counts').run();
+  await env.USAGE_DB.prepare('DELETE FROM usage_migrations').run();
+});
+
 describe('anonymous usage counters', () => {
   it('records events and aggregates them in stats', async () => {
     const t1 = await handleRequest(trackRequest('reaction'), env, fetch);
     expect(t1.status).toBe(204);
+    expect(t1.headers.get('access-control-allow-origin')).toBe(allowedOrigin);
 
     await handleRequest(trackRequest('textbook', 'na-h2o'), env, fetch);
     await handleRequest(trackRequest('textbook', 'fe-cl2'), env, fetch);
@@ -38,6 +54,37 @@ describe('anonymous usage counters', () => {
     expect(body.totals.textbook).toBeGreaterThanOrEqual(2);
     expect(body.today.reaction).toBeGreaterThanOrEqual(1);
     expect(body.total).toBeGreaterThanOrEqual(3);
+  });
+
+  it('serves exact aggregate stats without listing legacy KV keys', async () => {
+    await env.USAGE_DB.prepare(
+      'INSERT INTO usage_counts (event, day, count) VALUES (?, ?, ?), (?, ?, ?)',
+    )
+      .bind('reaction', '20260827', 7, 'textbook', '20260827', 3)
+      .run();
+
+    const originalList = env.COUNTERS.list.bind(env.COUNTERS);
+    Object.defineProperty(env.COUNTERS, 'list', {
+      configurable: true,
+      value: async () => {
+        throw new Error('KV list() limit exceeded for the day.');
+      },
+    });
+    try {
+      const stats = await handleRequest(statsRequest(), env, fetch);
+      expect(stats.status).toBe(200);
+      const body = (await stats.json()) as {
+        totals: Record<string, number>;
+        today: Record<string, number>;
+        total: number;
+      };
+      expect(body.totals.reaction).toBe(7);
+      expect(body.totals.textbook).toBe(3);
+      expect(body.today.reaction).toBe(7);
+      expect(body.total).toBe(10);
+    } finally {
+      Object.defineProperty(env.COUNTERS, 'list', { configurable: true, value: originalList });
+    }
   });
 
   it('rejects unknown events and malformed slugs', async () => {
@@ -61,34 +108,31 @@ describe('anonymous usage counters', () => {
     expect(response.status).toBe(405);
   });
 
-  it('adds KV-stored baselines to totals but not to today', async () => {
-    await env.COUNTERS.put('bases', JSON.stringify({ reaction: 120, textbook: 80 }));
-    try {
-      await handleRequest(trackRequest('reaction'), env, fetch);
+  it('adds migrated baselines to totals but not to today', async () => {
+    await env.USAGE_DB.prepare(
+      'INSERT INTO usage_counts (event, day, count) VALUES (?, ?, ?), (?, ?, ?)',
+    )
+      .bind('reaction', 'legacy', 120, 'textbook', 'legacy', 80)
+      .run();
+    await handleRequest(trackRequest('reaction'), env, fetch);
 
-      const stats = await handleRequest(statsRequest(), env, fetch);
-      expect(stats.status).toBe(200);
-      const body = (await stats.json()) as {
-        totals: Record<string, number>;
-        today: Record<string, number>;
-        total: number;
-        bases: Record<string, number>;
-      };
-      expect(body.bases.reaction).toBe(120);
-      expect(body.bases.textbook).toBe(80);
-      // 总数 = 事件计数 + 基线
-      expect(body.totals.reaction).toBeGreaterThanOrEqual(121);
-      expect(body.totals.textbook).toBeGreaterThanOrEqual(80);
-      expect(body.total).toBeGreaterThanOrEqual(201);
-      // 今日只算当日事件，不含基线
-      expect(body.today.reaction).toBeGreaterThanOrEqual(1);
-      expect(body.today.reaction).toBeLessThan(body.totals.reaction);
-    } finally {
-      await env.COUNTERS.delete('bases');
-    }
+    const stats = await handleRequest(statsRequest(), env, fetch);
+    expect(stats.status).toBe(200);
+    const body = (await stats.json()) as {
+      totals: Record<string, number>;
+      today: Record<string, number>;
+      total: number;
+      bases: Record<string, number>;
+    };
+    expect(body.bases.reaction).toBe(120);
+    expect(body.bases.textbook).toBe(80);
+    expect(body.totals.reaction).toBe(121);
+    expect(body.totals.textbook).toBe(80);
+    expect(body.total).toBe(201);
+    expect(body.today.reaction).toBe(1);
   });
 
-  it('survives a corrupted or invalid bases key', async () => {
+  it('does not depend on the legacy KV bases key', async () => {
     await env.COUNTERS.put('bases', '{not valid json');
     try {
       const stats = await handleRequest(statsRequest(), env, fetch);
@@ -100,6 +144,34 @@ describe('anonymous usage counters', () => {
       }
     } finally {
       await env.COUNTERS.delete('bases');
+    }
+  });
+
+  it('migrates legacy event keys idempotently into aggregate stats', async () => {
+    const nonce = Date.now().toString(36);
+    const keys = [
+      `t:reaction:20260826:${nonce}-a`,
+      `t:reaction:20260826:${nonce}-b`,
+      `t:textbook:20260827:${nonce}-c`,
+    ];
+    for (const key of keys) await env.COUNTERS.put(key, '');
+    try {
+      await migrateLegacyCounters(env);
+      await migrateLegacyCounters(env);
+
+      const stats = await handleRequest(statsRequest(), env, fetch);
+      expect(stats.status).toBe(200);
+      const body = (await stats.json()) as {
+        totals: Record<string, number>;
+        today: Record<string, number>;
+        total: number;
+      };
+      expect(body.totals.reaction).toBe(2);
+      expect(body.totals.textbook).toBe(1);
+      expect(body.today.textbook).toBe(1);
+      expect(body.total).toBe(3);
+    } finally {
+      for (const key of keys) await env.COUNTERS.delete(key);
     }
   });
 });

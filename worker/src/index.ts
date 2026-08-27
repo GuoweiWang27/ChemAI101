@@ -567,6 +567,7 @@ async function handleIdentify(
 const TRACK_EVENTS = new Set(['reaction', 'builder', 'compound', 'textbook']);
 const SLUG_RE = /^[a-z0-9-]{1,64}$/;
 const TRACK_TTL_SECONDS = 7776000; // 90 天
+const LEGACY_DAY = 'legacy';
 
 function todayStamp(): string {
   return new Date().toISOString().slice(0, 10).replace(/-/g, '');
@@ -603,85 +604,136 @@ async function handleTrack(request: Request, env: Env, origin: string): Promise<
     return jsonResponse({ error: 'Too many requests' }, 429, origin);
   }
 
+  const stamp = todayStamp();
   try {
-    const key = `t:${event}:${todayStamp()}:${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
-    await env.COUNTERS.put(key, slug, { expirationTtl: TRACK_TTL_SECONDS });
+    await env.USAGE_DB.prepare(
+      `INSERT INTO usage_counts (event, day, count)
+       VALUES (?, ?, 1)
+       ON CONFLICT(event, day) DO UPDATE SET count = count + 1`,
+    )
+      .bind(event, stamp)
+      .run();
   } catch (error) {
-    // 计数失败绝不影响主功能
+    // D1 临时不可用时，把事件保存在旧 KV 日志中，后续可由迁移工具补回，避免静默丢数。
     console.error(
-      JSON.stringify({ message: 'track write failed', error: error instanceof Error ? error.message : 'unknown' }),
+      JSON.stringify({ message: 'D1 track write failed', error: error instanceof Error ? error.message : 'unknown' }),
     );
+    try {
+      const key = `t:${event}:${stamp}:${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+      await env.COUNTERS.put(key, slug, { expirationTtl: TRACK_TTL_SECONDS });
+    } catch (fallbackError) {
+      console.error(
+        JSON.stringify({
+          message: 'track fallback write failed',
+          error: fallbackError instanceof Error ? fallbackError.message : 'unknown',
+        }),
+      );
+    }
   }
-  return new Response(null, { status: 204 });
+  return new Response(null, { status: 204, headers: corsHeaders(origin) });
 }
 
-/** 计数基线：计数功能启用前的既有用量。存 KV 单键 JSON，可通过 wrangler 配置，无需重新部署。 */
-const BASES_KEY = 'bases';
-
-/** 读计数基线。键不存在 / JSON 损坏 / 字段非法时一律按 0 处理——基线只参与汇总，绝不能弄坏 stats。 */
 function emptyBases(): Record<string, number> {
   const bases: Record<string, number> = {};
   for (const event of TRACK_EVENTS) bases[event] = 0;
   return bases;
 }
 
-async function readBases(env: Env): Promise<Record<string, number>> {
-  let raw: string | null;
-  try {
-    raw = await env.COUNTERS.get(BASES_KEY);
-  } catch (error) {
-    console.error(
-      JSON.stringify({ message: 'bases read failed', error: error instanceof Error ? error.message : 'unknown' }),
-    );
-    return emptyBases();
-  }
-  if (!raw) return emptyBases();
-  try {
-    const parsed = JSON.parse(raw) as Record<string, unknown>;
-    const bases = emptyBases();
-    for (const event of TRACK_EVENTS) {
-      const value = parsed[event];
-      if (typeof value === 'number' && Number.isFinite(value) && value > 0) {
-        bases[event] = Math.floor(value);
-      }
-    }
-    return bases;
-  } catch {
-    return emptyBases();
-  }
+interface UsageAggregateRow {
+  event: string;
+  total: number;
+  today: number;
+  base: number;
 }
 
-async function countPrefix(env: Env, prefix: string): Promise<number> {
-  let count = 0;
-  let cursor: string | undefined;
-  for (;;) {
-    const page = (await env.COUNTERS.list({ prefix, cursor })) as {
-      keys: Array<{ name: string }>;
-      list_complete: boolean;
-      cursor?: string;
-    };
-    count += page.keys.length;
-    if (page.list_complete) break;
-    cursor = page.cursor;
+/**
+ * 把旧版逐事件 KV 键汇总到 D1。目标表与源表分离，写入取历史最大值，
+ * 因此定时任务可安全重跑，也不会因 KV 键 90 天后过期而让总数倒退。
+ */
+export async function migrateLegacyCounters(env: Env): Promise<void> {
+  const counts = new Map<string, { event: string; day: string; count: number }>();
+  for (const event of TRACK_EVENTS) {
+    let cursor: string | undefined;
+    do {
+      const page = (await env.COUNTERS.list({ prefix: `t:${event}:`, cursor, limit: 1000 })) as {
+        keys: Array<{ name: string }>;
+        list_complete: boolean;
+        cursor?: string;
+      };
+      for (const key of page.keys) {
+        const match = /^t:([a-z]+):(\d{8}):/.exec(key.name);
+        if (!match || match[1] !== event) continue;
+        const mapKey = `${event}:${match[2]}`;
+        const current = counts.get(mapKey);
+        counts.set(mapKey, { event, day: match[2], count: (current?.count ?? 0) + 1 });
+      }
+      cursor = page.list_complete ? undefined : page.cursor;
+    } while (cursor);
   }
-  return count;
+
+  if (counts.size === 0) return;
+  const statements = [...counts.values()].map(({ event, day, count }) =>
+    env.USAGE_DB.prepare(
+      `INSERT INTO usage_legacy_counts (event, day, count)
+       VALUES (?, ?, ?)
+       ON CONFLICT(event, day) DO UPDATE
+       SET count = MAX(usage_legacy_counts.count, excluded.count)`,
+    ).bind(event, day, count),
+  );
+  const detail = JSON.stringify({
+    rows: counts.size,
+    events: [...counts.values()].reduce((sum, item) => sum + item.count, 0),
+  });
+  statements.push(
+    env.USAGE_DB.prepare(
+      `INSERT INTO usage_migrations (name, applied_at, details)
+       VALUES ('kv-event-log-v1', datetime('now'), ?)
+       ON CONFLICT(name) DO UPDATE SET applied_at = excluded.applied_at, details = excluded.details`,
+    ).bind(detail),
+  );
+  await env.USAGE_DB.batch(statements);
 }
 
 async function handleStats(request: Request, env: Env, origin: string): Promise<Response> {
   if (request.method !== 'GET') {
     return jsonResponse({ error: 'Method not allowed' }, 405, origin);
   }
-  const bases = await readBases(env);
   const totals: Record<string, number> = {};
   const today: Record<string, number> = {};
-  const stamp = todayStamp();
-  let total = 0;
+  const bases = emptyBases();
   for (const event of TRACK_EVENTS) {
-    totals[event] = (await countPrefix(env, `t:${event}:`)) + (bases[event] ?? 0);
-    // 今日数只统计当日事件，不含基线
-    today[event] = await countPrefix(env, `t:${event}:${stamp}`);
-    total += totals[event];
+    totals[event] = 0;
+    today[event] = 0;
   }
+  const stamp = todayStamp();
+  try {
+    const result = await env.USAGE_DB.prepare(
+      `SELECT event,
+              SUM(count) AS total,
+              SUM(CASE WHEN day = ? THEN count ELSE 0 END) AS today,
+              SUM(CASE WHEN day = ? THEN count ELSE 0 END) AS base
+       FROM (
+         SELECT event, day, count FROM usage_counts
+         UNION ALL
+         SELECT event, day, count FROM usage_legacy_counts
+       )
+       GROUP BY event`,
+    )
+      .bind(stamp, LEGACY_DAY)
+      .all<UsageAggregateRow>();
+    for (const row of result.results) {
+      if (!TRACK_EVENTS.has(row.event)) continue;
+      totals[row.event] = Number(row.total) || 0;
+      today[row.event] = Number(row.today) || 0;
+      bases[row.event] = Number(row.base) || 0;
+    }
+  } catch (error) {
+    console.error(
+      JSON.stringify({ message: 'stats query failed', error: error instanceof Error ? error.message : 'unknown' }),
+    );
+    return jsonResponse({ error: 'Statistics temporarily unavailable' }, 503, origin);
+  }
+  const total = Object.values(totals).reduce((sum, count) => sum + count, 0);
   return jsonResponse({ totals, today, total, bases }, 200, origin);
 }
 
@@ -690,5 +742,17 @@ export default {
     // tsconfig 同时含 DOM 与 workers-types；取 workers 语义的 caches.default
     const cache = (caches as unknown as { default?: Cache }).default;
     return handleRequest(request, env, fetch, cache);
+  },
+  scheduled(_controller: ScheduledController, env: Env, ctx: ExecutionContext): void {
+    ctx.waitUntil(
+      migrateLegacyCounters(env).catch((error) => {
+        console.error(
+          JSON.stringify({
+            message: 'legacy counter migration failed',
+            error: error instanceof Error ? error.message : 'unknown',
+          }),
+        );
+      }),
+    );
   },
 } satisfies ExportedHandler<Env>;

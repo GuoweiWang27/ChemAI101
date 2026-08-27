@@ -28,6 +28,17 @@
       "id": "5909c39bf85e41b79be5c0343742210a"
     }
   ],
+  "d1_databases": [
+    {
+      "binding": "USAGE_DB",
+      "database_name": "chemai101-usage",
+      "database_id": "ea01fee4-0bf6-4aa4-98da-d11dac59f9cf",
+      "migrations_dir": "worker/migrations"
+    }
+  ],
+  "triggers": {
+    "crons": ["5 0 * * *"]
+  },
   "observability": {
     "enabled": true,
     "logs": {
