@@ -4,6 +4,12 @@ import { handleRequest, migrateLegacyCounters } from '../src/index';
 
 const allowedOrigin = 'https://chemai101.guoweiwang.com';
 
+function dayStamp(offsetDays = 0): string {
+  const date = new Date();
+  date.setUTCDate(date.getUTCDate() + offsetDays);
+  return date.toISOString().slice(0, 10).replace(/-/g, '');
+}
+
 function trackRequest(event: string, slug?: string, origin = allowedOrigin): Request {
   return new Request('https://chemai101-api.guoweiwang27.workers.dev/v1/track', {
     method: 'POST',
@@ -60,7 +66,7 @@ describe('anonymous usage counters', () => {
     await env.USAGE_DB.prepare(
       'INSERT INTO usage_counts (event, day, count) VALUES (?, ?, ?), (?, ?, ?)',
     )
-      .bind('reaction', '20260827', 7, 'textbook', '20260827', 3)
+      .bind('reaction', dayStamp(), 7, 'textbook', dayStamp(), 3)
       .run();
 
     const originalList = env.COUNTERS.list.bind(env.COUNTERS);
@@ -150,9 +156,9 @@ describe('anonymous usage counters', () => {
   it('migrates legacy event keys idempotently into aggregate stats', async () => {
     const nonce = Date.now().toString(36);
     const keys = [
-      `t:reaction:20260826:${nonce}-a`,
-      `t:reaction:20260826:${nonce}-b`,
-      `t:textbook:20260827:${nonce}-c`,
+      `t:reaction:${dayStamp(-1)}:${nonce}-a`,
+      `t:reaction:${dayStamp(-1)}:${nonce}-b`,
+      `t:textbook:${dayStamp()}:${nonce}-c`,
     ];
     for (const key of keys) await env.COUNTERS.put(key, '');
     try {
