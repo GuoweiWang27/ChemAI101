@@ -27,7 +27,32 @@ npm run worker:deploy
 
 ## 前端发布
 
-Cloudflare Pages 从 GitHub `GuoweiWang27/ChemAI101` 的 `main` 分支构建。
+Cloudflare Pages 项目关联 GitHub `GuoweiWang27/ChemAI101` 的 `main`
+分支，但正式前端采用验证后的 `dist` 直传。仓库根 `wrangler.jsonc`
+属于独立 API Worker `chemai101-api`，不要为了 Pages Git 构建向其中加入
+`pages_build_output_dir`；Cloudflare 的 Pages 与 Workers Wrangler 配置字段
+并不完全兼容。
+
+发布前先让本地提交和远端 `main` 对齐，并执行完整门禁：
+
+```bash
+npm test
+npx tsc --noEmit
+npm run build
+npm run worker:check
+git push origin main
+npx wrangler pages deploy dist \
+  --project-name chemai101 \
+  --branch main \
+  --commit-hash "$(git rev-parse HEAD)" \
+  --commit-dirty=false
+```
+
+发布后必须确认 Pages 部署的 Source 与 `git rev-parse HEAD` 一致，并对
+`https://chemai101.guoweiwang.com/` 做桌面端与手机端浏览器复核。GitHub
+上的 Cloudflare Pages 自动 check 可能因根目录 Worker 配置而失败；它不应
+替代上述直传部署和生产读回。
+
 前端默认 Worker 根地址：
 
 `https://chemai101-api.guoweiwang27.workers.dev`
