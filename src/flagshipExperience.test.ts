@@ -9,8 +9,8 @@ import { TeachingMomentCard } from '../components/TeachingMomentCard';
 import { FlagshipReactionPlayer } from '../components/FlagshipReactionPlayer';
 import { TextbookModule } from '../components/TextbookModule';
 import { ReactionPage } from '../components/ReactionPage';
-import { ProjectStoryPage } from '../components/ProjectStoryPage';
 import { FlagshipMicroStage } from '../components/FlagshipMicroStage';
+import { HomeModule } from '../components/HomeModule';
 
 describe('flagship classroom experience', () => {
   it('renders macro phenomenon families and an accessible teaching prompt', () => {
@@ -193,14 +193,29 @@ describe('flagship classroom experience', () => {
     expect(scene.macroTrack.every((event) => event.params.conditionNote === '教材化非水加成模型；含水体系可能形成卤代醇')).toBe(true);
   });
 
-  it('renders a truthful repository-derived project story', () => {
+  it('promotes Reaction Tray as a playable home destination', () => {
     const html = renderToStaticMarkup(
-      React.createElement(LanguageProvider, null, React.createElement(ProjectStoryPage)),
+      React.createElement(
+        LanguageProvider,
+        null,
+        React.createElement(HomeModule, { onOpen: () => undefined }),
+      ),
     );
-    expect(html).toContain('40');
-    expect(html).toContain('5');
-    expect(html).toContain('教师课堂复核待完成');
-    expect(html).toContain('原子守恒');
-    expect(html).not.toMatch(/教师认证|课堂验证通过|提升\d+%|招生结果/);
+
+    expect(html).toContain('href="/reaction-tray/"');
+    expect(html).toContain('Reaction Tray');
+    expect(html).toContain('20');
+  });
+
+  it('does not surface the retired project story from home', () => {
+    const html = renderToStaticMarkup(
+      React.createElement(
+        LanguageProvider,
+        null,
+        React.createElement(HomeModule, { onOpen: () => undefined }),
+      ),
+    );
+
+    expect(html).not.toContain('项目说明');
   });
 });

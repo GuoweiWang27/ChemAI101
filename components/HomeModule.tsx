@@ -1,11 +1,11 @@
 import React from 'react';
-import { Atom, BookOpen, ChevronRight, Database, FileText, FlaskConical } from 'lucide-react';
+import { ArrowUpRight, Atom, BookOpen, ChevronRight, Database, FlaskConical, Gamepad2 } from 'lucide-react';
 import { ALL_REACTIONS } from '../src/data/reactions';
 import { LiveStatsLine } from './LiveStatsLine';
 import { useLanguage } from '../contexts/LanguageContext';
 import { FlameHeroCanvas } from './FlameHeroCanvas';
 
-export type HomeTab = 'textbook' | 'reaction' | 'builder' | 'library' | 'project';
+export type HomeTab = 'textbook' | 'reaction' | 'builder' | 'library';
 
 interface HomeModuleProps {
   onOpen: (tab: HomeTab) => void;
@@ -90,6 +90,20 @@ export const HomeModule: React.FC<HomeModuleProps> = ({ onOpen }) => {
               </h2>
               <p className="mt-5 text-base sm:text-lg text-[#5c5549] font-medium">{t('homeSubtitle')}</p>
               <p className="mt-3 text-xs sm:text-sm text-[#6f685d] tracking-[0.15em]">{t('homeCapabilities')}</p>
+              <a
+                href="/reaction-tray/"
+                className="group mt-6 flex w-full items-center gap-3 rounded-2xl border border-[#6f1010] bg-[#8c1515] px-4 py-3.5 text-left text-white shadow-[0_10px_28px_rgba(140,21,21,0.2)] transition-all hover:-translate-y-0.5 hover:bg-[#6f1010] hover:shadow-[0_14px_34px_rgba(111,16,16,0.28)] sm:w-fit sm:min-w-[330px]"
+              >
+                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-white/20 bg-white/10">
+                  <Gamepad2 className="h-5 w-5" />
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-[#f3cfaa]">{t('reactionTrayKicker')}</span>
+                  <strong className="mt-0.5 block font-display text-lg leading-tight">{t('reactionTrayTitle')}</strong>
+                  <span className="mt-1 block text-xs leading-relaxed text-white/75">{t('reactionTrayDescription')}</span>
+                </span>
+                <ArrowUpRight className="h-5 w-5 shrink-0 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+              </a>
             </div>
             {/* 右：炉膛窗口（唯一深色区，像壁炉口） */}
             <div className="sm:w-[44%] p-3 sm:p-5 flex">
@@ -127,21 +141,6 @@ export const HomeModule: React.FC<HomeModuleProps> = ({ onOpen }) => {
             </button>
           ))}
         </div>
-
-        <button
-          type="button"
-          onClick={() => onOpen('project')}
-          className="group mt-4 flex w-full items-center gap-4 rounded-2xl border border-science-200 bg-[#eef3f1] p-5 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:border-science-400 hover:shadow-md sm:mt-6 sm:p-6"
-        >
-          <div className="rounded-xl bg-white p-3 text-science-600 shadow-sm">
-            <FileText className="h-6 w-6" />
-          </div>
-          <div className="min-w-0 flex-1">
-            <h3 className="font-display text-lg font-bold text-[#1a1a1a]">{t('navProject')}</h3>
-            <p className="mt-1 text-sm leading-relaxed text-[#5c5549]">{t('projectStoryIntro')}</p>
-          </div>
-          <ChevronRight className="h-5 w-5 shrink-0 text-science-500 transition-transform group-hover:translate-x-1" />
-        </button>
 
         {/* Footer note */}
         <p className="mt-8 text-center text-xs text-[#a39a89]">

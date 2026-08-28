@@ -9,6 +9,7 @@ chemistry teacher uses it for reaction demos in class.
 
 ```
 Browser (Cloudflare Pages: chemai101.guoweiwang.com)
+  ├─ /reaction-tray/ → Reaction Tray 20-level chemistry puzzle
   └─ Cloudflare Worker: chemai101-api
        ├─ /v1/analyze   → DeepSeek API (deepseek-v4-flash): reaction prediction & naming,
        │                   with deterministic chemistry verification (valence, connectivity,
@@ -33,6 +34,9 @@ leak upstream bodies.
 
 The local frontend uses the production Worker by default. Override only the
 non-secret base URL with `VITE_CHEMAI_API_BASE` when testing another Worker.
+
+The vendored Reaction Tray build is served from `public/reaction-tray/`. Its
+source commit and build date are recorded in `public/reaction-tray/source.json`.
 
 ## Verify
 

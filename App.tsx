@@ -1,6 +1,6 @@
 import React, { lazy, Suspense, useEffect, useState } from 'react';
 import { HomeModule } from './components/HomeModule';
-import { Atom, BookOpen, Database, FileText, FlaskConical, Home as HomeIcon, Languages } from 'lucide-react';
+import { Atom, BookOpen, Database, FlaskConical, Gamepad2, Home as HomeIcon, Languages } from 'lucide-react';
 import { useLanguage } from './contexts/LanguageContext';
 import { parseRoute, updateRouteParams, RouteTarget } from './utils/routeParams';
 import { getReaction } from './src/data/reactions';
@@ -10,10 +10,9 @@ const BuilderModule = lazy(() => import('./components/BuilderModule').then((modu
 const LibraryModule = lazy(() => import('./components/LibraryModule').then((module) => ({ default: module.LibraryModule })));
 const TextbookModule = lazy(() => import('./components/TextbookModule').then((module) => ({ default: module.TextbookModule })));
 const ReactionPage = lazy(() => import('./components/ReactionPage').then((module) => ({ default: module.ReactionPage })));
-const ProjectStoryPage = lazy(() => import('./components/ProjectStoryPage').then((module) => ({ default: module.ProjectStoryPage })));
 
 function App() {
-  const [activeTab, setActiveTab] = useState<'home' | 'textbook' | 'reaction' | 'builder' | 'library' | 'project'>('home');
+  const [activeTab, setActiveTab] = useState<'home' | 'textbook' | 'reaction' | 'builder' | 'library'>('home');
   const [route, setRoute] = useState<RouteTarget>(() => parseRoute(window.location.search));
   const { language, setLanguage, t } = useLanguage();
 
@@ -45,7 +44,6 @@ function App() {
     { tab: 'reaction', label: t('navReaction'), mobileLabel: language === 'zh' ? '实验室' : 'Lab', Icon: FlaskConical },
     { tab: 'builder', label: t('navBuilder'), mobileLabel: language === 'zh' ? '构建器' : 'Builder', Icon: Atom },
     { tab: 'library', label: t('navLibrary'), mobileLabel: language === 'zh' ? '分子库' : 'Library', Icon: Database },
-    { tab: 'project', label: t('navProject'), mobileLabel: language === 'zh' ? '项目' : 'Project', Icon: FileText },
   ] as const;
 
   return (
@@ -77,6 +75,13 @@ function App() {
                   <span>{label}</span>
                 </button>
               ))}
+              <a
+                href="/reaction-tray/"
+                className="flex items-center gap-2 whitespace-nowrap rounded-lg bg-[#8c1515] px-4 py-2 text-sm font-semibold text-white shadow-sm transition-all hover:bg-[#6f1010] hover:shadow-md"
+              >
+                <Gamepad2 className="h-4 w-4" />
+                <span>{t('reactionTrayNav')}</span>
+              </a>
             </nav>
 
             <button
@@ -111,6 +116,14 @@ function App() {
               <span className="w-full truncate text-center">{mobileLabel}</span>
             </button>
           ))}
+          <a
+            href="/reaction-tray/"
+            aria-label={language === 'zh' ? '打开反应槽游戏' : 'Open Reaction Tray game'}
+            className="flex min-w-0 flex-col items-center justify-center gap-0.5 rounded-lg bg-[#f7ecec] px-1 text-[10px] font-semibold leading-tight text-[#8c1515] transition-colors active:bg-[#eed9d9]"
+          >
+            <Gamepad2 className="h-4 w-4 shrink-0" />
+            <span className="w-full truncate text-center">{t('reactionTrayNav')}</span>
+          </a>
         </nav>
       </header>
 
@@ -134,8 +147,6 @@ function App() {
               <TextbookModule />
             ) : activeTab === 'library' ? (
               <LibraryModule />
-            ) : activeTab === 'project' ? (
-              <ProjectStoryPage />
             ) : (
               <BuilderModule />
             )}
